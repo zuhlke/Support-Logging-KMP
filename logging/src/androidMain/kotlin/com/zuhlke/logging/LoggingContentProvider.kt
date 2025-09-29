@@ -6,8 +6,8 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import android.util.Log
-import kotlinx.coroutines.runBlocking
 import kotlin.time.ExperimentalTime
+import kotlinx.coroutines.runBlocking
 
 internal class LoggingContentProvider : ContentProvider() {
 
@@ -16,32 +16,17 @@ internal class LoggingContentProvider : ContentProvider() {
         private const val APP_RUNS_PATH = "appRuns"
     }
 
-    override fun onCreate(): Boolean {
-        return true
+    override fun onCreate(): Boolean = true
+
+    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String?>?): Int = 0
+
+    override fun getType(uri: Uri): String? = when (uri.lastPathSegment) {
+        LOGS_PATH -> "vnd.android.cursor.dir/vnd.com.zuhlke.logging.logs"
+        APP_RUNS_PATH -> "vnd.android.cursor.dir/vnd.com.zuhlke.logging.appruns"
+        else -> null
     }
 
-    override fun delete(
-        uri: Uri,
-        selection: String?,
-        selectionArgs: Array<out String?>?
-    ): Int {
-        return 0
-    }
-
-    override fun getType(uri: Uri): String? {
-        return when (uri.lastPathSegment) {
-            LOGS_PATH -> "vnd.android.cursor.dir/vnd.com.zuhlke.logging.logs"
-            APP_RUNS_PATH -> "vnd.android.cursor.dir/vnd.com.zuhlke.logging.appruns"
-            else -> null
-        }
-    }
-
-    override fun insert(
-        uri: Uri,
-        values: ContentValues?
-    ): Uri? {
-        return null
-    }
+    override fun insert(uri: Uri, values: ContentValues?): Uri? = null
 
     @OptIn(ExperimentalTime::class)
     override fun query(
@@ -113,7 +98,5 @@ internal class LoggingContentProvider : ContentProvider() {
         values: ContentValues?,
         selection: String?,
         selectionArgs: Array<out String?>?
-    ): Int {
-        return 0
-    }
+    ): Int = 0
 }

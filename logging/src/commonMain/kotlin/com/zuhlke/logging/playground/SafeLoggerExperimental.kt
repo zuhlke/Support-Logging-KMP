@@ -51,20 +51,16 @@ internal class SafeLoggerExperimental(tag: String, debug: Boolean = false) {
     }
 }
 
-internal class Internal() {
+internal class Internal {
     @InterpolatorFunction<DebugSafeStringInterpolator>(DebugSafeStringInterpolator::class)
     fun debug(message: String): Interpolatable = Messages.throwPluginNotExecuted()
 
     @InterpolatorFunction<ErrorSafeStringInterpolator>(ErrorSafeStringInterpolator::class)
     fun error(message: String): Interpolatable = Messages.throwPluginNotExecuted()
 
-    fun public(value: Any): PublicArgument {
-        return PublicArgument(value)
-    }
+    fun public(value: Any): PublicArgument = PublicArgument(value)
 
-    fun hash(value: Any): HashArgument {
-        return HashArgument(value)
-    }
+    fun hash(value: Any): HashArgument = HashArgument(value)
 }
 
 internal interface ParamInterpolator {
@@ -72,22 +68,18 @@ internal interface ParamInterpolator {
 }
 
 internal class ProductionInterpolator : ParamInterpolator {
-    override fun interpolate(param: Any): String {
-        return when (param) {
-            is HashArgument -> param.arg.toString().hashCode().toString()
-            is PublicArgument -> param.arg.toString()
-            else -> "<redacted>"
-        }
+    override fun interpolate(param: Any): String = when (param) {
+        is HashArgument -> param.arg.toString().hashCode().toString()
+        is PublicArgument -> param.arg.toString()
+        else -> "<redacted>"
     }
 }
 
 internal class DebugInterpolator : ParamInterpolator {
-    override fun interpolate(param: Any): String {
-        return when (param) {
-            is HashArgument -> param.arg.toString()
-            is PublicArgument -> param.arg.toString()
-            else -> param.toString()
-        }
+    override fun interpolate(param: Any): String = when (param) {
+        is HashArgument -> param.arg.toString()
+        is PublicArgument -> param.arg.toString()
+        else -> param.toString()
     }
 }
 
@@ -102,11 +94,9 @@ internal data class HashArgument(val arg: Any)
 
 internal abstract class SafeStringInterpolator(private val severity: Severity) :
     Interpolator<Any, Interpolatable> {
-    override fun interpolate(parts: () -> List<String>, params: () -> List<Any>): Interpolatable {
-        return Interpolatable(parts(), params(), severity)
-    }
+    override fun interpolate(parts: () -> List<String>, params: () -> List<Any>): Interpolatable =
+        Interpolatable(parts(), params(), severity)
 }
 
 internal object DebugSafeStringInterpolator : SafeStringInterpolator(Severity.Debug)
 internal object ErrorSafeStringInterpolator : SafeStringInterpolator(Severity.Error)
-

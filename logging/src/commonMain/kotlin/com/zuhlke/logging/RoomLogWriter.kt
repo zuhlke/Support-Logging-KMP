@@ -5,6 +5,9 @@ import co.touchlab.kermit.Severity
 import com.zuhlke.logging.data.AppRun
 import com.zuhlke.logging.data.Log
 import com.zuhlke.logging.data.LogDao
+import kotlin.properties.Delegates
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -16,15 +19,10 @@ import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
-internal open class RoomLogWriter(
-    private val clock: Clock,
-    private val logDao: LogDao
-) : LogWriter() {
+internal open class RoomLogWriter(private val clock: Clock, private val logDao: LogDao) :
+    LogWriter() {
 
     constructor(
         logDao: LogDao
@@ -33,13 +31,13 @@ internal open class RoomLogWriter(
     private var appRunId by Delegates.notNull<Int>()
     private val coroutineScope = CoroutineScope(
         Dispatchers.IO.limitedParallelism(1) +
-                SupervisorJob() +
-                CoroutineName("RoomLogWriter") +
-                CoroutineExceptionHandler { _, throwable ->
-                    // can't log it, we're the logger -- print to standard error
-                    println("RoomLogWriter: Uncaught exception in writer coroutine")
-                    throwable.printStackTrace()
-                },
+            SupervisorJob() +
+            CoroutineName("RoomLogWriter") +
+            CoroutineExceptionHandler { _, throwable ->
+                // can't log it, we're the logger -- print to standard error
+                println("RoomLogWriter: Uncaught exception in writer coroutine")
+                throwable.printStackTrace()
+            }
     )
 
     private val loggingChannel: Channel<Log> = Channel(capacity = Int.MAX_VALUE)
@@ -51,7 +49,8 @@ internal open class RoomLogWriter(
     }
 
     fun init(appVersion: String, operatingSystemVersion: String, device: String) {
-        coroutineScope.launch { // TODO: ensure sequential init and logging
+        coroutineScope.launch {
+            // TODO: ensure sequential init and logging
             val appRun = AppRun(
                 launchDate = clock.now(),
                 appVersion = appVersion,

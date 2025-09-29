@@ -17,4 +17,3 @@ internal data class Log(
     val throwable: String?,
     val appRunId: Int
 )
-

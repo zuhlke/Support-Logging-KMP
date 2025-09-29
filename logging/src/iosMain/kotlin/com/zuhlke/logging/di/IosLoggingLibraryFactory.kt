@@ -17,7 +17,7 @@ internal class IosLoggingLibraryFactory : LoggingLibraryFactory {
     override fun createLogRoomDatabase(): LogDatabase {
         val dbFile = "${fileDirectory()}/$LOG_DB_FILENAME"
         return Room.databaseBuilder<LogDatabase>(
-            name = dbFile,
+            name = dbFile
         )
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
@@ -31,14 +31,12 @@ internal class IosLoggingLibraryFactory : LoggingLibraryFactory {
             inDomain = NSUserDomainMask,
             appropriateForURL = null,
             create = false,
-            error = null,
+            error = null
         )
         return requireNotNull(documentDirectory).path!!
     }
 
-    override fun getMetadata(): RunMetadata {
-        return getMetadataInternal()
-    }
+    override fun getMetadata(): RunMetadata = getMetadataInternal()
 }
 
 internal fun getMetadataInternal(): RunMetadata {
@@ -62,7 +60,7 @@ internal fun getMetadataInternal(): RunMetadata {
         }
         return identifier
     }
-    */
+     */
     return RunMetadata(
         appVersion = "Not implemented",
         operatingSystemVersion = "Not implemented",

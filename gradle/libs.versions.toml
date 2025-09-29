@@ -15,6 +15,7 @@ junit = "4.13.2"
 kermit = "2.0.8"
 kotlin = "2.2.20"
 ksp = "2.2.20-2.0.2"
+ktlint = "13.1.0"
 library-compileSdk = "36"
 library-minSdk = "23"
 room = "2.8.1"
@@ -47,5 +48,6 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMul
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 room = { id = "androidx.room", version.ref = "room" }
 terpal = { id = "io.exoquery.terpal-plugin", version.ref = "terpal" }

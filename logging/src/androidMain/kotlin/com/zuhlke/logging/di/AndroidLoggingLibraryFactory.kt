@@ -13,14 +13,12 @@ internal class AndroidLoggingLibraryFactory(private val app: Application) : Logg
         val dbFile = app.getDatabasePath(LOG_DB_FILENAME)
         return Room.databaseBuilder<LogDatabase>(
             context = app,
-            name = dbFile.absolutePath,
+            name = dbFile.absolutePath
         )
             .setDriver(AndroidSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()
     }
 
-    override fun getMetadata(): RunMetadata {
-        return getMetadata(app)
-    }
+    override fun getMetadata(): RunMetadata = getMetadata(app)
 }

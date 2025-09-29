@@ -10,4 +10,3 @@ internal interface LoggingLibraryFactory {
 }
 
 internal const val LOG_DB_FILENAME = "logs.db"
-

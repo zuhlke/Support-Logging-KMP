@@ -6,9 +6,7 @@ import com.zuhlke.logging.di.IosLoggingLibraryFactory
 import com.zuhlke.logging.di.LoggingLibraryContainer
 
 public actual object ZuhlkeLogger {
-    public fun initialize(
-        useSafeInterpolation: Boolean
-    ) {
+    public fun initialize(useSafeInterpolation: Boolean) {
         val interpolationConfiguration = if (useSafeInterpolation) {
             SafeInterpolation
         } else {

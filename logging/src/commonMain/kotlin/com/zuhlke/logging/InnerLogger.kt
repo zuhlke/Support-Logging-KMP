@@ -9,7 +9,6 @@ import kotlin.concurrent.atomics.AtomicBoolean
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 import kotlin.time.ExperimentalTime
 
-
 @OptIn(ExperimentalAtomicApi::class)
 internal object InnerLogger {
 
@@ -35,24 +34,14 @@ internal object InnerLogger {
         }
     }
 
-    fun log(
-        severity: Severity,
-        tag: String,
-        message: () -> Interpolatable,
-        throwable: Throwable?
-    ) {
+    fun log(severity: Severity, tag: String, message: () -> Interpolatable, throwable: Throwable?) {
         if (!initialised.load()) {
             throw IllegalStateException("InnerLogger is not initialized")
         }
         log(severity, tag, message(), throwable)
     }
 
-    fun log(
-        severity: Severity,
-        tag: String,
-        message: Interpolatable,
-        throwable: Throwable?
-    ) {
+    fun log(severity: Severity, tag: String, message: Interpolatable, throwable: Throwable?) {
         if (!initialised.load()) {
             throw IllegalStateException("InnerLogger is not initialized")
         }
@@ -72,17 +61,12 @@ internal sealed interface OutputConfiguration {
         val logger = Logger(
             loggerConfigInit(
                 platformLogWriter(SimpleFormatter),
-                roomLogWriter,
+                roomLogWriter
             )
         )
 
         @OptIn(ExperimentalTime::class)
-        override fun log(
-            severity: Severity,
-            tag: String,
-            message: String,
-            throwable: Throwable?
-        ) {
+        override fun log(severity: Severity, tag: String, message: String, throwable: Throwable?) {
             // TODO: do we have to do it through Kermit? Shall we call logDao.insert directly?
             logger.log(
                 severity = severity.toKermitSeverity(),
@@ -93,30 +77,17 @@ internal sealed interface OutputConfiguration {
         }
 
         // TODO: refactor
-        override fun logAppRun(
-            appVersion: String,
-            operatingSystemVersion: String,
-            device: String
-        ) {
+        override fun logAppRun(appVersion: String, operatingSystemVersion: String, device: String) {
             roomLogWriter.init(appVersion, operatingSystemVersion, device)
         }
     }
 
     object NoOp : OutputConfiguration {
-        override fun log(
-            severity: Severity,
-            tag: String,
-            message: String,
-            throwable: Throwable?
-        ) {
+        override fun log(severity: Severity, tag: String, message: String, throwable: Throwable?) {
             // no-op
         }
 
-        override fun logAppRun(
-            appVersion: String,
-            operatingSystemVersion: String,
-            device: String
-        ) {
+        override fun logAppRun(appVersion: String, operatingSystemVersion: String, device: String) {
             // no-op
         }
     }
@@ -138,22 +109,18 @@ internal sealed interface InterpolationConfiguration {
     fun interpolate(param: Any): String
 
     data object SafeInterpolation : InterpolationConfiguration {
-        override fun interpolate(param: Any): String {
-            return when (param) {
-                is HashArgument -> param.arg.toString().hashCode().toString()
-                is PublicArgument -> param.arg.toString()
-                else -> "<redacted>"
-            }
+        override fun interpolate(param: Any): String = when (param) {
+            is HashArgument -> param.arg.toString().hashCode().toString()
+            is PublicArgument -> param.arg.toString()
+            else -> "<redacted>"
         }
     }
 
     data object UnsafeInterpolation : InterpolationConfiguration {
-        override fun interpolate(param: Any): String {
-            return when (param) {
-                is HashArgument -> param.arg.toString()
-                is PublicArgument -> param.arg.toString()
-                else -> param.toString()
-            }
+        override fun interpolate(param: Any): String = when (param) {
+            is HashArgument -> param.arg.toString()
+            is PublicArgument -> param.arg.toString()
+            else -> param.toString()
         }
     }
 }
