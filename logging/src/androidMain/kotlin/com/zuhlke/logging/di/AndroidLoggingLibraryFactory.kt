@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import androidx.sqlite.driver.AndroidSQLiteDriver
 import com.zuhlke.logging.RunMetadata
-import com.zuhlke.logging.data.LogDatabase
+import com.zuhlke.logging.integrations.room.data.LogDatabase
 import com.zuhlke.logging.getMetadata
 import kotlinx.coroutines.Dispatchers
 

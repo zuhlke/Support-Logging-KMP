@@ -3,7 +3,7 @@ package com.zuhlke.logging.di
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.zuhlke.logging.RunMetadata
-import com.zuhlke.logging.data.LogDatabase
+import com.zuhlke.logging.integrations.room.data.LogDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
