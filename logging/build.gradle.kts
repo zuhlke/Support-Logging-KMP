@@ -1,9 +1,12 @@
+import java.net.URI
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.terpal)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    id("maven-publish")
 }
 
 kotlin {
@@ -51,4 +54,27 @@ room {
 
 dependencies {
     ksp(libs.room.compiler)
+}
+
+group = "com.zuhlke"
+version = "0.1.0"
+
+publishing {
+    publications {
+        create<MavenPublication>("myLibrary") {
+            from(components["java"])
+            artifactId = "logging"
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = URI.create("https://github.com/zuhlke/Support-Logging-KMP")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
 }
