@@ -1,4 +1,5 @@
 import java.net.URI
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -61,19 +62,25 @@ version = "0.1.0"
 
 publishing {
     publications {
-        create<MavenPublication>("myLibrary") {
-            from(components["java"])
+        create<MavenPublication>("LoggingLibrary") {
             artifactId = "logging"
         }
     }
 
     repositories {
         maven {
+            val localProps = Properties()
+            val localPropsFile = rootProject.file("local.properties")
+            if (localPropsFile.exists()) {
+                localProps.load(localPropsFile.inputStream())
+            }
+
+
             name = "GitHubPackages"
-            url = URI.create("https://github.com/zuhlke/Support-Logging-KMP")
+            url = URI.create("https://maven.pkg.github.com/zuhlke/Support-Logging-KMP")
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = localProps.getProperty("gpr.user") ?: System.getenv("GITHUB_USER") ?: throw IllegalStateException("GitHub username not provided")
+                password = localProps.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
