@@ -46,4 +46,3 @@ internal object GlobalLogger {
         writerDispatcher.log(severity, tag, finalMessage, throwable)
     }
 }
-

@@ -12,14 +12,15 @@ internal class RoomLogWriter(private val logDao: LogDao) : LogWriter() {
     private var appRunId by Delegates.notNull<Int>()
 
     override suspend fun logAppRun(
-        launchDate: Instant, appVersion: String,
-        operatingSystemVersion: String,
+        launchDate: Instant,
+        appVersion: String,
+        osVersion: String,
         device: String
     ) {
         val appRun = AppRun(
             launchDate = launchDate,
             appVersion = appVersion,
-            operatingSystemVersion = operatingSystemVersion,
+            operatingSystemVersion = osVersion,
             device = device
         )
         val rowId = logDao.insert(appRun)

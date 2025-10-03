@@ -7,7 +7,7 @@ internal abstract class LogWriter {
     abstract suspend fun logAppRun(
         launchDate: Instant,
         appVersion: String,
-        operatingSystemVersion: String,
+        osVersion: String,
         device: String
     )
 

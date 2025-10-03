@@ -1,5 +1,8 @@
 package com.zuhlke.logging
 
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -10,26 +13,21 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
-internal data class LoggerConfiguration(
-    internal val logWriters: List<LogWriter>
-)
+internal data class LoggerConfiguration(internal val logWriters: List<LogWriter>)
 
 @OptIn(ExperimentalTime::class)
 // TODO: give better name
 internal class WriterDispatcher(val clock: Clock, val configuration: LoggerConfiguration) {
     private val coroutineScope = CoroutineScope(
         Dispatchers.IO.limitedParallelism(1) +
-                SupervisorJob() +
-                CoroutineName("ZuhkleLogger") +
-                CoroutineExceptionHandler { _, throwable ->
-                    // can't log it, we're the logger -- print to standard error
-                    println("RoomLogWriter: Uncaught exception in writer coroutine")
-                    throwable.printStackTrace()
-                }
+            SupervisorJob() +
+            CoroutineName("ZuhkleLogger") +
+            CoroutineExceptionHandler { _, throwable ->
+                // can't log it, we're the logger -- print to standard error
+                println("RoomLogWriter: Uncaught exception in writer coroutine")
+                throwable.printStackTrace()
+            }
     )
 
     private val loggingChannel: Channel<Loggable> = Channel(capacity = Int.MAX_VALUE)
@@ -50,7 +48,7 @@ internal class WriterDispatcher(val clock: Clock, val configuration: LoggerConfi
                         writer.logAppRun(
                             launchDate = loggable.launchDate,
                             appVersion = loggable.appVersion,
-                            operatingSystemVersion = loggable.operatingSystemVersion,
+                            osVersion = loggable.operatingSystemVersion,
                             device = loggable.device
                         )
                     }
@@ -82,12 +80,7 @@ internal class WriterDispatcher(val clock: Clock, val configuration: LoggerConfi
         )
     }
 
-    fun log(
-        severity: Severity,
-        message: String,
-        tag: String,
-        throwable: Throwable?
-    ) {
+    fun log(severity: Severity, message: String, tag: String, throwable: Throwable?) {
         loggingChannel.trySend(
             Loggable.LogRecord(
                 timestamp = clock.now(),
@@ -100,14 +93,13 @@ internal class WriterDispatcher(val clock: Clock, val configuration: LoggerConfi
     }
 }
 
-internal sealed class Loggable() {
+internal sealed class Loggable {
     internal data class AppRun(
         val launchDate: Instant,
         val appVersion: String,
         val operatingSystemVersion: String,
         val device: String
-    ) :
-        Loggable()
+    ) : Loggable()
 
     internal data class LogRecord(
         val timestamp: Instant,
@@ -117,4 +109,3 @@ internal sealed class Loggable() {
         val throwable: Throwable?
     ) : Loggable()
 }
-

@@ -15,13 +15,13 @@ internal class KermitLogWriter : LogWriter() {
     override suspend fun logAppRun(
         launchDate: Instant,
         appVersion: String,
-        operatingSystemVersion: String,
+        osVersion: String,
         device: String
     ) {
         logger.log(
             severity = Severity.Info.toKermitSeverity(),
             tag = "AppRun",
-            message = "App started. Version: $appVersion, OS: $operatingSystemVersion, Device: $device",
+            message = "App started. Version: $appVersion, OS: $osVersion, Device: $device",
             throwable = null
         )
     }
