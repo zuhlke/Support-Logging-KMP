@@ -1,4 +1,3 @@
-import java.net.URI
 import java.util.Properties
 
 plugins {
@@ -54,7 +53,7 @@ room {
 }
 
 dependencies {
-    ksp(libs.room.compiler)
+    add("kspAndroid", libs.room.compiler)
 }
 
 group = "com.zuhlke"
@@ -77,7 +76,7 @@ publishing {
 
 
             name = "GitHubPackages"
-            url = URI.create("https://maven.pkg.github.com/zuhlke/Support-Logging-KMP")
+            url = uri("https://maven.pkg.github.com/zuhlke/Support-Logging-KMP")
             credentials {
                 username = localProps.getProperty("gpr.user") ?: System.getenv("GITHUB_USER") ?: throw IllegalStateException("GitHub username not provided")
                 password = localProps.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
