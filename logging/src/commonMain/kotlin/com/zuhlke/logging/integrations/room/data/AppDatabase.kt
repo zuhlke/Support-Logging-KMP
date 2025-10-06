@@ -1,4 +1,4 @@
-package com.zuhlke.logging.data
+package com.zuhlke.logging.integrations.room.data
 
 import androidx.room.ConstructedBy
 import androidx.room.Database

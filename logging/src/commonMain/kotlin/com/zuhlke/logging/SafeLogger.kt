@@ -7,19 +7,19 @@ import io.exoquery.terpal.Messages
 public class SafeLogger(private val tag: String) {
 
     public fun d(message: Interpolatable) {
-        InnerLogger.log(Severity.Debug, tag, message, throwable = null)
+        GlobalLogger.log(Severity.Debug, tag, message, throwable = null)
     }
 
     public fun d(message: () -> Interpolatable) {
-        InnerLogger.log(Severity.Debug, tag, message, throwable = null)
+        GlobalLogger.log(Severity.Debug, tag, message, throwable = null)
     }
 
     public fun e(throwable: Throwable?, message: Interpolatable) {
-        InnerLogger.log(Severity.Error, tag, message, throwable = throwable)
+        GlobalLogger.log(Severity.Error, tag, message, throwable = throwable)
     }
 
     public fun e(throwable: Throwable?, message: () -> Interpolatable) {
-        InnerLogger.log(Severity.Error, tag, message, throwable = throwable)
+        GlobalLogger.log(Severity.Error, tag, message, throwable = throwable)
     }
 }
 

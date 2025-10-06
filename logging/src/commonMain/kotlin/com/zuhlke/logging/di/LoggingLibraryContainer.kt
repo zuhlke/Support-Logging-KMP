@@ -1,7 +1,7 @@
 package com.zuhlke.logging.di
 
 import com.zuhlke.logging.RunMetadata
-import com.zuhlke.logging.data.LogDao
+import com.zuhlke.logging.integrations.room.data.LogDao
 
 // TODO: hide this class from external usage
 internal class LoggingLibraryContainer(private val factory: LoggingLibraryFactory) {
