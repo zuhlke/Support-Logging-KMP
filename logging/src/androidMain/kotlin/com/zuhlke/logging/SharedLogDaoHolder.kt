@@ -1,6 +1,6 @@
 package com.zuhlke.logging
 
-import com.zuhlke.logging.data.LogDao
+import com.zuhlke.logging.integrations.room.data.LogDao
 
 internal object SharedLogDaoHolder {
     // TODO: safeguard it

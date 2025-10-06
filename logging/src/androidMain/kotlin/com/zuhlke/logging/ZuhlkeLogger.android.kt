@@ -6,6 +6,9 @@ import com.zuhlke.logging.InterpolationConfiguration.SafeInterpolation
 import com.zuhlke.logging.InterpolationConfiguration.UnsafeInterpolation
 import com.zuhlke.logging.di.AndroidLoggingLibraryFactory
 import com.zuhlke.logging.di.LoggingLibraryContainer
+import com.zuhlke.logging.integrations.kermit.KermitLogWriter
+import com.zuhlke.logging.integrations.room.RoomLogWriter
+import kotlin.time.Clock
 
 public actual object ZuhlkeLogger {
 
@@ -23,10 +26,11 @@ public actual object ZuhlkeLogger {
         val loggingLibraryContainer =
             LoggingLibraryContainer(AndroidLoggingLibraryFactory(application))
         SharedLogDaoHolder.logDao = loggingLibraryContainer.logDao
-        InnerLogger.init(
-            OutputConfiguration.DatabaseWriting(loggingLibraryContainer.logDao),
+        GlobalLogger.init(
+            Clock.System,
             interpolationConfiguration,
-            loggingLibraryContainer.runMetadata
+            loggingLibraryContainer.runMetadata,
+            logWriters = listOf(KermitLogWriter(), RoomLogWriter(loggingLibraryContainer.logDao))
         )
     }
 }
