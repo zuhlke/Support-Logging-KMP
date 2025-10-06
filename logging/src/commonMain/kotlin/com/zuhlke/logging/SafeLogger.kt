@@ -32,8 +32,8 @@ public data class Interpolatable(internal val parts: List<String>, internal val 
 internal data class PublicArgument(val arg: Any)
 internal data class HashArgument(val arg: Any)
 
+// We return Any here to hide internal types from the public API
 public fun public(value: Any): Any = PublicArgument(value)
-
 public fun hash(value: Any): Any = HashArgument(value)
 
 internal object SafeStringInterpolator : Interpolator<Any, Interpolatable> {

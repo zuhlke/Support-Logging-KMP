@@ -21,15 +21,11 @@ kotlin {
             api(libs.terpal.runtime)
             implementation(libs.kermit)
             implementation(libs.coroutines.core)
-            implementation(libs.room.runtime)
         }
 
         androidMain.dependencies {
+            implementation(libs.room.runtime)
             implementation(libs.sqlite.framework)
-        }
-
-        iosMain.dependencies {
-            implementation(libs.sqlite.bundled)
         }
 
         commonTest.dependencies {
@@ -60,11 +56,6 @@ group = "com.zuhlke"
 version = "0.1.0"
 
 publishing {
-    publications {
-        create<MavenPublication>("LoggingLibrary") {
-            artifactId = "logging"
-        }
-    }
 
     repositories {
         maven {

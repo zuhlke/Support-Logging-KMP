@@ -43,6 +43,11 @@ internal object GlobalLogger {
             throw IllegalStateException("GlobalLogger is not initialized")
         }
         val finalMessage = interpolationConfiguration.interpolate(message)
-        writerDispatcher.log(severity, tag, finalMessage, throwable)
+        writerDispatcher.log(
+            severity = severity,
+            tag = tag,
+            message = finalMessage,
+            throwable = throwable
+        )
     }
 }
