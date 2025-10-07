@@ -1,4 +1,3 @@
-import java.net.URI
 import java.util.Properties
 
 plugins {
@@ -22,15 +21,11 @@ kotlin {
             api(libs.terpal.runtime)
             implementation(libs.kermit)
             implementation(libs.coroutines.core)
-            implementation(libs.room.runtime)
         }
 
         androidMain.dependencies {
+            implementation(libs.room.runtime)
             implementation(libs.sqlite.framework)
-        }
-
-        iosMain.dependencies {
-            implementation(libs.sqlite.bundled)
         }
 
         commonTest.dependencies {
@@ -54,18 +49,13 @@ room {
 }
 
 dependencies {
-    ksp(libs.room.compiler)
+    add("kspAndroid", libs.room.compiler)
 }
 
 group = "com.zuhlke"
-version = "0.1.0"
+version = "0.1.1"
 
 publishing {
-    publications {
-        create<MavenPublication>("LoggingLibrary") {
-            artifactId = "logging"
-        }
-    }
 
     repositories {
         maven {
@@ -77,7 +67,7 @@ publishing {
 
 
             name = "GitHubPackages"
-            url = URI.create("https://maven.pkg.github.com/zuhlke/Support-Logging-KMP")
+            url = uri("https://maven.pkg.github.com/zuhlke/Support-Logging-KMP")
             credentials {
                 username = localProps.getProperty("gpr.user") ?: System.getenv("GITHUB_USER") ?: throw IllegalStateException("GitHub username not provided")
                 password = localProps.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")

@@ -15,22 +15,23 @@ public actual object ZuhlkeLogger {
     public fun initialize(
         application: Application,
         useSafeInterpolation: Boolean = application.applicationInfo.flags and
-            ApplicationInfo.FLAG_DEBUGGABLE ==
-            0
+                ApplicationInfo.FLAG_DEBUGGABLE == 0
     ) {
         val interpolationConfiguration = if (useSafeInterpolation) {
             SafeInterpolation
         } else {
             UnsafeInterpolation
         }
-        val loggingLibraryContainer =
-            LoggingLibraryContainer(AndroidLoggingLibraryFactory(application))
-        SharedLogDaoHolder.logDao = loggingLibraryContainer.logDao
+        val factory = AndroidLoggingLibraryFactory(application)
+        val loggingLibraryContainer = LoggingLibraryContainer(factory)
+        val logDao = factory.createLogRoomDatabase().logDao()
+
+        SharedLogDaoHolder.logDao = logDao
         GlobalLogger.init(
             Clock.System,
             interpolationConfiguration,
             loggingLibraryContainer.runMetadata,
-            logWriters = listOf(KermitLogWriter(), RoomLogWriter(loggingLibraryContainer.logDao))
+            logWriters = listOf(KermitLogWriter(), RoomLogWriter(logDao))
         )
     }
 }

@@ -80,7 +80,7 @@ internal class WriterDispatcher(val clock: Clock, val configuration: LoggerConfi
         )
     }
 
-    fun log(severity: Severity, message: String, tag: String, throwable: Throwable?) {
+    fun log(severity: Severity, tag: String, message: String, throwable: Throwable?) {
         loggingChannel.trySend(
             Loggable.LogRecord(
                 timestamp = clock.now(),

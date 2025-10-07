@@ -9,7 +9,7 @@ import com.zuhlke.logging.integrations.room.data.LogDatabase
 import kotlinx.coroutines.Dispatchers
 
 internal class AndroidLoggingLibraryFactory(private val app: Application) : LoggingLibraryFactory {
-    override fun createLogRoomDatabase(): LogDatabase {
+    fun createLogRoomDatabase(): LogDatabase {
         val dbFile = app.getDatabasePath(LOG_DB_FILENAME)
         return Room.databaseBuilder<LogDatabase>(
             context = app,
@@ -22,3 +22,5 @@ internal class AndroidLoggingLibraryFactory(private val app: Application) : Logg
 
     override fun getMetadata(): RunMetadata = getMetadata(app)
 }
+
+internal const val LOG_DB_FILENAME = "logs.db"

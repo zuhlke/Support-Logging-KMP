@@ -5,7 +5,6 @@ import com.zuhlke.logging.InterpolationConfiguration.UnsafeInterpolation
 import com.zuhlke.logging.di.IosLoggingLibraryFactory
 import com.zuhlke.logging.di.LoggingLibraryContainer
 import com.zuhlke.logging.integrations.kermit.KermitLogWriter
-import com.zuhlke.logging.integrations.room.RoomLogWriter
 import kotlin.time.Clock
 
 public actual object ZuhlkeLogger {
@@ -21,7 +20,7 @@ public actual object ZuhlkeLogger {
             Clock.System,
             interpolationConfiguration,
             loggingLibraryContainer.runMetadata,
-            logWriters = listOf(KermitLogWriter(), RoomLogWriter(loggingLibraryContainer.logDao))
+            logWriters = listOf(KermitLogWriter())
         )
     }
 }

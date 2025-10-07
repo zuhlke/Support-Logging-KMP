@@ -39,6 +39,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.kermit)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.terpal.runtime)
@@ -61,6 +62,7 @@ android {
         versionName = "1.0"
     }
     signingConfigs {
+        // TODO: generate new debug key
         getByName("debug") {
             storeFile = file("debug.jks")
             storePassword = "5TJ[m\"'XKC!&CB@w"
