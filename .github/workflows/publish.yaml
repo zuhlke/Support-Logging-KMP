@@ -3,12 +3,15 @@ name: Publish KMP App
 
 on:
   release:
-    types: [published, prereleased]
+    types: [prereleased, released]
 
 jobs:
   publish:
     name: Publish KMP Artifacts
     runs-on: macos-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout repository
@@ -26,3 +29,6 @@ jobs:
 
       - name: Publish artifacts
         run: ./gradlew publish --stacktrace
+        env:
+          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
