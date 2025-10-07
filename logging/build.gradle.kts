@@ -69,7 +69,7 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/zuhlke/Support-Logging-KMP")
             credentials {
-                username = localProps.getProperty("gpr.user") ?: System.getenv("GITHUB_USER") ?: throw IllegalStateException("GitHub username not provided")
+                username = localProps.getProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR") ?: throw IllegalStateException("GitHub username not provided")
                 password = localProps.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
             }
         }
