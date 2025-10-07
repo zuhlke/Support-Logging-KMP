@@ -62,6 +62,7 @@ android {
         versionName = "1.0"
     }
     signingConfigs {
+        // TODO: generate new debug key
         getByName("debug") {
             storeFile = file("debug.jks")
             storePassword = "5TJ[m\"'XKC!&CB@w"

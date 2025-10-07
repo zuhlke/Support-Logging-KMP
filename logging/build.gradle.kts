@@ -53,7 +53,7 @@ dependencies {
 }
 
 group = "com.zuhlke"
-version = "0.1.0"
+version = "0.1.1"
 
 publishing {
 
