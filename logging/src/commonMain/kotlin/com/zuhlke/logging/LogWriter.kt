@@ -1,17 +1,18 @@
 package com.zuhlke.logging
 
+import com.zuhlke.logging.data.Severity
 import kotlin.time.Instant
 
-internal abstract class LogWriter {
+internal interface LogWriter {
 
-    abstract suspend fun logAppRun(
+    suspend fun writeAppRun(
         launchDate: Instant,
         appVersion: String,
         osVersion: String,
         device: String
     )
 
-    abstract suspend fun log(
+    suspend fun writeLog(
         timestamp: Instant,
         severity: Severity,
         message: String,

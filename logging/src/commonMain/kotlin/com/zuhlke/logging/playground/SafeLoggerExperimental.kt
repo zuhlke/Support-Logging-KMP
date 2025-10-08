@@ -4,7 +4,7 @@ import co.touchlab.kermit.Logger
 import co.touchlab.kermit.SimpleFormatter
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
-import com.zuhlke.logging.Severity
+import com.zuhlke.logging.data.Severity
 import io.exoquery.terpal.Interpolator
 import io.exoquery.terpal.InterpolatorFunction
 import io.exoquery.terpal.Messages

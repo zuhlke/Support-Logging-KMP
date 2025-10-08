@@ -5,14 +5,14 @@ import co.touchlab.kermit.SimpleFormatter
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.zuhlke.logging.LogWriter
-import com.zuhlke.logging.Severity
+import com.zuhlke.logging.data.Severity
 import kotlin.time.Instant
 
-internal class KermitLogWriter : LogWriter() {
+internal class KermitLogWriter : LogWriter {
 
     private val logger = Logger(loggerConfigInit(platformLogWriter(SimpleFormatter)))
 
-    override suspend fun logAppRun(
+    override suspend fun writeAppRun(
         launchDate: Instant,
         appVersion: String,
         osVersion: String,
@@ -26,7 +26,7 @@ internal class KermitLogWriter : LogWriter() {
         )
     }
 
-    override suspend fun log(
+    override suspend fun writeLog(
         timestamp: Instant,
         severity: Severity,
         message: String,

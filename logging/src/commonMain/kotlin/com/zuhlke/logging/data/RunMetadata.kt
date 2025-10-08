@@ -1,7 +1,7 @@
-package com.zuhlke.logging
+package com.zuhlke.logging.data
 
 internal class RunMetadata(
     val appVersion: String,
-    val operatingSystemVersion: String,
+    val osVersion: String,
     val device: String
 )

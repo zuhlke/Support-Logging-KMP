@@ -16,11 +16,15 @@ public actual object ZuhlkeLogger {
         }
         val loggingLibraryContainer =
             LoggingLibraryContainer(IosLoggingLibraryFactory())
-        GlobalLogger.init(
+
+        val writerDispatcher = DelegatingLogDispatcher(
             Clock.System,
-            interpolationConfiguration,
-            loggingLibraryContainer.runMetadata,
             logWriters = listOf(KermitLogWriter())
+        )
+        InnerLogger.init(
+            writerDispatcher,
+            interpolationConfiguration,
+            loggingLibraryContainer.runMetadata
         )
     }
 }

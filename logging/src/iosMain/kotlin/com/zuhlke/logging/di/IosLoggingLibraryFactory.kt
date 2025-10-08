@@ -1,6 +1,6 @@
 package com.zuhlke.logging.di
 
-import com.zuhlke.logging.RunMetadata
+import com.zuhlke.logging.data.RunMetadata
 
 internal class IosLoggingLibraryFactory : LoggingLibraryFactory {
     override fun getMetadata(): RunMetadata = getMetadataInternal()
@@ -30,7 +30,7 @@ internal fun getMetadataInternal(): RunMetadata {
      */
     return RunMetadata(
         appVersion = "Not implemented",
-        operatingSystemVersion = "Not implemented",
+        osVersion = "Not implemented",
         device = "Not implemented"
     )
 }

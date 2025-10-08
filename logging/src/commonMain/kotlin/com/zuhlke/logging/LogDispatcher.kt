@@ -1,8 +1,8 @@
 package com.zuhlke.logging
 
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
+import com.zuhlke.logging.data.RunMetadata
+import com.zuhlke.logging.data.Severity
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -13,21 +13,31 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
-internal data class LoggerConfiguration(internal val logWriters: List<LogWriter>)
+internal interface LogDispatcher {
+    fun init(runMetadata: RunMetadata)
+    fun log(severity: Severity, tag: String, message: String, throwable: Throwable? = null)
+}
 
 @OptIn(ExperimentalTime::class)
 // TODO: give better name
-internal class WriterDispatcher(val clock: Clock, val configuration: LoggerConfiguration) {
+internal class DelegatingLogDispatcher(
+    val clock: Clock,
+    val logWriters: List<LogWriter>,
+    dispatcher: CoroutineDispatcher = Dispatchers.IO.limitedParallelism(1)
+) : LogDispatcher {
     private val coroutineScope = CoroutineScope(
-        Dispatchers.IO.limitedParallelism(1) +
-            SupervisorJob() +
-            CoroutineName("ZuhkleLogger") +
-            CoroutineExceptionHandler { _, throwable ->
-                // can't log it, we're the logger -- print to standard error
-                println("RoomLogWriter: Uncaught exception in writer coroutine")
-                throwable.printStackTrace()
-            }
+        dispatcher +
+                SupervisorJob() +
+                CoroutineName("ZuhkleLogger") +
+                CoroutineExceptionHandler { _, throwable ->
+                    // can't log it, we're the logger -- print to standard error
+                    println("WriterDispatcher: Uncaught exception in writer coroutine")
+                    throwable.printStackTrace()
+                }
     )
 
     private val loggingChannel: Channel<Loggable> = Channel(capacity = Int.MAX_VALUE)
@@ -44,8 +54,8 @@ internal class WriterDispatcher(val clock: Clock, val configuration: LoggerConfi
 
             result.getOrNull()?.let { loggable ->
                 when (loggable) {
-                    is Loggable.AppRun -> configuration.logWriters.forEach { writer ->
-                        writer.logAppRun(
+                    is Loggable.AppRun -> logWriters.forEach { writer ->
+                        writer.writeAppRun(
                             launchDate = loggable.launchDate,
                             appVersion = loggable.appVersion,
                             osVersion = loggable.operatingSystemVersion,
@@ -53,34 +63,32 @@ internal class WriterDispatcher(val clock: Clock, val configuration: LoggerConfi
                         )
                     }
 
-                    is Loggable.LogRecord -> {
-                        configuration.logWriters.forEach { writer ->
-                            writer.log(
-                                timestamp = loggable.timestamp,
-                                severity = loggable.severity,
-                                message = loggable.message,
-                                tag = loggable.tag,
-                                throwable = loggable.throwable
-                            )
-                        }
+                    is Loggable.LogRecord -> logWriters.forEach { writer ->
+                        writer.writeLog(
+                            timestamp = loggable.timestamp,
+                            severity = loggable.severity,
+                            message = loggable.message,
+                            tag = loggable.tag,
+                            throwable = loggable.throwable
+                        )
                     }
                 }
             }
         }
     }
 
-    fun init(runMetadata: RunMetadata) {
+    override fun init(runMetadata: RunMetadata) {
         loggingChannel.trySend(
             Loggable.AppRun(
                 launchDate = clock.now(),
                 appVersion = runMetadata.appVersion,
-                operatingSystemVersion = runMetadata.operatingSystemVersion,
+                operatingSystemVersion = runMetadata.osVersion,
                 device = runMetadata.device
             )
         )
     }
 
-    fun log(severity: Severity, tag: String, message: String, throwable: Throwable?) {
+    override fun log(severity: Severity, tag: String, message: String, throwable: Throwable?) {
         loggingChannel.trySend(
             Loggable.LogRecord(
                 timestamp = clock.now(),

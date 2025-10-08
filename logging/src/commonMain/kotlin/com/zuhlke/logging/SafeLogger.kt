@@ -1,5 +1,6 @@
 package com.zuhlke.logging
 
+import com.zuhlke.logging.data.Severity
 import io.exoquery.terpal.Interpolator
 import io.exoquery.terpal.InterpolatorFunction
 import io.exoquery.terpal.Messages
@@ -7,19 +8,19 @@ import io.exoquery.terpal.Messages
 public class SafeLogger(private val tag: String) {
 
     public fun d(message: Interpolatable) {
-        GlobalLogger.log(Severity.Debug, tag, message, throwable = null)
+        InnerLogger.log(Severity.Debug, tag, message, throwable = null)
     }
 
     public fun d(message: () -> Interpolatable) {
-        GlobalLogger.log(Severity.Debug, tag, message, throwable = null)
+        InnerLogger.log(Severity.Debug, tag, message, throwable = null)
     }
 
     public fun e(throwable: Throwable?, message: Interpolatable) {
-        GlobalLogger.log(Severity.Error, tag, message, throwable = throwable)
+        InnerLogger.log(Severity.Error, tag, message, throwable = throwable)
     }
 
     public fun e(throwable: Throwable?, message: () -> Interpolatable) {
-        GlobalLogger.log(Severity.Error, tag, message, throwable = throwable)
+        InnerLogger.log(Severity.Error, tag, message, throwable = throwable)
     }
 }
 

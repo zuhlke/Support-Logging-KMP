@@ -3,7 +3,7 @@ package com.zuhlke.logging
 internal sealed interface InterpolationConfiguration {
 
     fun interpolate(interpolatable: Interpolatable): String {
-        val params = interpolatable.params.map(::interpolate)
+        val params = interpolatable.params.map(::interpolateParameter)
         return buildString {
             append(interpolatable.parts[0])
             for (i in params.indices) {
@@ -13,10 +13,10 @@ internal sealed interface InterpolationConfiguration {
         }
     }
 
-    fun interpolate(param: Any): String
+    fun interpolateParameter(param: Any): String
 
     data object SafeInterpolation : InterpolationConfiguration {
-        override fun interpolate(param: Any): String = when (param) {
+        override fun interpolateParameter(param: Any): String = when (param) {
             is HashArgument -> param.arg.toString().hashCode().toString()
             is PublicArgument -> param.arg.toString()
             else -> "<redacted>"
@@ -24,7 +24,7 @@ internal sealed interface InterpolationConfiguration {
     }
 
     data object UnsafeInterpolation : InterpolationConfiguration {
-        override fun interpolate(param: Any): String = when (param) {
+        override fun interpolateParameter(param: Any): String = when (param) {
             is HashArgument -> param.arg.toString()
             is PublicArgument -> param.arg.toString()
             else -> param.toString()

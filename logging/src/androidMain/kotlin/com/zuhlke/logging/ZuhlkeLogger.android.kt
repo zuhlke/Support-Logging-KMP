@@ -27,11 +27,14 @@ public actual object ZuhlkeLogger {
         val logDao = factory.createLogRoomDatabase().logDao()
 
         SharedLogDaoHolder.logDao = logDao
-        GlobalLogger.init(
+        val writerDispatcher = DelegatingLogDispatcher(
             Clock.System,
-            interpolationConfiguration,
-            loggingLibraryContainer.runMetadata,
             logWriters = listOf(KermitLogWriter(), RoomLogWriter(logDao))
+        )
+        InnerLogger.init(
+            writerDispatcher,
+            interpolationConfiguration,
+            loggingLibraryContainer.runMetadata
         )
     }
 }
