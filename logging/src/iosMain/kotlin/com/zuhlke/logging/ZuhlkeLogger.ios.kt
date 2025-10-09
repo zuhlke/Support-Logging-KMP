@@ -1,9 +1,9 @@
 package com.zuhlke.logging
 
-import com.zuhlke.logging.InterpolationConfiguration.SafeInterpolation
-import com.zuhlke.logging.InterpolationConfiguration.UnsafeInterpolation
 import com.zuhlke.logging.di.IosLoggingLibraryFactory
 import com.zuhlke.logging.integrations.kermit.KermitLogWriter
+import com.zuhlke.logging.interpolation.SafeInterpolation
+import com.zuhlke.logging.interpolation.UnsafeInterpolation
 import kotlin.time.Clock
 
 public actual object ZuhlkeLogger {

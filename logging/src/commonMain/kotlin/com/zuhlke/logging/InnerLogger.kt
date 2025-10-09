@@ -2,6 +2,7 @@ package com.zuhlke.logging
 
 import com.zuhlke.logging.data.RunMetadata
 import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.interpolation.InterpolationConfiguration
 import kotlin.concurrent.atomics.AtomicReference
 import kotlin.concurrent.atomics.ExperimentalAtomicApi
 

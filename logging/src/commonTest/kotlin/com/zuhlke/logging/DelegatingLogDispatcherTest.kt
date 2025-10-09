@@ -5,11 +5,11 @@ import com.zuhlke.logging.utils.fakes.ClockFake
 import com.zuhlke.logging.utils.fakes.LogWriterFake
 import com.zuhlke.logging.utils.fixtures.nowFixture
 import com.zuhlke.logging.utils.fixtures.runMetadataFixture
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.time.Instant
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.runTest
 
 class DelegatingLogDispatcherTest {
 
@@ -18,9 +18,9 @@ class DelegatingLogDispatcherTest {
         val testDispatcher = StandardTestDispatcher(testScheduler)
         val logWriter1 = LogWriterFake()
         val logWriter2 = LogWriterFake()
-        val logWriters = listOf(logWriter1, logWriter2)
         val clock = ClockFake(nowFixture)
-        val dispatcher = DelegatingLogDispatcher(clock, logWriters, testDispatcher)
+        val dispatcher =
+            DelegatingLogDispatcher(clock, listOf(logWriter1, logWriter2), testDispatcher)
 
         dispatcher.init(runMetadataFixture)
         testScheduler.advanceUntilIdle()
@@ -44,9 +44,9 @@ class DelegatingLogDispatcherTest {
         val testDispatcher = StandardTestDispatcher(testScheduler)
         val logWriter1 = LogWriterFake()
         val logWriter2 = LogWriterFake()
-        val logWriters = listOf(logWriter1, logWriter2)
         val clock = ClockFake(nowFixture)
-        val dispatcher = DelegatingLogDispatcher(clock, logWriters, testDispatcher)
+        val dispatcher =
+            DelegatingLogDispatcher(clock, listOf(logWriter1, logWriter2), testDispatcher)
 
         dispatcher.log(
             severity = Severity.Info,

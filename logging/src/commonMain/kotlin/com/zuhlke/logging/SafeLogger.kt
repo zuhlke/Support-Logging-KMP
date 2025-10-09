@@ -30,12 +30,12 @@ public fun safeString(@Suppress("unused") string: String): Interpolatable =
 
 public data class Interpolatable(internal val parts: List<String>, internal val params: List<Any>)
 
-internal data class PublicArgument(val arg: Any)
-internal data class HashArgument(val arg: Any)
+internal data class PublicParameter(val arg: Any)
+internal data class HashParameter(val arg: Any)
 
 // We return Any here to hide internal types from the public API
-public fun public(value: Any): Any = PublicArgument(value)
-public fun hash(value: Any): Any = HashArgument(value)
+public fun public(value: Any): Any = PublicParameter(value)
+public fun hash(value: Any): Any = HashParameter(value)
 
 internal object SafeStringInterpolator : Interpolator<Any, Interpolatable> {
     override fun interpolate(parts: () -> List<String>, params: () -> List<Any>): Interpolatable =

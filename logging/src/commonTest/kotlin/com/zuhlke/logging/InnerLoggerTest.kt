@@ -1,6 +1,7 @@
 package com.zuhlke.logging
 
 import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.interpolation.SafeInterpolation
 import com.zuhlke.logging.utils.fakes.LogDispatcherFake
 import com.zuhlke.logging.utils.fixtures.runMetadataFixture
 import kotlin.test.BeforeTest
@@ -20,7 +21,7 @@ class InnerLoggerTest {
     fun `init calls logDispatcher`() {
         val subject = InnerLogger
         val logDispatcherFake = LogDispatcherFake()
-        val interpolationConfiguration = InterpolationConfiguration.SafeInterpolation
+        val interpolationConfiguration = SafeInterpolation
 
         subject.init(logDispatcherFake, interpolationConfiguration, runMetadataFixture)
 
@@ -33,7 +34,7 @@ class InnerLoggerTest {
     fun `init cannot be called more than once`() {
         val subject = InnerLogger
         val logDispatcherFake = LogDispatcherFake()
-        val interpolationConfiguration = InterpolationConfiguration.SafeInterpolation
+        val interpolationConfiguration = SafeInterpolation
 
         subject.init(logDispatcherFake, interpolationConfiguration, runMetadataFixture)
         val exception = assertFailsWith<IllegalStateException> {
@@ -62,7 +63,7 @@ class InnerLoggerTest {
     @Test
     fun `log calls logDispatcher`() {
         val logDispatcherFake = LogDispatcherFake()
-        val interpolationConfiguration = InterpolationConfiguration.SafeInterpolation
+        val interpolationConfiguration = SafeInterpolation
         val subject = InnerLogger(logDispatcherFake, interpolationConfiguration)
 
         subject.log(

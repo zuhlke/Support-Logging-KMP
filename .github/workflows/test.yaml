@@ -9,7 +9,7 @@ on:
 
 jobs:
   all-tests:
-    name: Run Gradle allTests
+    name: Run Checks
     runs-on: ubuntu-latest
 
     steps:
