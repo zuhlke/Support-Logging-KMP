@@ -49,6 +49,7 @@ internal class InnerLogger(
         }
 
         val shared: InnerLogger
-            get() = instance.load() ?: throw IllegalStateException("InnerLogger is not initialized. Call init() first.")
+            get() = instance.load()
+                ?: throw IllegalStateException("InnerLogger is not initialized. Call init() first.")
     }
 }

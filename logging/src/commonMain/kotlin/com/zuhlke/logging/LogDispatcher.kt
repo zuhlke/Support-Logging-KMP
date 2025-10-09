@@ -8,4 +8,3 @@ internal interface LogDispatcher {
     fun init(runMetadata: RunMetadata)
     fun log(severity: Severity, tag: String, message: String, throwable: Throwable? = null)
 }
-

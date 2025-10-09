@@ -5,11 +5,11 @@ import com.zuhlke.logging.utils.fakes.ClockFake
 import com.zuhlke.logging.utils.fakes.LogWriterFake
 import com.zuhlke.logging.utils.fixtures.nowFixture
 import com.zuhlke.logging.utils.fixtures.runMetadataFixture
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.time.Instant
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runTest
 
 class DelegatingLogDispatcherTest {
 
@@ -111,6 +111,4 @@ class DelegatingLogDispatcherTest {
         )
         assertContentEquals(expected, logWriter.writeLogCalls)
     }
-
 }
-

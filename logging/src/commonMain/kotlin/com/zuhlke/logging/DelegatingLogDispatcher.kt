@@ -2,6 +2,9 @@ package com.zuhlke.logging
 
 import com.zuhlke.logging.data.RunMetadata
 import com.zuhlke.logging.data.Severity
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineName
@@ -13,9 +16,6 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 // TODO: give better name
@@ -26,13 +26,13 @@ internal class DelegatingLogDispatcher(
 ) : LogDispatcher {
     private val coroutineScope = CoroutineScope(
         dispatcher +
-                SupervisorJob() +
-                CoroutineName("ZuhkleLogger") +
-                CoroutineExceptionHandler { _, throwable ->
-                    // can't log it, we're the logger -- print to standard error
-                    println("WriterDispatcher: Uncaught exception in writer coroutine")
-                    throwable.printStackTrace()
-                }
+            SupervisorJob() +
+            CoroutineName("ZuhkleLogger") +
+            CoroutineExceptionHandler { _, throwable ->
+                // can't log it, we're the logger -- print to standard error
+                println("WriterDispatcher: Uncaught exception in writer coroutine")
+                throwable.printStackTrace()
+            }
     )
 
     private val loggingChannel: Channel<Loggable> = Channel(capacity = Int.MAX_VALUE)

@@ -27,9 +27,7 @@ internal class LogDispatcherFake : LogDispatcher {
         _initCalls.add(runMetadata)
     }
 
-    override fun log(
-        severity: Severity, tag: String, message: String, throwable: Throwable?
-    ) {
+    override fun log(severity: Severity, tag: String, message: String, throwable: Throwable?) {
         _logCalls.add(LogEntry(severity, tag, message, throwable))
     }
 }

@@ -93,10 +93,10 @@ class InnerLoggerTest {
                     message = "Test message2",
                     throwable = throwable
                 )
-            ), logDispatcherFake.logCalls
+            ),
+            logDispatcherFake.logCalls
         )
     }
 
     // tests for interpolation
 }
-
