@@ -1,17 +1,17 @@
 package com.zuhlke.logging.integrations.room
 
 import com.zuhlke.logging.LogWriter
-import com.zuhlke.logging.Severity
+import com.zuhlke.logging.data.Severity
 import com.zuhlke.logging.integrations.room.data.AppRun
 import com.zuhlke.logging.integrations.room.data.Log
 import com.zuhlke.logging.integrations.room.data.LogDao
 import kotlin.properties.Delegates
 import kotlin.time.Instant
 
-internal class RoomLogWriter(private val logDao: LogDao) : LogWriter() {
+internal class RoomLogWriter(private val logDao: LogDao) : LogWriter {
     private var appRunId by Delegates.notNull<Int>()
 
-    override suspend fun logAppRun(
+    override suspend fun writeAppRun(
         launchDate: Instant,
         appVersion: String,
         osVersion: String,
@@ -27,7 +27,7 @@ internal class RoomLogWriter(private val logDao: LogDao) : LogWriter() {
         appRunId = logDao.getAppRunIdByRowId(rowId)
     }
 
-    override suspend fun log(
+    override suspend fun writeLog(
         timestamp: Instant,
         severity: Severity,
         message: String,

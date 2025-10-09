@@ -2,6 +2,7 @@ package com.zuhlke.logging
 
 import android.content.Context
 import android.os.Build
+import com.zuhlke.logging.data.RunMetadata
 
 internal fun getMetadata(appContext: Context): RunMetadata {
     fun getAppVersion(): String = try {
@@ -20,7 +21,7 @@ internal fun getMetadata(appContext: Context): RunMetadata {
 
     return RunMetadata(
         appVersion = getAppVersion(),
-        operatingSystemVersion = Build.VERSION.SDK_INT.toString(),
+        osVersion = Build.VERSION.SDK_INT.toString(),
         device = Build.MODEL
     )
 }

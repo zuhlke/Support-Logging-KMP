@@ -22,11 +22,11 @@ import com.zuhlke.logging.SafeLogger
 import com.zuhlke.logging.hash
 import com.zuhlke.logging.public
 import com.zuhlke.logging.safeString
+import kotlin.random.Random
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import supportloggingkmp.composeapp.generated.resources.Res
 import supportloggingkmp.composeapp.generated.resources.compose_multiplatform
-import kotlin.random.Random
 
 @Composable
 @Preview
@@ -46,7 +46,13 @@ fun App() {
                 showContent = !showContent
                 val password = Random.nextInt().toString()
                 Logger.d { "Kermit: password = $password, showContent = $showContent" }
-                logger.d { safeString("ZuhlkeLogger: password = $password, showContent (public) = ${public(showContent)} hash = ${hash(password)}") }
+                logger.d {
+                    safeString(
+                        "ZuhlkeLogger: password = $password, showContent (public) = ${public(
+                            showContent
+                        )} hash = ${hash(password)}"
+                    )
+                }
             }) {
                 Text("Click me!")
             }

@@ -28,3 +28,14 @@ subprojects {
         }
     }
 }
+
+tasks.register("installGitHook", Copy::class) {
+    from(file("$rootDir/scripts/pre-push"))
+    into(file("$rootDir/.git/hooks"))
+    filePermissions {
+        user {
+            read = true
+            execute = true
+        }
+    }
+}

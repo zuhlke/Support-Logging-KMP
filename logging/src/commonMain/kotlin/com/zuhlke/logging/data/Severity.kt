@@ -1,4 +1,4 @@
-package com.zuhlke.logging
+package com.zuhlke.logging.data
 
 public enum class Severity {
     Verbose,
