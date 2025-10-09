@@ -64,6 +64,4 @@ class SafeInterpolationTest {
         assertEquals("<redacted>", result2)
         assertEquals("<redacted>", result3)
     }
-
 }
-

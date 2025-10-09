@@ -70,5 +70,4 @@ class UnsafeInterpolationTest {
             result3
         )
     }
-
 }

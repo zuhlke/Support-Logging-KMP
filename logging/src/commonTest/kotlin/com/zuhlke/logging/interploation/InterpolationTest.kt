@@ -10,9 +10,7 @@ class InterpolationTest {
     @Test
     fun `interpolate returns empty string when no parts and no params`() {
         val subject: InterpolationConfiguration = object : InterpolationConfiguration {
-            override fun interpolateParameter(param: Any): String {
-                return param.toString()
-            }
+            override fun interpolateParameter(param: Any): String = param.toString()
         }
 
         val result = subject.interpolate(Interpolatable(emptyList(), emptyList()))
@@ -23,9 +21,7 @@ class InterpolationTest {
     @Test
     fun `interpolate single part when one part and no params`() {
         val subject: InterpolationConfiguration = object : InterpolationConfiguration {
-            override fun interpolateParameter(param: Any): String {
-                return param.toString()
-            }
+            override fun interpolateParameter(param: Any): String = param.toString()
         }
 
         val result = subject.interpolate(Interpolatable(listOf("sample"), emptyList()))
@@ -36,9 +32,7 @@ class InterpolationTest {
     @Test
     fun `interpolate assembles multiple parts and params in order`() {
         val subject: InterpolationConfiguration = object : InterpolationConfiguration {
-            override fun interpolateParameter(param: Any): String {
-                return param.toString()
-            }
+            override fun interpolateParameter(param: Any): String = param.toString()
         }
 
         val result = subject.interpolate(
@@ -54,9 +48,7 @@ class InterpolationTest {
     @Test
     fun `interpolate delegates parameter formatting to interpolateParameter`() {
         val subject: InterpolationConfiguration = object : InterpolationConfiguration {
-            override fun interpolateParameter(param: Any): String {
-                return param.hashCode().toHexString()
-            }
+            override fun interpolateParameter(param: Any): String = param.hashCode().toHexString()
         }
 
         val result = subject.interpolate(
