@@ -8,19 +8,19 @@ import io.exoquery.terpal.Messages
 public class SafeLogger(private val tag: String) {
 
     public fun d(message: Interpolatable) {
-        InnerLogger.log(Severity.Debug, tag, message, throwable = null)
+        InnerLogger.shared.log(Severity.Debug, tag, message, throwable = null)
     }
 
     public fun d(message: () -> Interpolatable) {
-        InnerLogger.log(Severity.Debug, tag, message, throwable = null)
+        InnerLogger.shared.log(Severity.Debug, tag, message, throwable = null)
     }
 
     public fun e(throwable: Throwable?, message: Interpolatable) {
-        InnerLogger.log(Severity.Error, tag, message, throwable = throwable)
+        InnerLogger.shared.log(Severity.Error, tag, message, throwable = throwable)
     }
 
     public fun e(throwable: Throwable?, message: () -> Interpolatable) {
-        InnerLogger.log(Severity.Error, tag, message, throwable = throwable)
+        InnerLogger.shared.log(Severity.Error, tag, message, throwable = throwable)
     }
 }
 

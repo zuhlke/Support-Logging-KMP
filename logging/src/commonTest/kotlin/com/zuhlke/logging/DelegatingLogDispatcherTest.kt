@@ -1,12 +1,14 @@
 package com.zuhlke.logging
 
-import com.zuhlke.logging.data.RunMetadata
 import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.utils.fakes.ClockFake
+import com.zuhlke.logging.utils.fakes.LogWriterFake
+import com.zuhlke.logging.utils.fixtures.nowFixture
+import com.zuhlke.logging.utils.fixtures.runMetadataFixture
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
-import kotlin.time.Clock
 import kotlin.time.Instant
 
 class DelegatingLogDispatcherTest {
@@ -17,30 +19,23 @@ class DelegatingLogDispatcherTest {
         val logWriter1 = LogWriterFake()
         val logWriter2 = LogWriterFake()
         val logWriters = listOf(logWriter1, logWriter2)
-        val clock = object : Clock {
-            override fun now(): Instant = Instant.parse("2025-02-03T04:05:06Z")
-        }
-        val runMetadata = RunMetadata(
-            appVersion = "1.0.0",
-            osVersion = "16.0",
-            device = "Test Device"
-        )
+        val clock = ClockFake(nowFixture)
         val dispatcher = DelegatingLogDispatcher(clock, logWriters, testDispatcher)
 
-        dispatcher.init(runMetadata)
+        dispatcher.init(runMetadataFixture)
         testScheduler.advanceUntilIdle()
 
         val expected = listOf(
-            LogWriterFake.RunMetadata(
-                launchDate = Instant.parse("2025-02-03T04:05:06Z"),
-                appVersion = "1.0.0",
-                osVersion = "16.0",
-                device = "Test Device"
+            LogWriterFake.AppRunArgs(
+                launchDate = nowFixture,
+                appVersion = runMetadataFixture.appVersion,
+                osVersion = runMetadataFixture.osVersion,
+                device = runMetadataFixture.device
             )
         )
-        assertContentEquals(expected, logWriter1.writeAppRunCalls)
+        assertContentEquals(expected, logWriter1.writeAppRunArgs)
         assertContentEquals(emptyList(), logWriter1.writeLogCalls)
-        assertContentEquals(expected, logWriter2.writeAppRunCalls)
+        assertContentEquals(expected, logWriter2.writeAppRunArgs)
         assertContentEquals(emptyList(), logWriter2.writeLogCalls)
     }
 
@@ -50,9 +45,7 @@ class DelegatingLogDispatcherTest {
         val logWriter1 = LogWriterFake()
         val logWriter2 = LogWriterFake()
         val logWriters = listOf(logWriter1, logWriter2)
-        val clock = object : Clock {
-            override fun now(): Instant = Instant.parse("2025-02-03T04:05:06Z")
-        }
+        val clock = ClockFake(nowFixture)
         val dispatcher = DelegatingLogDispatcher(clock, logWriters, testDispatcher)
 
         dispatcher.log(
@@ -64,7 +57,7 @@ class DelegatingLogDispatcherTest {
         testScheduler.advanceUntilIdle()
 
         val expected = listOf(
-            LogWriterFake.Log(
+            LogWriterFake.LogCallArgs(
                 timestamp = Instant.parse("2025-02-03T04:05:06Z"),
                 severity = Severity.Info,
                 message = "Test message",
@@ -74,17 +67,15 @@ class DelegatingLogDispatcherTest {
         )
         assertContentEquals(expected, logWriter1.writeLogCalls)
         assertContentEquals(expected, logWriter2.writeLogCalls)
-        assertContentEquals(emptyList(), logWriter1.writeAppRunCalls)
-        assertContentEquals(emptyList(), logWriter2.writeAppRunCalls)
+        assertContentEquals(emptyList(), logWriter1.writeAppRunArgs)
+        assertContentEquals(emptyList(), logWriter2.writeAppRunArgs)
     }
 
     @Test
     fun `log function calls writers with multiple severities`() = runTest {
         val testDispatcher = StandardTestDispatcher(testScheduler)
         val logWriter = LogWriterFake()
-        val clock = object : Clock {
-            override fun now(): Instant = Instant.parse("2025-02-03T04:05:06Z")
-        }
+        val clock = ClockFake(nowFixture)
         val dispatcher = DelegatingLogDispatcher(clock, listOf(logWriter), testDispatcher)
 
         dispatcher.log(
@@ -103,15 +94,15 @@ class DelegatingLogDispatcherTest {
         testScheduler.advanceUntilIdle()
 
         val expected = listOf(
-            LogWriterFake.Log(
-                timestamp = Instant.parse("2025-02-03T04:05:06Z"),
+            LogWriterFake.LogCallArgs(
+                timestamp = nowFixture,
                 severity = Severity.Info,
                 message = "Test message1",
                 tag = "TestTag2",
                 throwable = null
             ),
-            LogWriterFake.Log(
-                timestamp = Instant.parse("2025-02-03T04:05:06Z"),
+            LogWriterFake.LogCallArgs(
+                timestamp = nowFixture,
                 severity = Severity.Error,
                 message = "Test message1",
                 tag = "TestTag2",
@@ -123,42 +114,3 @@ class DelegatingLogDispatcherTest {
 
 }
 
-class LogWriterFake : LogWriter {
-
-    data class RunMetadata(
-        val launchDate: Instant,
-        val appVersion: String,
-        val osVersion: String,
-        val device: String
-    )
-
-    data class Log(
-        val timestamp: Instant,
-        val severity: Severity,
-        val message: String,
-        val tag: String,
-        val throwable: Throwable?
-    )
-
-    val writeAppRunCalls = mutableListOf<RunMetadata>()
-    val writeLogCalls = mutableListOf<Log>()
-
-    override suspend fun writeAppRun(
-        launchDate: Instant,
-        appVersion: String,
-        osVersion: String,
-        device: String
-    ) {
-        writeAppRunCalls.add(RunMetadata(launchDate, appVersion, osVersion, device))
-    }
-
-    override suspend fun writeLog(
-        timestamp: Instant,
-        severity: Severity,
-        message: String,
-        tag: String,
-        throwable: Throwable?
-    ) {
-        writeLogCalls.add(Log(timestamp, severity, message, tag, throwable))
-    }
-}

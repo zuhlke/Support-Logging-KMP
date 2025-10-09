@@ -1,6 +1,6 @@
 package com.zuhlke.logging
 
-internal sealed interface InterpolationConfiguration {
+internal interface InterpolationConfiguration {
 
     fun interpolate(interpolatable: Interpolatable): String {
         val params = interpolatable.params.map(::interpolateParameter)

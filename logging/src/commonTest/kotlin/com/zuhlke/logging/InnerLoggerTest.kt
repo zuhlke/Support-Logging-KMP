@@ -1,29 +1,32 @@
 package com.zuhlke.logging
 
-import com.zuhlke.logging.data.RunMetadata
 import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.utils.fakes.LogDispatcherFake
+import com.zuhlke.logging.utils.fixtures.runMetadataFixture
+import kotlin.test.BeforeTest
 import kotlin.test.Test
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class GlobalLoggerTest {
+class InnerLoggerTest {
+
+    @BeforeTest
+    fun setup() {
+        InnerLogger.reset()
+    }
 
     @Test
     fun `init calls logDispatcher`() {
         val subject = InnerLogger
         val logDispatcherFake = LogDispatcherFake()
         val interpolationConfiguration = InterpolationConfiguration.SafeInterpolation
-        val runMetadata = RunMetadata(
-            appVersion = "1.0.0",
-            osVersion = "15.0",
-            device = "Pixel 5"
-        )
 
-        subject.init(logDispatcherFake, interpolationConfiguration, runMetadata)
+        subject.init(logDispatcherFake, interpolationConfiguration, runMetadataFixture)
 
         assertEquals(0, logDispatcherFake.logCalled)
         assertEquals(1, logDispatcherFake.initCalled)
-        assertEquals(runMetadata, logDispatcherFake.initCalls.first())
+        assertEquals(runMetadataFixture, logDispatcherFake.initCalls.first())
     }
 
     @Test
@@ -31,54 +34,69 @@ class GlobalLoggerTest {
         val subject = InnerLogger
         val logDispatcherFake = LogDispatcherFake()
         val interpolationConfiguration = InterpolationConfiguration.SafeInterpolation
-        val runMetadata = RunMetadata(
-            appVersion = "1.0.0",
-            osVersion = "15.0",
-            device = "Pixel 5"
-        )
 
-        subject.init(logDispatcherFake, interpolationConfiguration, runMetadata)
+        subject.init(logDispatcherFake, interpolationConfiguration, runMetadataFixture)
         val exception = assertFailsWith<IllegalStateException> {
-            subject.init(logDispatcherFake, interpolationConfiguration, runMetadata)
+            subject.init(logDispatcherFake, interpolationConfiguration, runMetadataFixture)
         }
 
-        assertEquals("GlobalLogger is already initialized", exception.message)
+        assertEquals("InnerLogger is already initialized", exception.message)
         assertEquals(1, logDispatcherFake.initCalled)
         assertEquals(0, logDispatcherFake.logCalled)
     }
 
-    // log can't be called before init
-    // check atomicity
-    // calls init
-    // calls log
-}
+    @Test
+    fun `log cannot be called before init`() {
+        val exception = assertFailsWith<IllegalStateException> {
+            InnerLogger.shared.log(
+                severity = Severity.Error,
+                tag = "TestTag",
+                message = Interpolatable(parts = emptyList(), params = emptyList()),
+                throwable = null
+            )
+        }
 
-internal class LogDispatcherFake : LogDispatcher {
-
-    data class LogEntry(
-        val severity: Severity,
-        val tag: String,
-        val message: String,
-        val throwable: Throwable?
-    )
-
-    private val _initCalls = mutableListOf<RunMetadata>()
-    val initCalls: List<RunMetadata> = _initCalls
-    val initCalled: Int
-        get() = _initCalls.size
-
-    private val _logCalls = mutableListOf<LogEntry>()
-    val logCalls: List<LogEntry> = _logCalls
-    val logCalled: Int
-        get() = _logCalls.size
-
-    override fun init(runMetadata: RunMetadata) {
-        _initCalls.add(runMetadata)
+        assertEquals("InnerLogger is not initialized. Call init() first.", exception.message)
     }
 
-    override fun log(
-        severity: Severity, tag: String, message: String, throwable: Throwable?
-    ) {
-        _logCalls.add(LogEntry(severity, tag, message, throwable))
+    @Test
+    fun `log calls logDispatcher`() {
+        val logDispatcherFake = LogDispatcherFake()
+        val interpolationConfiguration = InterpolationConfiguration.SafeInterpolation
+        val subject = InnerLogger(logDispatcherFake, interpolationConfiguration)
+
+        subject.log(
+            severity = Severity.Debug,
+            tag = "TestTag",
+            message = Interpolatable(parts = listOf("Test message"), params = emptyList()),
+            throwable = null
+        )
+        val throwable = IllegalStateException("Test exception")
+        subject.log(
+            severity = Severity.Error,
+            tag = "TestTag2",
+            message = Interpolatable(parts = listOf("Test message2"), params = emptyList()),
+            throwable = throwable
+        )
+
+        assertContentEquals(
+            listOf(
+                LogDispatcherFake.LogEntry(
+                    severity = Severity.Debug,
+                    tag = "TestTag",
+                    message = "Test message",
+                    throwable = null
+                ),
+                LogDispatcherFake.LogEntry(
+                    severity = Severity.Error,
+                    tag = "TestTag2",
+                    message = "Test message2",
+                    throwable = throwable
+                )
+            ), logDispatcherFake.logCalls
+        )
     }
+
+    // tests for interpolation
 }
+
