@@ -21,10 +21,9 @@ public actual object ZuhlkeLogger {
         } else {
             UnsafeInterpolation
         }
-        val factory = AndroidLoggingLibraryFactory(application)
-        val logDao = factory.createLogRoomDatabase().logDao()
+        val factory = AndroidLoggingLibraryFactory.get(application)
+        val logDao = factory.logRoomDatabase.logDao()
 
-        SharedLogDaoHolder.logDao = logDao
         val writerDispatcher = DelegatingLogDispatcher(
             Clock.System,
             logWriters = listOf(KermitLogWriter(), RoomLogWriter(logDao))
