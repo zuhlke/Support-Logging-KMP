@@ -9,10 +9,8 @@ import android.util.Log
 import com.zuhlke.logging.di.AndroidLoggingLibraryFactory
 import com.zuhlke.logging.integrations.room.data.LogDao
 import kotlin.time.ExperimentalTime
-import kotlinx.coroutines.runBlocking
 
 internal class LoggingContentProvider : ContentProvider() {
-
 
     private lateinit var logDao: LogDao
 

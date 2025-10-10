@@ -9,7 +9,8 @@ import com.zuhlke.logging.getMetadata
 import com.zuhlke.logging.integrations.room.data.LogDatabase
 import kotlinx.coroutines.Dispatchers
 
-internal class AndroidLoggingLibraryFactory private constructor(context: Context) : LoggingLibraryFactory {
+internal class AndroidLoggingLibraryFactory private constructor(context: Context) :
+    LoggingLibraryFactory {
 
     val logRoomDatabase: LogDatabase by lazy { createLogRoomDatabase() }
     private val applicationContext = context.applicationContext
@@ -31,10 +32,8 @@ internal class AndroidLoggingLibraryFactory private constructor(context: Context
         @Volatile
         private var instance: AndroidLoggingLibraryFactory? = null
 
-        fun get(context: Context): AndroidLoggingLibraryFactory {
-            return instance ?: synchronized(this) {
-                instance ?: AndroidLoggingLibraryFactory(context).also { instance = it }
-            }
+        fun get(context: Context): AndroidLoggingLibraryFactory = instance ?: synchronized(this) {
+            instance ?: AndroidLoggingLibraryFactory(context).also { instance = it }
         }
     }
 }
