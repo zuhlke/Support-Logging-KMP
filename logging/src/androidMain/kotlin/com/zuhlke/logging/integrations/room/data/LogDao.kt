@@ -7,7 +7,7 @@ import androidx.room.Query
 @Dao
 internal interface LogDao {
     @Query("SELECT * FROM log WHERE id > :id")
-    suspend fun getLogsAfter(id: Int): List<Log>
+    fun getLogsAfter(id: Int): List<Log>
 
     @Insert
     suspend fun insert(log: Log)
@@ -19,5 +19,5 @@ internal interface LogDao {
     suspend fun getAppRunIdByRowId(rowId: Long): Int
 
     @Query("SELECT * FROM apprun WHERE id > :id")
-    suspend fun getAppRunsAfter(id: Int): List<AppRun>
+    fun getAppRunsAfter(id: Int): List<AppRun>
 }

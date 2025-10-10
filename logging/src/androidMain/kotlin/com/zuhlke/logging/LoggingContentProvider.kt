@@ -6,17 +6,33 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import android.util.Log
+import com.zuhlke.logging.di.AndroidLoggingLibraryFactory
+import com.zuhlke.logging.integrations.room.data.LogDao
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.runBlocking
 
 internal class LoggingContentProvider : ContentProvider() {
+
+
+    private lateinit var logDao: LogDao
 
     companion object {
         private const val LOGS_PATH = "logs"
         private const val APP_RUNS_PATH = "appRuns"
     }
 
-    override fun onCreate(): Boolean = true
+    override fun onCreate(): Boolean {
+        val applicationContext = context?.applicationContext
+        if (applicationContext == null) {
+            Log.e("LoggingContentProvider", "Failed to get application context")
+            return false
+        }
+
+        val factory = AndroidLoggingLibraryFactory.get(applicationContext)
+
+        logDao = factory.logRoomDatabase.logDao()
+        return true
+    }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String?>?): Int = 0
 
@@ -40,7 +56,7 @@ internal class LoggingContentProvider : ContentProvider() {
         val afterId = uri.getQueryParameter("afterId")?.toIntOrNull() ?: -1
         return when (uri.lastPathSegment) {
             LOGS_PATH -> {
-                val logs = runBlocking { SharedLogDaoHolder.logDao.getLogsAfter(afterId) }
+                val logs = logDao.getLogsAfter(afterId)
                 Log.d("LoggingContentProvider", "Found logs: ${logs.size}")
                 val cursor = MatrixCursor(
                     arrayOf(
@@ -70,7 +86,7 @@ internal class LoggingContentProvider : ContentProvider() {
             }
 
             APP_RUNS_PATH -> {
-                val appRuns = runBlocking { SharedLogDaoHolder.logDao.getAppRunsAfter(afterId) }
+                val appRuns = logDao.getAppRunsAfter(afterId)
                 Log.d("LoggingContentProvider", "Found appRuns: ${appRuns.size}")
                 val cursor = MatrixCursor(
                     arrayOf("id", "launchDate", "appVersion", "operatingSystemVersion", "device")
