@@ -54,7 +54,7 @@ dependencies {
 }
 
 group = "com.zuhlke"
-version = "0.2.0-SNAPSHOT"
+version = "0.2.0"
 
 publishing {
 
