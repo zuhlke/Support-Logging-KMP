@@ -7,6 +7,14 @@ import io.exoquery.terpal.Messages
 
 public class SafeLogger(private val tag: String) {
 
+    public fun v(message: Interpolatable) {
+        InnerLogger.shared.log(Severity.Verbose, tag, message, throwable = null)
+    }
+
+    public fun v(message: () -> Interpolatable) {
+        InnerLogger.shared.log(Severity.Verbose, tag, message, throwable = null)
+    }
+
     public fun d(message: Interpolatable) {
         InnerLogger.shared.log(Severity.Debug, tag, message, throwable = null)
     }
@@ -15,12 +23,36 @@ public class SafeLogger(private val tag: String) {
         InnerLogger.shared.log(Severity.Debug, tag, message, throwable = null)
     }
 
+    public fun i(message: Interpolatable) {
+        InnerLogger.shared.log(Severity.Info, tag, message, throwable = null)
+    }
+
+    public fun i(message: () -> Interpolatable) {
+        InnerLogger.shared.log(Severity.Info, tag, message, throwable = null)
+    }
+
+    public fun w(message: Interpolatable) {
+        InnerLogger.shared.log(Severity.Warn, tag, message, throwable = null)
+    }
+
+    public fun w(message: () -> Interpolatable) {
+        InnerLogger.shared.log(Severity.Warn, tag, message, throwable = null)
+    }
+
     public fun e(throwable: Throwable?, message: Interpolatable) {
         InnerLogger.shared.log(Severity.Error, tag, message, throwable = throwable)
     }
 
     public fun e(throwable: Throwable?, message: () -> Interpolatable) {
         InnerLogger.shared.log(Severity.Error, tag, message, throwable = throwable)
+    }
+
+    public fun a(throwable: Throwable?, message: Interpolatable) {
+        InnerLogger.shared.log(Severity.Assert, tag, message, throwable = throwable)
+    }
+
+    public fun a(throwable: Throwable?, message: () -> Interpolatable) {
+        InnerLogger.shared.log(Severity.Assert, tag, message, throwable = throwable)
     }
 }
 
