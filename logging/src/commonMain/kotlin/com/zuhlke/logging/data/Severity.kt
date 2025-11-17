@@ -1,6 +1,6 @@
 package com.zuhlke.logging.data
 
-internal enum class Severity {
+public enum class Severity {
     Verbose,
     Debug,
     Info,
