@@ -60,7 +60,7 @@ public class SafeLogger(private val tag: String) {
 public fun safeString(@Suppress("unused") string: String): Interpolatable =
     Messages.throwPluginNotExecuted()
 
-public data class Interpolatable(internal val parts: List<String>, internal val params: List<Any>)
+public class Interpolatable internal constructor(internal val parts: List<String>, internal val params: List<Any>)
 
 internal data class PublicParameter(val arg: Any)
 internal data class HashParameter(val arg: Any)
