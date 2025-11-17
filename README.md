@@ -17,7 +17,7 @@ Current published coordinates:
 ```
 Group:    com.zuhlke
 Artifact: logging
-Version:  0.2.0-SNAPSHOT
+Version:  0.3.0
 ```
 
 ### 1. Add GitHub Packages Maven Repository
@@ -61,7 +61,7 @@ You should store `gpr.user` and `gpr.key` in the project `local.properties`.
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("com.zuhlke:logging:0.2.0-SNAPSHOT")
+            implementation("com.zuhlke:logging:0.3.0")
         }
     }
 }

@@ -1,0 +1,31 @@
+public final class com/zuhlke/logging/Interpolatable {
+}
+
+public final class com/zuhlke/logging/SafeLogger {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun a (Ljava/lang/Throwable;Lcom/zuhlke/logging/Interpolatable;)V
+	public final fun a (Ljava/lang/Throwable;Lkotlin/jvm/functions/Function0;)V
+	public final fun d (Lcom/zuhlke/logging/Interpolatable;)V
+	public final fun d (Lkotlin/jvm/functions/Function0;)V
+	public final fun e (Ljava/lang/Throwable;Lcom/zuhlke/logging/Interpolatable;)V
+	public final fun e (Ljava/lang/Throwable;Lkotlin/jvm/functions/Function0;)V
+	public final fun i (Lcom/zuhlke/logging/Interpolatable;)V
+	public final fun i (Lkotlin/jvm/functions/Function0;)V
+	public final fun v (Lcom/zuhlke/logging/Interpolatable;)V
+	public final fun v (Lkotlin/jvm/functions/Function0;)V
+	public final fun w (Lcom/zuhlke/logging/Interpolatable;)V
+	public final fun w (Lkotlin/jvm/functions/Function0;)V
+}
+
+public final class com/zuhlke/logging/SafeLoggerKt {
+	public static final fun hash (Ljava/lang/Object;)Ljava/lang/Object;
+	public static final fun public (Ljava/lang/Object;)Ljava/lang/Object;
+	public static final fun safeString (Ljava/lang/String;)Lcom/zuhlke/logging/Interpolatable;
+}
+
+public final class com/zuhlke/logging/ZuhlkeLogger {
+	public static final field INSTANCE Lcom/zuhlke/logging/ZuhlkeLogger;
+	public final fun initialize (Landroid/app/Application;Z)V
+	public static synthetic fun initialize$default (Lcom/zuhlke/logging/ZuhlkeLogger;Landroid/app/Application;ZILjava/lang/Object;)V
+}
+

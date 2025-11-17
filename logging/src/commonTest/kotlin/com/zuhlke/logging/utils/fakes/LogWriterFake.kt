@@ -4,7 +4,7 @@ import com.zuhlke.logging.LogWriter
 import com.zuhlke.logging.data.Severity
 import kotlin.time.Instant
 
-class LogWriterFake : LogWriter {
+internal class LogWriterFake : LogWriter {
 
     data class AppRunArgs(
         val launchDate: Instant,

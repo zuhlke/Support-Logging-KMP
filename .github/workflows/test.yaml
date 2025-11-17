@@ -26,8 +26,14 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Run Lint
+        run: ./gradlew lint
+
       - name: Run KtLint
         run: ./gradlew ktlintCheck
+
+      - name: Check binary compatibility
+        run: ./gradlew apiCheck || { exit_code=$?; printf "*** This PR changes Logger's public API. If this change is intentional, run './gradlew apiDump' and commit the new API files. ***"; exit $exit_code; }
 
       - name: Run all tests
         run: ./gradlew allTests --stacktrace

@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.terpal)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.binaryCompatibilityValidator)
     id("maven-publish")
 }
 
@@ -54,7 +55,7 @@ dependencies {
 }
 
 group = "com.zuhlke"
-version = "0.2.0"
+version = "0.3.0"
 
 publishing {
 
