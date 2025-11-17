@@ -114,14 +114,15 @@ class SafeLoggerTest {
         assertInnerLoggerWasCalledWithConcreteMessage(Severity.Assert)
     }
 
-
     private fun assertInnerLoggerWasCalledWithConcreteMessage(severity: Severity) {
-        val expected = listOf(FakeLogEntry.LogWithConcreteMessage(severity, TAG, message, throwable))
+        val expected =
+            listOf(FakeLogEntry.LogWithConcreteMessage(severity, TAG, message, throwable))
         assertContentEquals(expected, innerLogger.logs)
     }
 
     private fun assertInnerLoggerWasCalledWithLazyMessage(severity: Severity) {
-        val expected = listOf(FakeLogEntry.LogWithLazyMessage(severity, TAG, lazyMessage, throwable))
+        val expected =
+            listOf(FakeLogEntry.LogWithLazyMessage(severity, TAG, lazyMessage, throwable))
         assertContentEquals(expected, innerLogger.logs)
     }
 }

@@ -16,16 +16,26 @@ internal interface InnerLoggerInterface {
 internal class InnerLogger(
     val logDispatcher: LogDispatcher,
     val interpolationConfiguration: InterpolationConfiguration
-): InnerLoggerInterface {
+) : InnerLoggerInterface {
     override fun logMetadata(runMetadata: RunMetadata) {
         logDispatcher.init(runMetadata)
     }
 
-    override fun log(severity: Severity, tag: String, message: () -> Interpolatable, throwable: Throwable?) {
+    override fun log(
+        severity: Severity,
+        tag: String,
+        message: () -> Interpolatable,
+        throwable: Throwable?
+    ) {
         log(severity, tag, message(), throwable)
     }
 
-    override fun log(severity: Severity, tag: String, message: Interpolatable, throwable: Throwable?) {
+    override fun log(
+        severity: Severity,
+        tag: String,
+        message: Interpolatable,
+        throwable: Throwable?
+    ) {
         val finalMessage = interpolationConfiguration.interpolate(message)
         logDispatcher.log(
             severity = severity,
@@ -55,9 +65,7 @@ internal class InnerLogger(
             instance.store(null)
         }
 
-        internal fun init(
-            innerLogger: InnerLoggerInterface
-        ) {
+        internal fun init(innerLogger: InnerLoggerInterface) {
             instance.store(innerLogger)
         }
 
