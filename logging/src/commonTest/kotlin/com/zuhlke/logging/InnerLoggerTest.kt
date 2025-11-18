@@ -52,7 +52,7 @@ class InnerLoggerTest {
             InnerLogger.shared.log(
                 severity = Severity.Error,
                 tag = "TestTag",
-                message = Interpolatable(parts = emptyList(), params = emptyList()),
+                message = SafeString(parts = emptyList(), params = emptyList()),
                 throwable = null
             )
         }
@@ -69,14 +69,14 @@ class InnerLoggerTest {
         subject.log(
             severity = Severity.Debug,
             tag = "TestTag",
-            message = Interpolatable(parts = listOf("Test message"), params = emptyList()),
+            message = SafeString(parts = listOf("Test message"), params = emptyList()),
             throwable = null
         )
         val throwable = IllegalStateException("Test exception")
         subject.log(
             severity = Severity.Error,
             tag = "TestTag2",
-            message = Interpolatable(parts = listOf("Test message2"), params = emptyList()),
+            message = SafeString(parts = listOf("Test message2"), params = emptyList()),
             throwable = throwable
         )
 

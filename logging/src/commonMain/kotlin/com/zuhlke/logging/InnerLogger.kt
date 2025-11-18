@@ -8,8 +8,8 @@ import kotlin.concurrent.atomics.ExperimentalAtomicApi
 
 internal interface InnerLoggerInterface {
     fun logMetadata(runMetadata: RunMetadata)
-    fun log(severity: Severity, tag: String, message: () -> Interpolatable, throwable: Throwable?)
-    fun log(severity: Severity, tag: String, message: Interpolatable, throwable: Throwable?)
+    fun log(severity: Severity, tag: String, message: () -> SafeString, throwable: Throwable?)
+    fun log(severity: Severity, tag: String, message: SafeString, throwable: Throwable?)
 }
 
 @OptIn(ExperimentalAtomicApi::class)
@@ -24,7 +24,7 @@ internal class InnerLogger(
     override fun log(
         severity: Severity,
         tag: String,
-        message: () -> Interpolatable,
+        message: () -> SafeString,
         throwable: Throwable?
     ) {
         log(severity, tag, message(), throwable)
@@ -33,7 +33,7 @@ internal class InnerLogger(
     override fun log(
         severity: Severity,
         tag: String,
-        message: Interpolatable,
+        message: SafeString,
         throwable: Throwable?
     ) {
         val finalMessage = interpolationConfiguration.interpolate(message)

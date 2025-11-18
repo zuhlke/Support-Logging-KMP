@@ -1,18 +1,18 @@
 package com.zuhlke.logging.interpolation
 
-import com.zuhlke.logging.Interpolatable
+import com.zuhlke.logging.SafeString
 
 internal interface InterpolationConfiguration {
 
-    fun interpolate(interpolatable: Interpolatable): String {
-        val params = interpolatable.params.map(::interpolateParameter)
+    fun interpolate(safeString: SafeString): String {
+        val params = safeString.params.map(::interpolateParameter)
         return buildString {
-            if (interpolatable.parts.isNotEmpty()) {
-                append(interpolatable.parts[0])
+            if (safeString.parts.isNotEmpty()) {
+                append(safeString.parts[0])
             }
             for (i in params.indices) {
                 append(params[i])
-                append(interpolatable.parts[i + 1])
+                append(safeString.parts[i + 1])
             }
         }
     }

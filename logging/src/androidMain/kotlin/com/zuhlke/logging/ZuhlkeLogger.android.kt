@@ -11,6 +11,13 @@ import kotlin.time.Clock
 
 public actual object ZuhlkeLogger {
 
+    /**
+     * Initializes the Zuhlke logging library for Android.
+     *
+     * @param application The Android application instance.
+     * @param useSafeInterpolation If true, uses safe interpolation to avoid logging sensitive data.
+     *                             Defaults to true in release builds and false in debug builds.
+     */
     public fun initialize(
         application: Application,
         useSafeInterpolation: Boolean = application.applicationInfo.flags and

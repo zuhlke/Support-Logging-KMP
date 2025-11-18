@@ -1,4 +1,5 @@
 import java.util.Properties
+import org.gradle.kotlin.dsl.dokka
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -7,6 +8,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
     alias(libs.plugins.binaryCompatibilityValidator)
+    alias(libs.plugins.dokka)
     id("maven-publish")
 }
 
@@ -78,3 +80,17 @@ publishing {
         }
     }
 }
+
+dokka {
+    moduleName.set("Zuhkle Logger")
+    dokkaPublications.html {
+        suppressInheritedMembers.set(true)
+        failOnWarning.set(true)
+    }
+    dokkaSourceSets.forEach {
+        it.reportUndocumented.set(true)
+    }
+}
+
+tasks.named("check").configure { dependsOn(":logging:dokkaGenerateHtml") }
+

@@ -1,6 +1,6 @@
 package com.zuhlke.logging.interploation
 
-import com.zuhlke.logging.Interpolatable
+import com.zuhlke.logging.SafeString
 import com.zuhlke.logging.interpolation.InterpolationConfiguration
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,7 +13,7 @@ class InterpolationTest {
             override fun interpolateParameter(param: Any): String = param.toString()
         }
 
-        val result = subject.interpolate(Interpolatable(emptyList(), emptyList()))
+        val result = subject.interpolate(SafeString(emptyList(), emptyList()))
 
         assertEquals("", result)
     }
@@ -24,7 +24,7 @@ class InterpolationTest {
             override fun interpolateParameter(param: Any): String = param.toString()
         }
 
-        val result = subject.interpolate(Interpolatable(listOf("sample"), emptyList()))
+        val result = subject.interpolate(SafeString(listOf("sample"), emptyList()))
 
         assertEquals("sample", result)
     }
@@ -36,7 +36,7 @@ class InterpolationTest {
         }
 
         val result = subject.interpolate(
-            Interpolatable(
+            SafeString(
                 listOf("user name = ", ", user password = ", ""),
                 listOf("sampleName", "samplePassword")
             )
@@ -52,7 +52,7 @@ class InterpolationTest {
         }
 
         val result = subject.interpolate(
-            Interpolatable(
+            SafeString(
                 listOf("user name = ", ", user password = ", ""),
                 listOf("sampleName", "samplePassword")
             )
