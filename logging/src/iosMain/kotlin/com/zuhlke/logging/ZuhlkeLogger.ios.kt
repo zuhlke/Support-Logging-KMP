@@ -7,6 +7,11 @@ import com.zuhlke.logging.interpolation.UnsafeInterpolation
 import kotlin.time.Clock
 
 public actual object ZuhlkeLogger {
+    /**
+     * Initializes the Zuhlke logging library for iOS.
+     *
+     * @param useSafeInterpolation If true, uses safe interpolation to avoid logging sensitive data.
+     */
     public fun initialize(useSafeInterpolation: Boolean) {
         val logDispatcher = DelegatingLogDispatcher(
             Clock.System,

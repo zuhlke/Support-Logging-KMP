@@ -8,6 +8,7 @@ androidx-lifecycle = "2.9.6"
 binary-compatibility-generator = "0.18.1"
 composeMultiplatform = "1.9.3"
 coroutines = "1.10.2"
+dokka = "2.1.0"
 kermit = "2.0.8"
 kotlin = "2.2.20"
 ksp = "2.3.2"
@@ -37,6 +38,7 @@ androidKotlinMultiplatformLibrary = { id = "com.android.kotlin.multiplatform.lib
 binaryCompatibilityValidator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-generator"}
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }

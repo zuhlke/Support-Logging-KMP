@@ -1,7 +1,7 @@
 package com.zuhlke.logging.utils.fakes
 
 import com.zuhlke.logging.InnerLoggerInterface
-import com.zuhlke.logging.Interpolatable
+import com.zuhlke.logging.SafeString
 import com.zuhlke.logging.data.RunMetadata
 import com.zuhlke.logging.data.Severity
 
@@ -19,18 +19,13 @@ internal class FakeInnerLogger : InnerLoggerInterface {
     override fun log(
         severity: Severity,
         tag: String,
-        message: () -> Interpolatable,
+        message: () -> SafeString,
         throwable: Throwable?
     ) {
         _logs.add(FakeLogEntry.LogWithLazyMessage(severity, tag, message, throwable))
     }
 
-    override fun log(
-        severity: Severity,
-        tag: String,
-        message: Interpolatable,
-        throwable: Throwable?
-    ) {
+    override fun log(severity: Severity, tag: String, message: SafeString, throwable: Throwable?) {
         _logs.add(FakeLogEntry.LogWithConcreteMessage(severity, tag, message, throwable))
     }
 }
@@ -40,14 +35,14 @@ internal sealed class FakeLogEntry {
     data class LogWithConcreteMessage(
         val severity: Severity,
         val tag: String,
-        val message: Interpolatable,
+        val message: SafeString,
         val throwable: Throwable?
     ) : FakeLogEntry()
 
     data class LogWithLazyMessage(
         val severity: Severity,
         val tag: String,
-        val message: () -> Interpolatable,
+        val message: () -> SafeString,
         val throwable: Throwable?
     ) : FakeLogEntry()
 }

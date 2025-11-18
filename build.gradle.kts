@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.terpal) apply false
     alias(libs.plugins.binaryCompatibilityValidator) apply false
+    alias(libs.plugins.dokka) apply false
 }
 
 subprojects {

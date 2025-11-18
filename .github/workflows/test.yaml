@@ -38,3 +38,5 @@ jobs:
       - name: Run all tests
         run: ./gradlew allTests --stacktrace
 
+      - name: Generate documentation
+        run: ./gradlew logging:dokkaGenerateHtml
