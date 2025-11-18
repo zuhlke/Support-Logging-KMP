@@ -25,12 +25,7 @@ internal class FakeInnerLogger : InnerLoggerInterface {
         _logs.add(FakeLogEntry.LogWithLazyMessage(severity, tag, message, throwable))
     }
 
-    override fun log(
-        severity: Severity,
-        tag: String,
-        message: SafeString,
-        throwable: Throwable?
-    ) {
+    override fun log(severity: Severity, tag: String, message: SafeString, throwable: Throwable?) {
         _logs.add(FakeLogEntry.LogWithConcreteMessage(severity, tag, message, throwable))
     }
 }

@@ -20,14 +20,14 @@ public class SafeString internal constructor(
  * [String], redaction will not happen.** Use [public] and [hash] to mark variables
  * that can be revealed or hashed in logs.
  */
-public fun safeString(@Suppress("unused") string: String): SafeString =
-    Messages.throwPluginNotExecuted()
+public fun safeString(
+    @Suppress("unused") string: String
+): SafeString = Messages.throwPluginNotExecuted()
 
 internal object SafeStringInterpolator : Interpolator<Any, SafeString> {
     override fun interpolate(parts: () -> List<String>, params: () -> List<Any>): SafeString =
         SafeString(parts(), params())
 }
-
 
 internal data class PublicParameter(val arg: Any)
 internal data class HashParameter(val arg: Any)
@@ -35,9 +35,10 @@ internal data class HashParameter(val arg: Any)
 /**
  * Marks a parameter as safe to log in plain text.
  */
-public fun public(value: Any): Any = PublicParameter(value) // We return Any here to hide internal types from the public API
+public fun public(value: Any): Any =
+    PublicParameter(value) // We return Any here to hide internal types from the public API
+
 /**
  * Marks a parameter to be hashed before logging.
  */
 public fun hash(value: Any): Any = HashParameter(value)
-

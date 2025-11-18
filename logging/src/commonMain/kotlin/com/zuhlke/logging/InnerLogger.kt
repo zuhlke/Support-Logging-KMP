@@ -30,12 +30,7 @@ internal class InnerLogger(
         log(severity, tag, message(), throwable)
     }
 
-    override fun log(
-        severity: Severity,
-        tag: String,
-        message: SafeString,
-        throwable: Throwable?
-    ) {
+    override fun log(severity: Severity, tag: String, message: SafeString, throwable: Throwable?) {
         val finalMessage = interpolationConfiguration.interpolate(message)
         logDispatcher.log(
             severity = severity,

@@ -93,4 +93,3 @@ dokka {
 }
 
 tasks.named("check").configure { dependsOn(":logging:dokkaGenerateHtml") }
-
