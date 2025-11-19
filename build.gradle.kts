@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.terpal) apply false
     alias(libs.plugins.binaryCompatibilityValidator) apply false
     alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.mavenPublish) apply false
 }
 
 subprojects {

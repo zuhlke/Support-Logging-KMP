@@ -9,7 +9,7 @@ plugins {
     alias(libs.plugins.room)
     alias(libs.plugins.binaryCompatibilityValidator)
     alias(libs.plugins.dokka)
-    id("maven-publish")
+    alias(libs.plugins.mavenPublish)
 }
 
 kotlin {
@@ -63,20 +63,9 @@ publishing {
 
     repositories {
         maven {
-            val localProps = Properties()
-            val localPropsFile = rootProject.file("local.properties")
-            if (localPropsFile.exists()) {
-                localProps.load(localPropsFile.inputStream())
-            }
-
-            name = "GitHubPackages"
+            name = "githubPackages"
             url = uri("https://maven.pkg.github.com/zuhlke/Support-Logging-KMP")
-            credentials {
-                username =
-                    localProps.getProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                        ?: throw IllegalStateException("GitHub username not provided")
-                password = localProps.getProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-            }
+            credentials(PasswordCredentials::class)
         }
     }
 }
