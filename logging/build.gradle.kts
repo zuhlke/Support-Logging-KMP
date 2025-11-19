@@ -1,4 +1,3 @@
-import java.util.Properties
 import org.gradle.kotlin.dsl.dokka
 
 plugins {
@@ -56,16 +55,40 @@ dependencies {
     add("kspAndroid", libs.room.compiler)
 }
 
-group = "com.zuhlke"
+group = "io.github.zuhlke"
 version = "0.3.0"
 
-publishing {
+mavenPublishing {
+    publishToMavenCentral()
 
-    repositories {
-        maven {
-            name = "githubPackages"
-            url = uri("https://maven.pkg.github.com/zuhlke/Support-Logging-KMP")
-            credentials(PasswordCredentials::class)
+    signAllPublications()
+
+    coordinates(group.toString(), "logging", version.toString())
+
+    pom {
+        name = "Logging library"
+        description = "A logging library which is safe to use in production builds."
+        inceptionYear = "2025"
+        url = "https://github.com/zuhlke/Support-Logging-KMP/"
+        licenses {
+            license {
+                name = "MIT License"
+                url = "https://opensource.org/licenses/mit"
+            }
+        }
+        developers {
+            developer {
+                id = "alexander-mironov"
+                name = "Alexander Mironov"
+                email = "alexander.mironov@zuhlke.com"
+                organization = "Zuhlke Engineering Ltd"
+                organizationUrl = "https://www.zuehlke.com"
+            }
+        }
+        scm {
+            url = "https://github.com/zuhlke/Support-Logging-KMP/"
+            connection = "scm:git:git://github.com/zuhlke/Support-Logging-KMP.git"
+            developerConnection = "scm:git:ssh://git@github.com/zuhlke/Support-Logging-KMP.git"
         }
     }
 }
