@@ -11,7 +11,7 @@ import io.exoquery.terpal.Messages
 public class SafeString internal constructor(
     internal val parts: List<String>,
     internal val params: List<Any>
-)
+) // TODO: rename? What about PrivacyString? Ask iOS team
 
 @InterpolatorFunction<SafeStringInterpolator>(SafeStringInterpolator::class)
 /**
