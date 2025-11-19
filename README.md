@@ -2,6 +2,8 @@
 
 This is a Zuhlke Logging Kotlin Multiplatform (KMP) project targeting Android, iOS.
 
+![Maven Central Version](https://img.shields.io/maven-central/v/io.github.zuhlke/logging)
+
 ## Using the `com.zuhlke.logging` Library in Your Own KMP Project
 
 The library provides a Kotlin Multiplatform logging abstraction with:
