@@ -19,7 +19,6 @@ Current published coordinates:
 ```
 Group:    io.github.zuhlke
 Artifact: logging
-Version:  0.3.0
 ```
 
 ### 1. Add the Dependency in Your Shared Module
@@ -28,7 +27,7 @@ Version:  0.3.0
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation("io.github.zuhlke:logging:0.3.0")
+            implementation("io.github.zuhlke:logging:<version>")
         }
     }
 }

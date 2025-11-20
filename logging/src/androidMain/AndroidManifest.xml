@@ -3,7 +3,7 @@
 
     <permission
         android:name="com.zuhlke.logging.permission.READ_LOGS"
-        android:label="my_permission"
+        android:label="Read Logs Permission"
         android:protectionLevel="signature" />
 
     <application>

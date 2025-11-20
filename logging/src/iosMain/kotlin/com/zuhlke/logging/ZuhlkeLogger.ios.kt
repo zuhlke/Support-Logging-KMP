@@ -9,13 +9,13 @@ import kotlin.time.Clock
 public actual object ZuhlkeLogger {
     /**
      * Initializes the Zuhlke logging library for iOS.
-     *
      * @param useSafeInterpolation If true, uses safe interpolation to avoid logging sensitive data.
+     * @param subsystem The logging subsystem identifier.
      */
-    public fun initialize(useSafeInterpolation: Boolean) {
+    public fun initialize(useSafeInterpolation: Boolean, subsystem: String) {
         val logDispatcher = DelegatingLogDispatcher(
             Clock.System,
-            logWriters = listOf(KermitLogWriter())
+            logWriters = listOf(KermitLogWriter(subsystem = subsystem))
         )
 
         val interpolationConfiguration = if (useSafeInterpolation) {
