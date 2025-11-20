@@ -18,11 +18,7 @@ public actual object ZuhlkeLogger {
             logWriters = listOf(KermitLogWriter(subsystem = subsystem))
         )
 
-        val interpolationConfiguration = if (useSafeInterpolation) {
-            SafeInterpolation
-        } else {
-            UnsafeInterpolation
-        }
+        val interpolationConfiguration = if (useSafeInterpolation) { SafeInterpolation } else { UnsafeInterpolation }
 
         val factory = IosLoggingLibraryFactory()
         val runMetadata = factory.getMetadata()
