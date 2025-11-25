@@ -5,7 +5,7 @@ import ComposeApp
 struct iOSApp: App {
 
     init() {
-        ZuhlkeLogger.shared.initialize(useSafeInterpolation: true)
+        ZuhlkeLogger.shared.initialize(useSafeInterpolation: true, subsystem: "com.zuhlke.logging.sample")
     }
 
     var body: some Scene {
