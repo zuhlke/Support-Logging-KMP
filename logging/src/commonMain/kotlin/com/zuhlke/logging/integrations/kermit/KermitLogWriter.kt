@@ -1,16 +1,14 @@
 package com.zuhlke.logging.integrations.kermit
 
 import co.touchlab.kermit.Logger
-import co.touchlab.kermit.SimpleFormatter
 import co.touchlab.kermit.loggerConfigInit
-import co.touchlab.kermit.platformLogWriter
 import com.zuhlke.logging.LogWriter
 import com.zuhlke.logging.data.Severity
 import kotlin.time.Instant
 
-internal class KermitLogWriter : LogWriter {
+internal class KermitLogWriter(subsystem: String) : LogWriter {
 
-    private val logger = Logger(loggerConfigInit(platformLogWriter(SimpleFormatter)))
+    private val logger = Logger(loggerConfigInit(platformLogWriter(subsystem)))
 
     override suspend fun writeAppRun(
         launchDate: Instant,
@@ -50,3 +48,5 @@ internal fun Severity.toKermitSeverity(): co.touchlab.kermit.Severity = when (th
     Severity.Error -> co.touchlab.kermit.Severity.Error
     Severity.Assert -> co.touchlab.kermit.Severity.Assert
 }
+
+internal expect fun platformLogWriter(subsystem: String): co.touchlab.kermit.LogWriter
