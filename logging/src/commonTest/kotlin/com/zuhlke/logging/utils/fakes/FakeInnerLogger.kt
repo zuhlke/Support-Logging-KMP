@@ -12,6 +12,10 @@ internal class FakeInnerLogger : InnerLoggerInterface {
     private val _logs = mutableListOf<FakeLogEntry>()
     val logs: List<FakeLogEntry> = _logs
 
+    fun clearLogs() {
+        _logs.clear()
+    }
+
     override fun logMetadata(runMetadata: RunMetadata) {
         this.runMetadata = runMetadata
     }

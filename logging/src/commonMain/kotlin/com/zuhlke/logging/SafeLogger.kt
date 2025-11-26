@@ -128,4 +128,26 @@ public class SafeLogger(private val tag: String) {
     public fun a(throwable: Throwable? = null, message: () -> SafeString) {
         InnerLogger.shared.log(Severity.Assert, tag, message, throwable = throwable)
     }
+
+    /**
+     * Log a message with the specified severity using a [SafeString] message.
+     *
+     * @param severity - The severity level of the log.
+     * @param message - The message to log.
+     * @param throwable - Optional throwable to log.
+     */
+    public fun log(severity: Severity, message: SafeString, throwable: Throwable? = null) {
+        InnerLogger.shared.log(severity, tag, message, throwable)
+    }
+
+    /**
+     * Log a message with the specified severity.
+     *
+     * @param severity - The severity level of the log.
+     * @param throwable Optional throwable to log.
+     * @param message Lambda returning the message to log.
+     */
+    public fun log(severity: Severity, throwable: Throwable? = null, message: () -> SafeString) {
+        InnerLogger.shared.log(severity, tag, message, throwable)
+    }
 }
