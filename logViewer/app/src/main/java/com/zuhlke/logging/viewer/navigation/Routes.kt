@@ -12,10 +12,7 @@ internal object RouteAppList : NavKey
 internal data class RouteAppDetails(val authority: String) : NavKey
 
 @Serializable
-internal data class RouteSearch(
-    val authority: String,
-    val searchState: SearchState
-) : NavKey
+internal data class RouteSearch(val authority: String, val searchState: SearchState) : NavKey
 
 @Serializable
 internal data class RouteTagFilter(val tagFilterState: TagFilterState) : NavKey

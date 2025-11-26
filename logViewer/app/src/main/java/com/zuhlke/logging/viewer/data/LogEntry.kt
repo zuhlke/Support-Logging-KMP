@@ -1,9 +1,9 @@
 package com.zuhlke.logging.viewer.data
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 
 @OptIn(ExperimentalTime::class)
 data class LogEntry(
@@ -17,22 +17,20 @@ data class LogEntry(
 )
 
 @OptIn(ExperimentalTime::class)
-fun LogEntry.snapshot(subsystem: String): LogEntrySnapshot {
-    return LogEntrySnapshot(
-        date = timestamp,
-        level = severity.toIosCompatibleString(),
-        subsystem = subsystem,
-        category = tag,
-        message = message,
-        throwable = throwable,
-        composedMessage = if (throwable != null) "$message\n$throwable" else message,
-    )
-}
+fun LogEntry.snapshot(subsystem: String): LogEntrySnapshot = LogEntrySnapshot(
+    date = timestamp,
+    level = severity.toIosCompatibleString(),
+    subsystem = subsystem,
+    category = tag,
+    message = message,
+    throwable = throwable,
+    composedMessage = if (throwable != null) "$message\n$throwable" else message
+)
 
 @Serializable
 @OptIn(ExperimentalTime::class)
 data class LogEntrySnapshot(
-    @Contextual // TODO remove when AS Kotlin plugin is updated
+    @Contextual
     val date: Instant,
     val level: String,
     val subsystem: String,

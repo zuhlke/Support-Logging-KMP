@@ -5,13 +5,27 @@ import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.char
 
 val dateTimeFormatter = DateTimeComponents.Format {
-    day(); char('/'); monthNumber(); char('/'); year()
+    day()
+    char('/')
+    monthNumber()
+    char('/')
+    year()
     chars(", ")
-    hour(); char(':'); minute(); char(':'); second()
+    hour()
+    char(':')
+    minute()
+    char(':')
+    second()
     offset(UtcOffset.Formats.FOUR_DIGITS)
 }
 
 val timeFormatter = DateTimeComponents.Format {
-    hour(); char(':'); minute(); char(':'); second(); char('.'); secondFraction(3)
+    hour()
+    char(':')
+    minute()
+    char(':')
+    second()
+    char('.')
+    secondFraction(3)
     offset(UtcOffset.Formats.FOUR_DIGITS)
 }

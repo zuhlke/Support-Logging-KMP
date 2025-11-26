@@ -49,9 +49,9 @@ import com.zuhlke.logging.viewer.R
 import com.zuhlke.logging.viewer.data.LogEntry
 import com.zuhlke.logging.viewer.data.Severity
 import com.zuhlke.logging.viewer.ui.utils.timeFormatter
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.launch
 import kotlinx.datetime.format
-import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Composable

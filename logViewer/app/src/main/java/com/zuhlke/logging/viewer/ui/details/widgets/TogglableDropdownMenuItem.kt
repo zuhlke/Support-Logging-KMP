@@ -30,7 +30,8 @@ fun TogglableDropdownMenuItem(
                     role = Role.Checkbox
                     stateDescription =
                         if (checked) checkedStateDescription else uncheckedStateDescription
-                })
+                }
+            )
         },
         leadingIcon = {
             Icon(
@@ -40,7 +41,13 @@ fun TogglableDropdownMenuItem(
         },
         trailingIcon = {
             Icon(
-                painter = painterResource(id = if (checked) R.drawable.ic_check_box else R.drawable.ic_check_box_outline_blank),
+                painter = painterResource(
+                    id = if (checked) {
+                        R.drawable.ic_check_box
+                    } else {
+                        R.drawable.ic_check_box_outline_blank
+                    }
+                ),
                 contentDescription = null
             )
         },

@@ -23,7 +23,7 @@ fun AppRunsList(
     expandLongMessages: Boolean,
     onExportRequested: (List<LogEntry>) -> Unit,
     onSeveritySelected: (Severity) -> Unit,
-    onTagSelected: (String) -> Unit,
+    onTagSelected: (String) -> Unit
 ) {
     // TODO: add heuristic to decide whether to scroll to bottom or not
     // e.g. if user is at the bottom, scroll to bottom on new messages,

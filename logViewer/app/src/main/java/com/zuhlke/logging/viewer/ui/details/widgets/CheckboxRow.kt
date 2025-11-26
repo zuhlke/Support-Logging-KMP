@@ -22,7 +22,8 @@ fun CheckboxRow(text: String, checked: Boolean, onCheckedChange: (Boolean) -> Un
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text, modifier = Modifier
+            text,
+            modifier = Modifier
                 .weight(1f)
                 .padding(horizontal = 16.dp)
         )

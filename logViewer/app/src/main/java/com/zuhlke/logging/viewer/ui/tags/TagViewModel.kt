@@ -20,9 +20,8 @@ import kotlinx.serialization.Serializable
 data class TagFilterState(val selectedTags: Set<String>, val allTags: Set<String>)
 
 @HiltViewModel(assistedFactory = TagViewModel.Factory::class)
-class TagViewModel @AssistedInject constructor(
-    @Assisted tagFilterState: TagFilterState
-) : ViewModel() {
+class TagViewModel @AssistedInject constructor(@Assisted tagFilterState: TagFilterState) :
+    ViewModel() {
 
     private val selectedTags = MutableStateFlow(tagFilterState.selectedTags)
     private val allTagsSorted = tagFilterState.allTags.sorted()
@@ -34,10 +33,11 @@ class TagViewModel @AssistedInject constructor(
         toUiState(tagFilterState.selectedTags)
     )
 
-    private fun toUiState(currentSelectedTags: Set<String>) =
-        UiState(allTagsSorted.map { name ->
+    private fun toUiState(currentSelectedTags: Set<String>) = UiState(
+        allTagsSorted.map { name ->
             TagUiState(name, isSelected = name in currentSelectedTags)
-        })
+        }
+    )
 
     fun onTagClick(tag: String) {
         viewModelScope.launch {

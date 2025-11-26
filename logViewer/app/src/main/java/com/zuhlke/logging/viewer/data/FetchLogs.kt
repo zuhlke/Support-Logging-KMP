@@ -7,12 +7,12 @@ import androidx.core.database.getStringOrNull
 import androidx.core.net.toUri
 import com.zuhlke.logging.viewer.di.DISPATCHER_IO
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalTime::class)
 class FetchLogs @Inject constructor(
@@ -25,10 +25,14 @@ class FetchLogs @Inject constructor(
                 val uri = "content://$authority/logs?afterId=$lastKnownId".toUri()
                 val cursor = applicationContext.contentResolver.query(
                     uri,
-                    /* projection = */null,
-                    /* selection = */null,
-                    /* selectionArgs = */null,
-                    /* sortOrder = */null
+                    /* projection = */
+                    null,
+                    /* selection = */
+                    null,
+                    /* selectionArgs = */
+                    null,
+                    /* sortOrder = */
+                    null
                 )
                 cursor?.use { cursor ->
                     buildList {
@@ -44,10 +48,7 @@ class FetchLogs @Inject constructor(
             }
         }
 
-    private fun parseEntry(
-        cursor: Cursor,
-        authority: String
-    ): LogEntry {
+    private fun parseEntry(cursor: Cursor, authority: String): LogEntry {
         val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
         val timestamp =
             Instant.fromEpochMilliseconds(cursor.getLong(cursor.getColumnIndexOrThrow("timestamp")))

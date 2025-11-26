@@ -49,7 +49,7 @@ fun TopAppBarWithTitle(
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.primary
         ),
         title = title,
         scrollBehavior = scrollBehavior,

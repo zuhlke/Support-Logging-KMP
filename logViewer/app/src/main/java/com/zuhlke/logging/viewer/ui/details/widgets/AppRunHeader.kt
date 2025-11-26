@@ -27,16 +27,12 @@ import androidx.compose.ui.unit.dp
 import com.zuhlke.logging.viewer.R
 import com.zuhlke.logging.viewer.data.AppRun
 import com.zuhlke.logging.viewer.ui.utils.dateTimeFormatter
-import kotlinx.datetime.format
 import kotlin.time.ExperimentalTime
+import kotlinx.datetime.format
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun AppRunHeader(
-    appRun: AppRun,
-    onExport: () -> Unit,
-    modifier: Modifier = Modifier.Companion
-) {
+fun AppRunHeader(appRun: AppRun, onExport: () -> Unit, modifier: Modifier = Modifier.Companion) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     Row(
         modifier = modifier

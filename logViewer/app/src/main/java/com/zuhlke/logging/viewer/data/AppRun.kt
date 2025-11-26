@@ -1,9 +1,9 @@
 package com.zuhlke.logging.viewer.data
 
-import kotlinx.serialization.Contextual
-import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 
 @OptIn(ExperimentalTime::class)
 data class AppRun(
@@ -28,7 +28,7 @@ val AppRun.snapshot: AppRunSnapshot
 @Serializable
 @OptIn(ExperimentalTime::class)
 data class AppRunSnapshot(
-    @Contextual // TODO remove when AS Kotlin plugin is updated
+    @Contextual
     val launchDate: Instant,
     val appVersion: String,
     val operatingSystemVersion: String,

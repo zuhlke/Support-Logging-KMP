@@ -18,6 +18,9 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.io.File
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -35,9 +38,6 @@ import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
-import java.io.File
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
 
 @HiltViewModel(assistedFactory = AppDetailsViewModel.Factory::class)
 class AppDetailsViewModel @AssistedInject constructor(
@@ -54,17 +54,17 @@ class AppDetailsViewModel @AssistedInject constructor(
 
     private val _selectedTags = MutableStateFlow(defaultSearchState.tags)
     val selectedTags: StateFlow<Set<String>> = _selectedTags
-    private val _searchTerm = MutableStateFlow(defaultSearchState.messageText)
+    private val searchTerm = MutableStateFlow(defaultSearchState.messageText)
 
     @OptIn(FlowPreview::class)
-    private val _searchTermDebounce: Flow<String> = _searchTerm.debounce(200)
+    private val searchTermDebounce: Flow<String> = searchTerm.debounce(200)
 
     // TODO: shall we expose tags and severities here too instead of having separate public properties for them?
     val filteredAppRuns: StateFlow<UiState> = combine(
         logs,
         _selectedSeverities,
         _selectedTags,
-        _searchTermDebounce
+        searchTermDebounce
     ) { appRuns, severities, tags, searchTermDebounced ->
         if (severities.isEmpty() && tags.isEmpty() && searchTermDebounced == "") {
             UiState(appRuns, "")
@@ -82,7 +82,9 @@ class AppDetailsViewModel @AssistedInject constructor(
             )
         }
     }.stateIn(
-        viewModelScope, SharingStarted.Lazily, UiState(emptyList(), searchTerm = "")
+        viewModelScope,
+        SharingStarted.Lazily,
+        UiState(emptyList(), searchTerm = "")
     )
 
     private val _exportReady = MutableSharedFlow<Uri>()
@@ -110,7 +112,7 @@ class AppDetailsViewModel @AssistedInject constructor(
 
     fun setSearchTerm(searchTerm: String) {
         viewModelScope.launch {
-            _searchTerm.emit(searchTerm)
+            searchTerm.emit(searchTerm)
         }
     }
 
@@ -146,9 +148,7 @@ class AppDetailsViewModel @AssistedInject constructor(
     }
 
     // TODO: viewmodel shouldn't expose functions that return something
-    fun getUniqueTags(): Set<String> {
-        return logRepository.getUniqueTagsSnapshot()
-    }
+    fun getUniqueTags(): Set<String> = logRepository.getUniqueTagsSnapshot()
 
     private val json = Json { prettyPrint = true }
 
@@ -161,7 +161,9 @@ class AppDetailsViewModel @AssistedInject constructor(
                     val appRunEntries = logEntries.filter { it.appRunId == appRunId }
                     ExportedAppRunWithLogs(
                         info = appRunWithLogs.appRun.snapshot,
-                        logEntries = appRunEntries.map { it.snapshot(authority.removePrefix(".logging")) }
+                        logEntries = appRunEntries.map {
+                            it.snapshot(authority.removePrefix(".logging"))
+                        }
                     )
                 }
                 val json = json.encodeToString(toExport)
@@ -188,9 +190,5 @@ class AppDetailsViewModel @AssistedInject constructor(
         fun create(authority: String, defaultSearchState: SearchState): AppDetailsViewModel
     }
 
-    data class UiState(
-        val appRunsWithLogs: List<AppRunWithLogs>,
-        val searchTerm: String
-    )
+    data class UiState(val appRunsWithLogs: List<AppRunWithLogs>, val searchTerm: String)
 }
-

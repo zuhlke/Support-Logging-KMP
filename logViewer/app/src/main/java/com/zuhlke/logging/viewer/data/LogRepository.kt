@@ -18,10 +18,7 @@ class LogRepository @AssistedInject constructor(
     private val _data = MutableStateFlow<List<AppRunWithLogs>>(emptyList())
     val data: StateFlow<List<AppRunWithLogs>> = _data
 
-    suspend fun fetch(
-        lastKnownAppRunId: Int,
-        lastKnownLogId: Int
-    ): Pair<Int, Int> {
+    suspend fun fetch(lastKnownAppRunId: Int, lastKnownLogId: Int): Pair<Int, Int> {
         val newRuns = fetchAppRuns(authority, lastKnownAppRunId)
         val newLogs = fetchLogs(authority, lastKnownLogId)
         Log.d(
@@ -42,9 +39,9 @@ class LogRepository @AssistedInject constructor(
         return lastKnownAppRunId to lastKnownLogId
     }
 
-    fun getUniqueTagsSnapshot(): Set<String> {
-        return _data.value.flatMap { it.logEntries }.map { it.tag }.toSet()
-    }
+    fun getUniqueTagsSnapshot(): Set<String> = _data.value.flatMap {
+        it.logEntries
+    }.map { it.tag }.toSet()
 
     @AssistedFactory
     interface Factory {

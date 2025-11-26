@@ -97,6 +97,7 @@ dependencies {
     implementation(libs.androidx.profileinstaller)
     "baselineProfile"(project(":logViewerBaselineprofile"))
 
+    testImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

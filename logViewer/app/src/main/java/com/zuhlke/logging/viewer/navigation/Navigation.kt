@@ -43,7 +43,6 @@ import com.zuhlke.logging.viewer.ui.tags.TagViewModel
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun Navigation(modifier: Modifier) {
-
     val backStack = rememberNavBackStack(RouteAppList)
 
     val dialogStrategy = remember { DialogSceneStrategy<NavKey>() }
@@ -81,7 +80,8 @@ fun Navigation(modifier: Modifier) {
                                     "Choose a run from the list"
                                 )
                             }
-                        )) {
+                        )
+                    ) {
                         Log.d("Navigation", "inside RouteAppList")
                         AppListScreen(onAppClick = { authority ->
                             backStack.add(RouteAppDetails(authority))
@@ -111,9 +111,11 @@ fun Navigation(modifier: Modifier) {
                             viewModel,
                             onTagSelectorRequested = { tagsState ->
                                 backStack.add(RouteTagFilter(tagsState))
-                            }, onBack = {
+                            },
+                            onBack = {
                                 backStack.removeLastOrNull()
-                            })
+                            }
+                        )
                     }
 
                     is RouteAppDetails -> NavEntry(
@@ -137,11 +139,13 @@ fun Navigation(modifier: Modifier) {
                             },
                             onBack = {
                                 backStack.removeLastOrNull()
-                            })
+                            }
+                        )
                     }
 
                     is RouteTagFilter -> NavEntry(
-                        key, metadata = DialogSceneStrategy.dialog(
+                        key,
+                        metadata = DialogSceneStrategy.dialog(
                             DialogProperties(
                                 usePlatformDefaultWidth = false,
                                 decorFitsSystemWindows = false
@@ -158,9 +162,11 @@ fun Navigation(modifier: Modifier) {
                             viewModel,
                             onTagsSelectionChanged = {
                                 resultBus.sendResult<Set<String>>(result = it, resultKey = "tags")
-                            }, onBack = {
+                            },
+                            onBack = {
                                 backStack.removeLastOrNull()
-                            })
+                            }
+                        )
                     }
 
                     else -> error("Unknown route: $key")

@@ -24,16 +24,19 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val isPermissionGranted =
-            checkSelfPermission("com.zuhlke.logging.permission.READ_LOGS") == PackageManager.PERMISSION_GRANTED
+            checkSelfPermission("com.zuhlke.logging.permission.READ_LOGS") ==
+                PackageManager.PERMISSION_GRANTED
         Log.d("MainActivity", "Permission granted: $isPermissionGranted")
-        //TODO: handle the case when permission is not granted (the problem has to be fixed and the app has to be reinstalled)
+        // TODO: handle the case when permission is not granted (the problem has to be fixed and the app has to be reinstalled)
 
         enableEdgeToEdge()
         setContent {
             LogsViewerTheme {
-                Navigation(modifier = Modifier
-                    .fillMaxSize()
-                    .imePadding())
+                Navigation(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .imePadding()
+                )
             }
         }
     }

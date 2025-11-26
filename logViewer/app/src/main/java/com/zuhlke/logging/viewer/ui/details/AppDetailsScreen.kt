@@ -198,7 +198,7 @@ fun SimpleSearchBar(
                 )
             },
             expanded = expanded,
-            onExpandedChange = { },
+            onExpandedChange = { }
         ) {
             Column(Modifier.verticalScroll(rememberScrollState())) {
                 searchResults.forEach { result ->
@@ -249,7 +249,11 @@ fun AppDetailsPreview() {
                             id = 2,
                             timestamp = Instant.parse("2023-10-01T12:34:56Z"),
                             severity = Severity.Debug,
-                            message = "This is a sample log message. Very long message to test wrapping and see how it looks in the UI. This should be truncated if not expanded. Let's add even more text to ensure it exceeds two lines in the display. And even more text to be sure!",
+                            message = "This is a sample log message. Very long message to test " +
+                                "wrapping and see how it looks in the UI. This should be " +
+                                "truncated if not expanded. Let's add even more text to" +
+                                "ensure it exceeds two lines in the display. And even more " +
+                                "text to be sure!",
                             tag = "SampleTag",
                             throwable = "java.lang.Exception: Sample exception",
                             appRunId = 1
@@ -297,4 +301,3 @@ fun AppDetailsPreview() {
         )
     }
 }
-

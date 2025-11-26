@@ -26,18 +26,15 @@ import com.zuhlke.logging.viewer.R
 import com.zuhlke.logging.viewer.data.GetLogSharingApps
 import com.zuhlke.logging.viewer.data.LogSharingApp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 typealias Authority = String
 
 @Composable
-fun AppListScreen(
-    viewModel: AppListViewModel = hiltViewModel(),
-    onAppClick: (Authority) -> Unit
-) {
+fun AppListScreen(viewModel: AppListViewModel = hiltViewModel(), onAppClick: (Authority) -> Unit) {
     LaunchedEffect(Unit) {
         viewModel.initialize()
     }
@@ -57,13 +54,15 @@ fun AppListScreen(list: List<LogSharingApp>, onAppClick: (Authority) -> Unit) {
             },
             colors = topAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.primary
             )
         )
     }) { paddingValues ->
-        LazyColumn(modifier = Modifier
-            .padding(paddingValues)
-            .testTag("app_list")) {
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+                .testTag("app_list")
+        ) {
             items(list.size) { index ->
                 val app = list[index]
                 Card(

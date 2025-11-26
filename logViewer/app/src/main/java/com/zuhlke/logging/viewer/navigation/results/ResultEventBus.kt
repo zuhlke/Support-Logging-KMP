@@ -27,11 +27,8 @@ object LocalResultEventBus {
     /**
      * Provides a [ResultEventBus] to the composition
      */
-    infix fun provides(
-        bus: ResultEventBus
-    ): ProvidedValue<ResultEventBus?> {
-        return LocalResultEventBus.provides(bus)
-    }
+    infix fun provides(bus: ResultEventBus): ProvidedValue<ResultEventBus?> =
+        LocalResultEventBus.provides(bus)
 }
 
 /**

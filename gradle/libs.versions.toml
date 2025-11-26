@@ -5,6 +5,7 @@ android-minSdk = "23"
 android-targetSdk = "36"
 android-profiler-minSdk = "28"
 androidx-activity = "1.11.0"
+androidx-junit-ext = "1.3.0"
 baselineprofile = "1.4.1"
 benchmarkMacroJunit4 = "1.4.1"
 binary-compatibility-generator = "0.18.1"
@@ -49,7 +50,7 @@ sqlite-framework = { module = "androidx.sqlite:sqlite-framework", version.ref = 
 terpal-runtime = { module = "io.exoquery:terpal-runtime", version.ref = "terpal" }
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit-ext" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeAndroidBom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }

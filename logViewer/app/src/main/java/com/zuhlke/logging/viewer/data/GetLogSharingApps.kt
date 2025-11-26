@@ -5,10 +5,14 @@ import android.content.pm.PackageManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class GetLogSharingApps @Inject constructor(@param:ApplicationContext private val applicationContext: Context) {
+class GetLogSharingApps @Inject constructor(
+    @param:ApplicationContext private val applicationContext: Context
+) {
     operator fun invoke(): List<LogSharingApp> {
         val packages =
-            applicationContext.packageManager.getInstalledPackages(PackageManager.GET_PROVIDERS or PackageManager.GET_META_DATA)
+            applicationContext.packageManager.getInstalledPackages(
+                PackageManager.GET_PROVIDERS or PackageManager.GET_META_DATA
+            )
         val authorities = packages.flatMap { packageInfo ->
             val list = packageInfo.providers?.mapNotNull { contentProvider ->
                 val logProvider =
@@ -16,7 +20,10 @@ class GetLogSharingApps @Inject constructor(@param:ApplicationContext private va
                         ?: return@mapNotNull null
                 val info = packageInfo.applicationInfo
                 LogSharingApp(
-                    name = info?.let { applicationContext.packageManager.getApplicationLabel(it).toString() }
+                    name =
+                    info?.let {
+                        applicationContext.packageManager.getApplicationLabel(it).toString()
+                    }
                         ?: packageInfo.packageName,
                     packageName = packageInfo.packageName,
                     authority = logProvider
@@ -29,8 +36,4 @@ class GetLogSharingApps @Inject constructor(@param:ApplicationContext private va
     }
 }
 
-data class LogSharingApp(
-    val name: String,
-    val packageName: String,
-    val authority: String
-)
+data class LogSharingApp(val name: String, val packageName: String, val authority: String)

@@ -77,7 +77,6 @@ fun SearchScreen(
         onSearch = viewModel::setSearchTerm,
         onBack = onBack
     )
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -114,7 +113,7 @@ private fun SearchScreen(
                     )
                 },
                 expanded = false,
-                onExpandedChange = { },
+                onExpandedChange = { }
             ) { }
         },
         appRuns = appRuns,
@@ -143,7 +142,6 @@ private fun SearchScreen(
     onExportRequested: (List<LogEntry>) -> Unit,
     onBack: () -> Unit
 ) {
-
     var showLevel by rememberSaveable { mutableStateOf(true) }
     var showTimestamp by rememberSaveable { mutableStateOf(true) }
     var showTag by rememberSaveable { mutableStateOf(true) }
@@ -205,7 +203,8 @@ private fun SearchScreen(
                         },
                         label = {
                             Text(severityChipText)
-                        })
+                        }
+                    )
                     Spacer(Modifier.width(8.dp))
                     FilterChip(
                         selected = tagChipSelected,
@@ -218,7 +217,8 @@ private fun SearchScreen(
                         },
                         label = {
                             Text(tagChipText)
-                        })
+                        }
+                    )
                 }
                 AppRunsView(
                     appRuns = appRuns,
@@ -248,22 +248,19 @@ private fun SearchScreen(
 }
 
 @Composable
-fun getTagChipText(selectedTags: Set<String>): String {
-    return if (selectedTags.isEmpty()) {
-        stringResource(R.string.filter_tags)
+fun getTagChipText(selectedTags: Set<String>): String = if (selectedTags.isEmpty()) {
+    stringResource(R.string.filter_tags)
+} else {
+    selectedTags.minOf { it } + if (selectedTags.size > 1) {
+        "+${selectedTags.size - 1}"
     } else {
-        selectedTags.minOf { it } + if (selectedTags.size > 1) {
-            "+${selectedTags.size - 1}"
-        } else {
-            ""
-        }
+        ""
     }
 }
 
-
 @Composable
-private fun getSeverityChipText(selectedSeverities: Set<Severity>): String {
-    return if (selectedSeverities.isEmpty()) {
+private fun getSeverityChipText(selectedSeverities: Set<Severity>): String =
+    if (selectedSeverities.isEmpty()) {
         stringResource(R.string.filter_severity)
     } else {
         val firstSelected = Severity.entries.first { it in selectedSeverities }.stringResource
@@ -273,4 +270,3 @@ private fun getSeverityChipText(selectedSeverities: Set<Severity>): String {
             ""
         }
     }
-}

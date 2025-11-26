@@ -9,13 +9,11 @@ enum class Severity {
     Assert
 }
 
-fun Severity.toIosCompatibleString(): String {
-    return when (this) {
-        Severity.Verbose -> "verbose"
-        Severity.Debug -> "debug"
-        Severity.Info -> "info"
-        Severity.Warn -> "notice"
-        Severity.Error -> "error"
-        Severity.Assert -> "fault"
-    }
+fun Severity.toIosCompatibleString(): String = when (this) {
+    Severity.Verbose -> "verbose"
+    Severity.Debug -> "debug"
+    Severity.Info -> "info"
+    Severity.Warn -> "notice"
+    Severity.Error -> "error"
+    Severity.Assert -> "fault"
 }

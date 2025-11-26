@@ -251,13 +251,9 @@ class FakeLogContentProvider : ContentProvider() {
         }
     }
 
-    private fun getLogsAfter(afterId: Int): List<FakeLog> {
-        return logs.filter { it.id > afterId }
-    }
+    private fun getLogsAfter(afterId: Int): List<FakeLog> = logs.filter { it.id > afterId }
 
-    private fun getAppRunsAfter(afterId: Int): List<FakeAppRun> {
-        return appRuns.filter { it.id > afterId }
-    }
+    private fun getAppRunsAfter(afterId: Int): List<FakeAppRun> = appRuns.filter { it.id > afterId }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? = null
 
@@ -269,5 +265,4 @@ class FakeLogContentProvider : ContentProvider() {
     ): Int = 0
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String?>?): Int = 0
-
 }

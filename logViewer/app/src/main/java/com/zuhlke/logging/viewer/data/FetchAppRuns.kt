@@ -5,12 +5,12 @@ import android.util.Log
 import androidx.core.net.toUri
 import com.zuhlke.logging.viewer.di.DISPATCHER_IO
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 class FetchAppRuns @Inject constructor(
     @param:ApplicationContext val applicationContext: Context,
@@ -23,10 +23,14 @@ class FetchAppRuns @Inject constructor(
                 val uri = "content://$authority/appRuns?afterId=$lastKnownId".toUri()
                 val cursor = applicationContext.contentResolver.query(
                     uri,
-                    /* projection = */null,
-                    /* selection = */null,
-                    /* selectionArgs = */null,
-                    /* sortOrder = */null
+                    /* projection = */
+                    null,
+                    /* selection = */
+                    null,
+                    /* selectionArgs = */
+                    null,
+                    /* sortOrder = */
+                    null
                 )
                 cursor?.use { cursor ->
                     buildList {
@@ -41,7 +45,9 @@ class FetchAppRuns @Inject constructor(
                             val appVersion =
                                 cursor.getString(cursor.getColumnIndexOrThrow("appVersion"))
                             val osVersion =
-                                cursor.getString(cursor.getColumnIndexOrThrow("operatingSystemVersion"))
+                                cursor.getString(
+                                    cursor.getColumnIndexOrThrow("operatingSystemVersion")
+                                )
                             val device = cursor.getString(cursor.getColumnIndexOrThrow("device"))
                             Log.d("MainViewModel", "AppRun from $authority: $id $launchDate")
                             add(AppRun(id, launchDate, appVersion, osVersion, device))

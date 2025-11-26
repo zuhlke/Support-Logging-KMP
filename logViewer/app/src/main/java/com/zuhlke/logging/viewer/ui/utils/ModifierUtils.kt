@@ -8,9 +8,9 @@ import androidx.core.text.layoutDirection
 import java.util.Locale
 
 @Stable
-fun Modifier.autoMirror(): Modifier {
-    return if (Locale.getDefault().layoutDirection == LayoutDirection.RTL)
+fun Modifier.autoMirror(): Modifier =
+    if (Locale.getDefault().layoutDirection == LayoutDirection.RTL) {
         this.scale(scaleX = -1f, scaleY = 1f)
-    else
+    } else {
         this
-}
+    }
