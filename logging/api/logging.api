@@ -41,8 +41,8 @@ public final class com/zuhlke/logging/SafeStringKt {
 
 public final class com/zuhlke/logging/ZuhlkeLogger {
 	public static final field INSTANCE Lcom/zuhlke/logging/ZuhlkeLogger;
-	public final fun initialize (Landroid/app/Application;Z)V
-	public static synthetic fun initialize$default (Lcom/zuhlke/logging/ZuhlkeLogger;Landroid/app/Application;ZILjava/lang/Object;)V
+	public final fun initialize (Landroid/app/Application;ZZ)V
+	public static synthetic fun initialize$default (Lcom/zuhlke/logging/ZuhlkeLogger;Landroid/app/Application;ZZILjava/lang/Object;)V
 }
 
 public final class com/zuhlke/logging/data/Severity : java/lang/Enum {
