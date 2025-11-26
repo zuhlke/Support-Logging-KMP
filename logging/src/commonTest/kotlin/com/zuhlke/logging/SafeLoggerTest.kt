@@ -149,5 +149,4 @@ class SafeLoggerTest {
             listOf(FakeLogEntry.LogWithLazyMessage(severity, TAG, lazyMessage, throwable))
         assertContentEquals(expected, innerLogger.logs)
     }
-
 }
