@@ -40,7 +40,10 @@ internal class KermitLogWriter(subsystem: String) : LogWriter {
     }
 }
 
-internal fun Severity.toKermitSeverity(): co.touchlab.kermit.Severity = when (this) {
+/**
+ * Maps Zuhlke Logging Severity to Kermit Severity.
+ */
+public fun Severity.toKermitSeverity(): co.touchlab.kermit.Severity = when (this) {
     Severity.Verbose -> co.touchlab.kermit.Severity.Verbose
     Severity.Debug -> co.touchlab.kermit.Severity.Debug
     Severity.Info -> co.touchlab.kermit.Severity.Info

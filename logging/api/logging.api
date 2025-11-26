@@ -16,6 +16,10 @@ public final class com/zuhlke/logging/SafeLogger {
 	public final fun i (Ljava/lang/Throwable;Lkotlin/jvm/functions/Function0;)V
 	public static synthetic fun i$default (Lcom/zuhlke/logging/SafeLogger;Lcom/zuhlke/logging/SafeString;Ljava/lang/Throwable;ILjava/lang/Object;)V
 	public static synthetic fun i$default (Lcom/zuhlke/logging/SafeLogger;Ljava/lang/Throwable;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+	public final fun log (Lcom/zuhlke/logging/data/Severity;Lcom/zuhlke/logging/SafeString;Ljava/lang/Throwable;)V
+	public final fun log (Lcom/zuhlke/logging/data/Severity;Ljava/lang/Throwable;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun log$default (Lcom/zuhlke/logging/SafeLogger;Lcom/zuhlke/logging/data/Severity;Lcom/zuhlke/logging/SafeString;Ljava/lang/Throwable;ILjava/lang/Object;)V
+	public static synthetic fun log$default (Lcom/zuhlke/logging/SafeLogger;Lcom/zuhlke/logging/data/Severity;Ljava/lang/Throwable;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 	public final fun v (Lcom/zuhlke/logging/SafeString;Ljava/lang/Throwable;)V
 	public final fun v (Ljava/lang/Throwable;Lkotlin/jvm/functions/Function0;)V
 	public static synthetic fun v$default (Lcom/zuhlke/logging/SafeLogger;Lcom/zuhlke/logging/SafeString;Ljava/lang/Throwable;ILjava/lang/Object;)V
@@ -39,5 +43,21 @@ public final class com/zuhlke/logging/ZuhlkeLogger {
 	public static final field INSTANCE Lcom/zuhlke/logging/ZuhlkeLogger;
 	public final fun initialize (Landroid/app/Application;Z)V
 	public static synthetic fun initialize$default (Lcom/zuhlke/logging/ZuhlkeLogger;Landroid/app/Application;ZILjava/lang/Object;)V
+}
+
+public final class com/zuhlke/logging/data/Severity : java/lang/Enum {
+	public static final field Assert Lcom/zuhlke/logging/data/Severity;
+	public static final field Debug Lcom/zuhlke/logging/data/Severity;
+	public static final field Error Lcom/zuhlke/logging/data/Severity;
+	public static final field Info Lcom/zuhlke/logging/data/Severity;
+	public static final field Verbose Lcom/zuhlke/logging/data/Severity;
+	public static final field Warn Lcom/zuhlke/logging/data/Severity;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/zuhlke/logging/data/Severity;
+	public static fun values ()[Lcom/zuhlke/logging/data/Severity;
+}
+
+public final class com/zuhlke/logging/integrations/kermit/KermitLogWriterKt {
+	public static final fun toKermitSeverity (Lcom/zuhlke/logging/data/Severity;)Lco/touchlab/kermit/Severity;
 }
 

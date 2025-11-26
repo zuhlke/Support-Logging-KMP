@@ -1,6 +1,9 @@
 package com.zuhlke.logging.data
 
-internal enum class Severity {
+/**
+ * Represents the severity level of a log message.
+ */
+public enum class Severity {
     Verbose,
     Debug,
     Info,

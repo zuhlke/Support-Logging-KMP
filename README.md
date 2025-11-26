@@ -120,6 +120,27 @@ Notes:
 * If unsafe interpolation is enabled (debug builds), the raw string & params are logged to aid
   debugging.
 
+#### Why concatenated strings won’t work with `safeString(...)`
+
+The Terpal plugin only transforms calls where the argument is a single string literal with interpolation. If you pass a prebuilt/concatenated string, the plugin cannot capture `parts` and `params`, so the call is not transformed and will throw at runtime.
+
+Non‑working:
+```kotlin
+safeString(
+    "ZuhlkeLogger: password = $password, " +
+        "counter (public) = ${public(counter)} " +
+        "hash = ${hash(password)}"
+)
+```
+Works (single literal with interpolation inside):
+```kotlin
+safeString(
+    "ZuhlkeLogger: password = $password, counter (public) = ${public(counter)} hash = ${hash(password)}"
+)
+```
+
+Tip: Keep all `${...}` interpolations inside one string literal passed directly to `safeString(...)`.
+
 ### Example Output
 
 Below are illustrative (trimmed) outputs. Actual formatting may vary slightly by platform/tooling.

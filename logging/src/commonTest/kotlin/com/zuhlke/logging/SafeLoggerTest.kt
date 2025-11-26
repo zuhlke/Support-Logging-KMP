@@ -12,13 +12,7 @@ class SafeLoggerTest {
     companion object {
         const val TAG = "test tag"
         val throwable = IllegalStateException("Test exception")
-        val message = safeString(
-            "test message ${
-                public(
-                    1337
-                )
-            }"
-        )
+        val message = safeString("test message ${public(1337)}")
         val lazyMessage = { message }
     }
 
@@ -112,6 +106,36 @@ class SafeLoggerTest {
         testSubject.a(message, throwable)
 
         assertInnerLoggerWasCalledWithConcreteMessage(Severity.Assert)
+    }
+
+    @Test
+    fun `logs with all severities and concrete messages are recorded`() {
+        for (severity in Severity.entries) {
+            verifyLogWithConcreteMessage(severity)
+        }
+    }
+
+    private fun verifyLogWithConcreteMessage(severity: Severity) {
+        innerLogger.clearLogs()
+
+        testSubject.log(severity, message, throwable)
+
+        assertInnerLoggerWasCalledWithConcreteMessage(severity)
+    }
+
+    @Test
+    fun `logs with all severities and lazy messages are recorded`() {
+        for (severity in Severity.entries) {
+            verifyLogWithLazyMessage(severity)
+        }
+    }
+
+    private fun verifyLogWithLazyMessage(severity: Severity) {
+        innerLogger.clearLogs()
+
+        testSubject.log(severity, throwable, lazyMessage)
+
+        assertInnerLoggerWasCalledWithLazyMessage(severity)
     }
 
     private fun assertInnerLoggerWasCalledWithConcreteMessage(severity: Severity) {
