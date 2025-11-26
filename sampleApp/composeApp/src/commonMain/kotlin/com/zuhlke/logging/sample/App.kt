@@ -45,9 +45,10 @@ fun App() {
         ) { "Kermit: password = $password" }
         logger.log(severity, throwable) {
             safeString(
-                "ZuhlkeLogger: password = $password, counter (public) = ${public(
-                    counter
-                )} hash = ${hash(password)}"
+                """
+ZuhlkeLogger: password = $password, 
+counter (public) = ${public(counter)} 
+hash = ${hash(password)}"""
             )
         }
         loggerWithDifferentTag.log(
