@@ -52,19 +52,25 @@ kotlin {
 
 android {
     namespace = "com.zuhlke.logging.sample"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk {
+        version = release(libs.versions.android.compileSdk.get().toInt())
+    }
 
     defaultConfig {
         applicationId = "com.zuhlke.logging.sample"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk {
+            version = release(libs.versions.android.minSdk.get().toInt())
+        }
+        targetSdk {
+            version = release(libs.versions.android.targetSdk.get().toInt())
+        }
         versionCode = 1
         versionName = "1.0"
     }
     signingConfigs {
         // TODO: generate new debug key
         getByName("debug") {
-            storeFile = file("debug.jks")
+            storeFile = file("../../debug.jks")
             storePassword = "5TJ[m\"'XKC!&CB@w"
             keyAlias = "key0"
             keyPassword = "5TJ[m\"'XKC!&CB@w"
