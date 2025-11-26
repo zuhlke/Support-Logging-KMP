@@ -25,7 +25,7 @@ public actual object ZuhlkeLogger {
     public fun initialize(
         application: Application,
         useSafeInterpolation: Boolean = application.applicationInfo.flags and
-                ApplicationInfo.FLAG_DEBUGGABLE == 0,
+            ApplicationInfo.FLAG_DEBUGGABLE == 0,
         setUncaughtExceptionHandler: Boolean = true
     ) {
         val interpolationConfiguration = if (useSafeInterpolation) {

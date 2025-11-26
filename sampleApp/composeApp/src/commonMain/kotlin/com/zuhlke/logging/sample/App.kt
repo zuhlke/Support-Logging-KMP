@@ -23,8 +23,8 @@ import com.zuhlke.logging.hash
 import com.zuhlke.logging.integrations.kermit.toKermitSeverity
 import com.zuhlke.logging.public
 import com.zuhlke.logging.safeString
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.random.Random
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 typealias KermitLogger = co.touchlab.kermit.Logger
 
