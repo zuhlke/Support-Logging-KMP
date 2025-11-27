@@ -14,7 +14,7 @@ object DispatcherModule {
 
     @Provides
     @Named(DISPATCHER_IO)
-    fun provideUserId(): CoroutineDispatcher = Dispatchers.IO
+    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 }
 
 const val DISPATCHER_IO = "IO"
