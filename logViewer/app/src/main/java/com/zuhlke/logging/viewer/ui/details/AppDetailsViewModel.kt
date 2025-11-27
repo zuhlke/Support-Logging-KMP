@@ -1,27 +1,20 @@
 package com.zuhlke.logging.viewer.ui.details
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.annotation.MainThread
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zuhlke.logging.viewer.data.AppRunWithLogs
-import com.zuhlke.logging.viewer.data.ExportedAppRunWithLogs
 import com.zuhlke.logging.viewer.data.LogEntry
 import com.zuhlke.logging.viewer.data.LogRepository
 import com.zuhlke.logging.viewer.data.Severity
-import com.zuhlke.logging.viewer.data.snapshot
+import com.zuhlke.logging.viewer.export.Exporter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import java.io.File
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -35,15 +28,13 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
 
 @HiltViewModel(assistedFactory = AppDetailsViewModel.Factory::class)
 class AppDetailsViewModel @AssistedInject constructor(
     @Assisted val authority: String,
-    @Assisted val defaultSearchState: SearchState,
+    @Assisted defaultSearchState: SearchState,
     logRepositoryFactory: LogRepository.Factory,
-    @param:ApplicationContext private val context: Context
+    private val exporter: Exporter
 ) : ViewModel() {
 
     private lateinit var collectionJob: Job
@@ -67,7 +58,7 @@ class AppDetailsViewModel @AssistedInject constructor(
         searchTermDebounce
     ) { appRuns, severities, tags, searchTermDebounced ->
         if (severities.isEmpty() && tags.isEmpty() && searchTermDebounced == "") {
-            UiState(appRuns, "")
+            UiState(appRuns, searchTerm = "")
         } else {
             val regex = Regex(searchTermDebounced)
             UiState(
@@ -128,32 +119,11 @@ class AppDetailsViewModel @AssistedInject constructor(
         }
     }
 
-    private val json = Json { prettyPrint = true }
-
     @OptIn(ExperimentalTime::class)
     fun export(logEntries: List<LogEntry>) {
         viewModelScope.launch {
-            val file = withContext(Dispatchers.IO) {
-                val toExport = logEntries.map { it.appRunId }.toSet().map { appRunId ->
-                    val appRunWithLogs = logs.value.first { it.appRun.id == appRunId }
-                    val appRunEntries = logEntries.filter { it.appRunId == appRunId }
-                    ExportedAppRunWithLogs(
-                        info = appRunWithLogs.appRun.snapshot,
-                        logEntries = appRunEntries.map {
-                            it.snapshot(authority.removePrefix(".logging"))
-                        }
-                    )
-                }
-                val json = json.encodeToString(toExport)
-                File(context.filesDir, "exports").apply { mkdir() }
-                    .resolve("log-${Clock.System.now()}.json")
-                    .also { it.writeText(json) }
-            }
-            val fileUri: Uri = FileProvider.getUriForFile(
-                context,
-                "com.zuhlke.logging.viewer.fileprovider",
-                file
-            )
+            val allAppRuns = logs.value.map { it.appRun }
+            val fileUri = exporter.exportToTempFile(allAppRuns, logEntries)
             _exportReady.emit(fileUri)
         }
     }
