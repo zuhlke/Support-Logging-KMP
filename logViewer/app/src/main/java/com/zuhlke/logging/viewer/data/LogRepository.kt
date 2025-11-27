@@ -22,7 +22,7 @@ class LogRepository @AssistedInject constructor(
         var lastKnownAppRunId = 0
         var lastKnownLogId = 0
 
-        while(true) {
+        while (true) {
             val newRuns = fetchAppRuns(authority, lastKnownAppRunId)
             val newLogs = fetchLogs(authority, lastKnownLogId)
             Log.d(

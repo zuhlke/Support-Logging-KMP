@@ -90,7 +90,7 @@ class AppDetailsViewModel @AssistedInject constructor(
     private val _exportReady = MutableSharedFlow<Uri>()
     val exportReady: SharedFlow<Uri> = _exportReady
 
-    private val _uniqueTags: MutableStateFlow<Set<String>> = MutableStateFlow<Set<String>>(emptySet())
+    private val _uniqueTags: MutableStateFlow<Set<String>> = MutableStateFlow(emptySet())
     val uniqueTags: StateFlow<Set<String>> = _uniqueTags
 
     fun setSeverities(severities: Set<Severity>) {
