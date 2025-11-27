@@ -1,11 +1,10 @@
-package com.zuhlke.logging.viewer.data.repository
+package com.zuhlke.logging.viewer.data.contentprovider
 
 import android.util.Log
-import com.zuhlke.logging.viewer.data.contentprovider.FetchAppRuns
-import com.zuhlke.logging.viewer.data.contentprovider.FetchLogs
 import com.zuhlke.logging.viewer.data.model.AppRun
 import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
 import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.repository.AppRunsWithLogsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject

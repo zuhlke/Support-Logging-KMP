@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
 import com.zuhlke.logging.viewer.data.model.LogEntry
 import com.zuhlke.logging.viewer.data.model.Severity
-import com.zuhlke.logging.viewer.data.repository.ContentProviderAppRunsWithLogsRepository
+import com.zuhlke.logging.viewer.data.contentprovider.ContentProviderAppRunsWithLogsRepository
 import com.zuhlke.logging.viewer.export.Exporter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
