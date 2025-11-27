@@ -8,14 +8,15 @@ import com.zuhlke.logging.viewer.data.model.LogEntry
 import com.zuhlke.logging.viewer.export.model.AppRunWithLogsSnapshot
 import com.zuhlke.logging.viewer.export.model.snapshot
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.serialization.json.Json
 import java.io.File
 import javax.inject.Inject
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
+import kotlinx.serialization.json.Json
 
-class JsonLogExporter @Inject constructor(@param:ApplicationContext val applicationContext: Context) :
-    LogExporter {
+class JsonLogExporter @Inject constructor(
+    @param:ApplicationContext val applicationContext: Context
+) : LogExporter {
 
     private val json = Json { prettyPrint = true }
 

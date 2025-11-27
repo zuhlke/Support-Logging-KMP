@@ -14,6 +14,7 @@ import com.zuhlke.logging.viewer.data.model.LogEntry
 import com.zuhlke.logging.viewer.data.model.Severity
 import com.zuhlke.logging.viewer.data.repository.AppRunsWithLogsRepository
 import com.zuhlke.logging.viewer.export.LogExporter
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -27,7 +28,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlin.time.ExperimentalTime
 
 class AppDetailsViewModel(
     defaultSearchState: SearchState,
@@ -131,22 +131,19 @@ class AppDetailsViewModel(
         Log.d("AppDetailsViewModel", "onCleared")
     }
 
-//    @AssistedFactory
-//    interface Factory {
-//        fun create(defaultSearchState: SearchState): AppDetailsViewModel
-//    }
-
     data class UiState(val appRunsWithLogs: List<AppRunWithLogs>, val searchTerm: String)
 
     companion object {
-        val KEY_APP_RUNS_WITH_LOGS_REPOSITORY = object : CreationExtras.Key<AppRunsWithLogsRepository> {}
+        val KEY_APP_RUNS_WITH_LOGS_REPOSITORY =
+            object : CreationExtras.Key<AppRunsWithLogsRepository> {}
         val KEY_SEARCH_STATE = object : CreationExtras.Key<SearchState> {}
         val KEY_LOG_EXPORTER = object : CreationExtras.Key<LogExporter> {}
 
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val searchState = this[KEY_SEARCH_STATE] as SearchState
-                val repository = this[KEY_APP_RUNS_WITH_LOGS_REPOSITORY] as AppRunsWithLogsRepository
+                val repository =
+                    this[KEY_APP_RUNS_WITH_LOGS_REPOSITORY] as AppRunsWithLogsRepository
                 val logExporter = this[KEY_LOG_EXPORTER] as LogExporter
                 AppDetailsViewModel(
                     defaultSearchState = searchState,

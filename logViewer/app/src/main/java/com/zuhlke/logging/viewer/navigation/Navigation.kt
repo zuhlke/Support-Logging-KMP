@@ -111,7 +111,7 @@ fun Navigation(
                         }
                         val viewModel: AppDetailsViewModel = viewModel(
                             factory = AppDetailsViewModel.Factory,
-                            extras = extras,
+                            extras = extras
                         )
 
                         ResultEffect<Set<String>>(resultKey = "tags") { result ->
@@ -144,7 +144,7 @@ fun Navigation(
                         }
                         val viewModel: AppDetailsViewModel = viewModel(
                             factory = AppDetailsViewModel.Factory,
-                            extras = extras,
+                            extras = extras
                         )
 
                         AppDetailsScreen(
