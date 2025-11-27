@@ -22,6 +22,8 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.MutableCreationExtras
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
@@ -29,6 +31,8 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
+import com.zuhlke.logging.viewer.data.contentprovider.ContentProviderAppRunsWithLogsRepository
+import com.zuhlke.logging.viewer.export.LogExporter
 import com.zuhlke.logging.viewer.navigation.results.LocalResultEventBus
 import com.zuhlke.logging.viewer.navigation.results.ResultEffect
 import com.zuhlke.logging.viewer.navigation.results.ResultEventBus
@@ -42,7 +46,11 @@ import com.zuhlke.logging.viewer.ui.tags.TagViewModel
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
-fun Navigation(modifier: Modifier) {
+fun Navigation(
+    modifier: Modifier,
+    appRunsWithLogsRepository: ContentProviderAppRunsWithLogsRepository.Factory,
+    logExporter: LogExporter
+) {
     val backStack = rememberNavBackStack(RouteAppList)
 
     val dialogStrategy = remember { DialogSceneStrategy<NavKey>() }
@@ -93,16 +101,19 @@ fun Navigation(modifier: Modifier) {
                         metadata = ListDetailSceneStrategy.detailPane()
                     ) {
                         Log.d("Navigation", "inside RouteSearch")
-                        val viewModel =
-                            hiltViewModel<AppDetailsViewModel, AppDetailsViewModel.Factory>(
-                                creationCallback = { factory ->
-                                    Log.d("Navigation", "AppDetailsViewModel creationCallback")
-                                    factory.create(
-                                        key.authority,
-                                        defaultSearchState = key.searchState
-                                    )
-                                }
+                        val extras = MutableCreationExtras().apply {
+                            set(AppDetailsViewModel.KEY_SEARCH_STATE, key.searchState)
+                            set(
+                                AppDetailsViewModel.KEY_APP_RUNS_WITH_LOGS_REPOSITORY,
+                                appRunsWithLogsRepository.create(authority = key.authority)
                             )
+                            set(AppDetailsViewModel.KEY_LOG_EXPORTER, logExporter)
+                        }
+                        val viewModel: AppDetailsViewModel = viewModel(
+                            factory = AppDetailsViewModel.Factory,
+                            extras = extras,
+                        )
+
                         ResultEffect<Set<String>>(resultKey = "tags") { result ->
                             Log.d("Navigation", "ResultEffect result = $result")
                             viewModel.setTags(result)
@@ -123,15 +134,19 @@ fun Navigation(modifier: Modifier) {
                         metadata = ListDetailSceneStrategy.detailPane()
                     ) {
                         Log.d("Navigation", "inside RouteAppDetails")
-                        val viewModel =
-                            hiltViewModel<AppDetailsViewModel, AppDetailsViewModel.Factory>(
-                                creationCallback = { factory ->
-                                    factory.create(
-                                        key.authority,
-                                        defaultSearchState = SearchState()
-                                    )
-                                }
+                        val extras = MutableCreationExtras().apply {
+                            set(AppDetailsViewModel.KEY_SEARCH_STATE, SearchState())
+                            set(
+                                AppDetailsViewModel.KEY_APP_RUNS_WITH_LOGS_REPOSITORY,
+                                appRunsWithLogsRepository.create(authority = key.authority)
                             )
+                            set(AppDetailsViewModel.KEY_LOG_EXPORTER, logExporter)
+                        }
+                        val viewModel: AppDetailsViewModel = viewModel(
+                            factory = AppDetailsViewModel.Factory,
+                            extras = extras,
+                        )
+
                         AppDetailsScreen(
                             viewModel,
                             onSearch = { searchState ->
