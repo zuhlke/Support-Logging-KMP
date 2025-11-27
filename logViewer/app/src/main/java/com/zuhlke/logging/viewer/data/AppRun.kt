@@ -13,24 +13,3 @@ data class AppRun(
     val osVersion: String,
     val device: String
 )
-
-@OptIn(ExperimentalTime::class)
-val AppRun.snapshot: AppRunSnapshot
-    get() {
-        return AppRunSnapshot(
-            launchDate = launchDate,
-            appVersion = appVersion,
-            operatingSystemVersion = osVersion,
-            device = device
-        )
-    }
-
-@Serializable
-@OptIn(ExperimentalTime::class)
-data class AppRunSnapshot(
-    @Contextual
-    val launchDate: Instant,
-    val appVersion: String,
-    val operatingSystemVersion: String,
-    val device: String
-)

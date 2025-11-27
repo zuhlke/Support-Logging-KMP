@@ -8,12 +8,3 @@ enum class Severity {
     Error,
     Assert
 }
-
-fun Severity.toIosCompatibleString(): String = when (this) {
-    Severity.Verbose -> "verbose"
-    Severity.Debug -> "debug"
-    Severity.Info -> "info"
-    Severity.Warn -> "notice"
-    Severity.Error -> "error"
-    Severity.Assert -> "fault"
-}
