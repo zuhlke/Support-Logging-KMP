@@ -2,10 +2,9 @@ package com.zuhlke.logging.viewer.export.model
 
 import com.zuhlke.logging.viewer.data.LogEntry
 import com.zuhlke.logging.viewer.data.Severity
-import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
-
+import kotlinx.serialization.Serializable
 
 @Serializable
 @OptIn(ExperimentalTime::class)
