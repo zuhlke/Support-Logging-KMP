@@ -112,7 +112,7 @@ class AppDetailsViewModel @AssistedInject constructor(
 
     fun setSearchTerm(searchTerm: String) {
         viewModelScope.launch {
-            searchTerm.emit(searchTerm)
+            this@AppDetailsViewModel.searchTerm.emit(searchTerm)
         }
     }
 
