@@ -251,7 +251,7 @@ fun AppDetailsPreview() {
                             severity = Severity.Debug,
                             message = "This is a sample log message. Very long message to test " +
                                 "wrapping and see how it looks in the UI. This should be " +
-                                "truncated if not expanded. Let's add even more text to" +
+                                "truncated if not expanded. Let's add even more text to " +
                                 "ensure it exceeds two lines in the display. And even more " +
                                 "text to be sure!",
                             tag = "SampleTag",
