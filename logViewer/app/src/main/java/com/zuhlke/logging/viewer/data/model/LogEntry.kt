@@ -1,6 +1,5 @@
 package com.zuhlke.logging.viewer.data.model
 
-import com.zuhlke.logging.viewer.data.model.Severity
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 

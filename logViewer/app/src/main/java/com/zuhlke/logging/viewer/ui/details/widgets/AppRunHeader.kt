@@ -32,7 +32,7 @@ import kotlinx.datetime.format
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun AppRunHeader(appRun: AppRun, onExport: () -> Unit, modifier: Modifier = Modifier.Companion) {
+fun AppRunHeader(appRun: AppRun, onExport: () -> Unit, modifier: Modifier = Modifier) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     Row(
         modifier = modifier

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
 import com.zuhlke.logging.viewer.data.model.LogEntry
 import com.zuhlke.logging.viewer.data.model.Severity
+import com.zuhlke.logging.viewer.data.repository.ContentProviderAppRunsWithLogsRepository
 import com.zuhlke.logging.viewer.export.Exporter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -33,7 +34,7 @@ class AppDetailsViewModel @AssistedInject constructor(
     @Assisted val authority: String,
     @Assisted defaultSearchState: SearchState,
     appRunsWithLogsRepositoryFactory:
-    com.zuhlke.logging.viewer.data.repository.LogRepository.Factory,
+    ContentProviderAppRunsWithLogsRepository.Factory,
     private val exporter: Exporter
 ) : ViewModel() {
 
