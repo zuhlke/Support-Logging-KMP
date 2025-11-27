@@ -23,8 +23,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.data.GetLogSharingApps
-import com.zuhlke.logging.viewer.data.LogSharingApp
+import com.zuhlke.logging.viewer.data.contentprovider.GetLogSharingApps
+import com.zuhlke.logging.viewer.data.contentprovider.LogSharingApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

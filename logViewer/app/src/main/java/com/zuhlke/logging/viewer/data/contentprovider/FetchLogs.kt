@@ -1,10 +1,12 @@
-package com.zuhlke.logging.viewer.data
+package com.zuhlke.logging.viewer.data.contentprovider
 
 import android.content.Context
 import android.database.Cursor
 import android.util.Log
 import androidx.core.database.getStringOrNull
 import androidx.core.net.toUri
+import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.model.Severity
 import com.zuhlke.logging.viewer.di.DISPATCHER_IO
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

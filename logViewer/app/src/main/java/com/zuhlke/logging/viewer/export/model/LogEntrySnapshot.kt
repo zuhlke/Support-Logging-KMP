@@ -1,7 +1,7 @@
 package com.zuhlke.logging.viewer.export.model
 
-import com.zuhlke.logging.viewer.data.LogEntry
-import com.zuhlke.logging.viewer.data.Severity
+import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.model.Severity
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable

@@ -5,10 +5,9 @@ import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.zuhlke.logging.viewer.data.AppRunWithLogs
-import com.zuhlke.logging.viewer.data.LogEntry
-import com.zuhlke.logging.viewer.data.LogRepository
-import com.zuhlke.logging.viewer.data.Severity
+import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
+import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.model.Severity
 import com.zuhlke.logging.viewer.export.Exporter
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -33,12 +32,13 @@ import kotlinx.coroutines.launch
 class AppDetailsViewModel @AssistedInject constructor(
     @Assisted val authority: String,
     @Assisted defaultSearchState: SearchState,
-    logRepositoryFactory: LogRepository.Factory,
+    appRunsWithLogsRepositoryFactory:
+    com.zuhlke.logging.viewer.data.repository.LogRepository.Factory,
     private val exporter: Exporter
 ) : ViewModel() {
 
     private lateinit var collectionJob: Job
-    private val logRepository = logRepositoryFactory.create(authority)
+    private val logRepository = appRunsWithLogsRepositoryFactory.create(authority)
     private val logs = MutableStateFlow<List<AppRunWithLogs>>(emptyList())
     private val _selectedSeverities = MutableStateFlow(defaultSearchState.severities)
     val selectedSeverities: StateFlow<Set<Severity>> = _selectedSeverities

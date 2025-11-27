@@ -3,8 +3,8 @@ package com.zuhlke.logging.viewer.export
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.zuhlke.logging.viewer.data.AppRun
-import com.zuhlke.logging.viewer.data.LogEntry
+import com.zuhlke.logging.viewer.data.model.AppRun
+import com.zuhlke.logging.viewer.data.model.LogEntry
 import com.zuhlke.logging.viewer.export.model.AppRunWithLogsSnapshot
 import com.zuhlke.logging.viewer.export.model.snapshot
 import dagger.hilt.android.qualifiers.ApplicationContext
