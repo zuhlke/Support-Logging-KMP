@@ -54,6 +54,7 @@ fun SearchScreen(
 
     val appRuns by viewModel.filteredAppRuns.collectAsStateWithLifecycle()
     val selectedSeverities by viewModel.selectedSeverities.collectAsStateWithLifecycle()
+    val uniqueTags by viewModel.uniqueTags.collectAsStateWithLifecycle()
     val selectedTags by viewModel.selectedTags.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
@@ -70,8 +71,12 @@ fun SearchScreen(
         onSelectedSeveritiesChanged = viewModel::setSeverities,
         selectedTags = selectedTags,
         onTagsClick = {
-            val allTags = viewModel.getUniqueTags()
-            onTagSelectorRequested(TagFilterState(selectedTags = selectedTags, allTags = allTags))
+            onTagSelectorRequested(
+                TagFilterState(
+                    selectedTags = selectedTags,
+                    allTags = uniqueTags
+                )
+            )
         },
         onSelectedTagsChanged = viewModel::setTags,
         onSearch = viewModel::setSearchTerm,

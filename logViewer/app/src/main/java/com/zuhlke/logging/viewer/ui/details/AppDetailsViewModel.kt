@@ -24,7 +24,7 @@ import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,7 +34,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -47,6 +46,7 @@ class AppDetailsViewModel @AssistedInject constructor(
     @param:ApplicationContext private val context: Context
 ) : ViewModel() {
 
+    private lateinit var collectionJob: Job
     private val logRepository = logRepositoryFactory.create(authority)
     private val logs = MutableStateFlow<List<AppRunWithLogs>>(emptyList())
     private val _selectedSeverities = MutableStateFlow(defaultSearchState.severities)
@@ -90,13 +90,8 @@ class AppDetailsViewModel @AssistedInject constructor(
     private val _exportReady = MutableSharedFlow<Uri>()
     val exportReady: SharedFlow<Uri> = _exportReady
 
-    private val autoRefresh = MutableStateFlow(true)
-    private var lastKnownAppRunId = -1
-    private var lastKnownLogId = -1
-
-    fun setAutoRefresh(enabled: Boolean) {
-        autoRefresh.value = enabled
-    }
+    private val _uniqueTags: MutableStateFlow<Set<String>> = MutableStateFlow(emptySet())
+    val uniqueTags: StateFlow<Set<String>> = _uniqueTags
 
     fun setSeverities(severities: Set<Severity>) {
         viewModelScope.launch {
@@ -123,32 +118,15 @@ class AppDetailsViewModel @AssistedInject constructor(
     fun init() {
         if (initialised) return
         initialised = true
-        viewModelScope.launch {
-            autoRefresh.transformLatest { enabled ->
-                if (enabled) {
-                    while (true) {
-                        emit(Unit)
-                        delay(1000)
-                    }
-                }
-            }.collect {
-                val result = logRepository.fetch(
-                    lastKnownAppRunId = lastKnownAppRunId,
-                    lastKnownLogId = lastKnownLogId
-                )
-                lastKnownAppRunId = result.first
-                lastKnownLogId = result.second
-            }
-        }
-        viewModelScope.launch {
-            logRepository.data.collect { appRuns ->
-                logs.value = appRuns.filter { it.logEntries.isNotEmpty() }
+        collectionJob = viewModelScope.launch {
+            logRepository.getLogs().collect { appRuns ->
+                logs.value = appRuns.filter { runWithLogs -> runWithLogs.logEntries.isNotEmpty() }
+
+                val tags = logs.value.flatMap { it.logEntries.map { entry -> entry.tag } }.toSet()
+                _uniqueTags.emit(tags)
             }
         }
     }
-
-    // TODO: viewmodel shouldn't expose functions that return something
-    fun getUniqueTags(): Set<String> = logRepository.getUniqueTagsSnapshot()
 
     private val json = Json { prettyPrint = true }
 
@@ -182,6 +160,7 @@ class AppDetailsViewModel @AssistedInject constructor(
 
     override fun onCleared() {
         super.onCleared()
+        collectionJob.cancel()
         Log.d("AppDetailsViewModel", "onCleared")
     }
 
