@@ -30,5 +30,8 @@ dependencyResolutionManagement {
 
 include(":composeApp")
 project(":composeApp").projectDir = File("sampleApp/composeApp")
-
 include(":logging")
+include(":logViewerApp")
+project(":logViewerApp").projectDir = File("logViewer/app")
+include(":logViewerBaselineprofile")
+project(":logViewerBaselineprofile").projectDir = File("logViewer/baselineprofile")
