@@ -39,12 +39,9 @@ class Exporter @Inject constructor(@param:ApplicationContext val applicationCont
             .resolve("log-${Clock.System.now()}.json")
             .also { it.writeText(json) }
         return FileProvider.getUriForFile(
-            /* context = */
-            applicationContext,
-            /* authority = */
-            "com.zuhlke.logging.viewer.fileprovider",
-            /* file = */
-            exportFile
+            /* context = */ applicationContext,
+            /* authority = */ "com.zuhlke.logging.viewer.fileprovider",
+            /* file = */ exportFile
         )
     }
 }

@@ -25,14 +25,10 @@ class FetchLogs @Inject constructor(
                 val uri = "content://$authority/logs?afterId=$lastKnownId".toUri()
                 val cursor = applicationContext.contentResolver.query(
                     uri,
-                    /* projection = */
-                    null,
-                    /* selection = */
-                    null,
-                    /* selectionArgs = */
-                    null,
-                    /* sortOrder = */
-                    null
+                    /* projection = */ null,
+                    /* selection = */ null,
+                    /* selectionArgs = */ null,
+                    /* sortOrder = */ null
                 )
                 cursor?.use { cursor ->
                     buildList {

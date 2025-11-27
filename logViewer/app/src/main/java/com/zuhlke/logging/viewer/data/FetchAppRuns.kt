@@ -13,7 +13,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class FetchAppRuns @Inject constructor(
-    @param:ApplicationContext val applicationContext: Context,
+    @param:ApplicationContext val context: Context,
     @param:Named(DISPATCHER_IO) val dispatcher: CoroutineDispatcher
 ) {
     @OptIn(ExperimentalTime::class)
@@ -21,16 +21,12 @@ class FetchAppRuns @Inject constructor(
         withContext(dispatcher) {
             try {
                 val uri = "content://$authority/appRuns?afterId=$lastKnownId".toUri()
-                val cursor = applicationContext.contentResolver.query(
+                val cursor = context.contentResolver.query(
                     uri,
-                    /* projection = */
-                    null,
-                    /* selection = */
-                    null,
-                    /* selectionArgs = */
-                    null,
-                    /* sortOrder = */
-                    null
+                    /* projection = */ null,
+                    /* selection = */ null,
+                    /* selectionArgs = */ null,
+                    /* sortOrder = */ null
                 )
                 cursor?.use { cursor ->
                     buildList {
