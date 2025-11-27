@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
 import com.zuhlke.logging.viewer.data.AppRun
-import com.zuhlke.logging.viewer.data.ExportedAppRunWithLogs
 import com.zuhlke.logging.viewer.data.LogEntry
-import com.zuhlke.logging.viewer.data.snapshot
+import com.zuhlke.logging.viewer.export.model.AppRunWithLogsSnapshot
+import com.zuhlke.logging.viewer.export.model.snapshot
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import javax.inject.Inject
@@ -25,7 +25,7 @@ class Exporter @Inject constructor(@param:ApplicationContext val applicationCont
                 .filter { it.value.isNotEmpty() }
 
         val toExport = logsByAppRun.map { (appRun, logs) ->
-            ExportedAppRunWithLogs(
+            AppRunWithLogsSnapshot(
                 info = appRun.snapshot,
                 logEntries = logs.map {
                     // TODO: Make subsystem configurable
@@ -39,12 +39,9 @@ class Exporter @Inject constructor(@param:ApplicationContext val applicationCont
             .resolve("log-${Clock.System.now()}.json")
             .also { it.writeText(json) }
         return FileProvider.getUriForFile(
-            /* context = */
-            applicationContext,
-            /* authority = */
-            "com.zuhlke.logging.viewer.fileprovider",
-            /* file = */
-            exportFile
+            /* context = */ applicationContext,
+            /* authority = */ "com.zuhlke.logging.viewer.fileprovider",
+            /* file = */ exportFile
         )
     }
 }
