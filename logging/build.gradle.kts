@@ -57,7 +57,7 @@ dependencies {
 }
 
 group = "io.github.zuhlke"
-version = "0.4.1"
+version = "0.5.0"
 
 mavenPublishing {
     publishToMavenCentral()
