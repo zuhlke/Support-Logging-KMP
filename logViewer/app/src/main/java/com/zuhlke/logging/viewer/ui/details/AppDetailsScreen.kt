@@ -36,10 +36,10 @@ import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.data.AppRun
-import com.zuhlke.logging.viewer.data.AppRunWithLogs
-import com.zuhlke.logging.viewer.data.LogEntry
-import com.zuhlke.logging.viewer.data.Severity
+import com.zuhlke.logging.viewer.data.model.AppRun
+import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
+import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.model.Severity
 import com.zuhlke.logging.viewer.ui.details.widgets.AppRunsView
 import com.zuhlke.logging.viewer.ui.details.widgets.TopAppBarWithTitle
 import com.zuhlke.logging.viewer.ui.theme.LogsViewerTheme

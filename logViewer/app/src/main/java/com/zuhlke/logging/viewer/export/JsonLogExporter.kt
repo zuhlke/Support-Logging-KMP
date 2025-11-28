@@ -3,8 +3,8 @@ package com.zuhlke.logging.viewer.export
 import android.content.Context
 import android.net.Uri
 import androidx.core.content.FileProvider
-import com.zuhlke.logging.viewer.data.AppRun
-import com.zuhlke.logging.viewer.data.LogEntry
+import com.zuhlke.logging.viewer.data.model.AppRun
+import com.zuhlke.logging.viewer.data.model.LogEntry
 import com.zuhlke.logging.viewer.export.model.AppRunWithLogsSnapshot
 import com.zuhlke.logging.viewer.export.model.snapshot
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -14,12 +14,14 @@ import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlinx.serialization.json.Json
 
-class Exporter @Inject constructor(@param:ApplicationContext val applicationContext: Context) {
+class JsonLogExporter @Inject constructor(
+    @param:ApplicationContext val applicationContext: Context
+) : LogExporter {
 
     private val json = Json { prettyPrint = true }
 
     @OptIn(ExperimentalTime::class)
-    fun exportToTempFile(appRuns: List<AppRun>, logs: List<LogEntry>): Uri {
+    override fun exportToShareableFile(appRuns: List<AppRun>, logs: List<LogEntry>): Uri {
         val logsByAppRun =
             appRuns.associateWith { appRun -> logs.filter { it.appRunId == appRun.id } }
                 .filter { it.value.isNotEmpty() }
@@ -34,10 +36,10 @@ class Exporter @Inject constructor(@param:ApplicationContext val applicationCont
             )
         }
 
-        val json = json.encodeToString(toExport)
+        val jsonText = json.encodeToString(toExport)
         val exportFile = File(applicationContext.cacheDir, "exports").apply { mkdir() }
             .resolve("log-${Clock.System.now()}.json")
-            .also { it.writeText(json) }
+            .also { it.writeText(jsonText) }
         return FileProvider.getUriForFile(
             /* context = */ applicationContext,
             /* authority = */ "com.zuhlke.logging.viewer.fileprovider",

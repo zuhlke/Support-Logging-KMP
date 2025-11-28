@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.data.AppRunWithLogs
-import com.zuhlke.logging.viewer.data.LogEntry
-import com.zuhlke.logging.viewer.data.Severity
+import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
+import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.model.Severity
 
 @Composable
 fun AppRunsView(

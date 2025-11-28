@@ -1,4 +1,4 @@
-package com.zuhlke.logging.viewer.data
+package com.zuhlke.logging.viewer.data.contentprovider
 
 import android.content.Context
 import android.content.pm.PackageManager

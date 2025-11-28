@@ -4,16 +4,16 @@ import android.net.Uri
 import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.zuhlke.logging.viewer.data.AppRunWithLogs
-import com.zuhlke.logging.viewer.data.LogEntry
-import com.zuhlke.logging.viewer.data.LogRepository
-import com.zuhlke.logging.viewer.data.Severity
-import com.zuhlke.logging.viewer.export.Exporter
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
+import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.model.Severity
+import com.zuhlke.logging.viewer.data.repository.AppRunsWithLogsRepository
+import com.zuhlke.logging.viewer.export.LogExporter
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -29,16 +29,13 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@HiltViewModel(assistedFactory = AppDetailsViewModel.Factory::class)
-class AppDetailsViewModel @AssistedInject constructor(
-    @Assisted val authority: String,
-    @Assisted defaultSearchState: SearchState,
-    logRepositoryFactory: LogRepository.Factory,
-    private val exporter: Exporter
+class AppDetailsViewModel(
+    defaultSearchState: SearchState,
+    private val repository: AppRunsWithLogsRepository,
+    private val logExporter: LogExporter
 ) : ViewModel() {
 
-    private lateinit var collectionJob: Job
-    private val logRepository = logRepositoryFactory.create(authority)
+    private var collectionJob: Job? = null
     private val logs = MutableStateFlow<List<AppRunWithLogs>>(emptyList())
     private val _selectedSeverities = MutableStateFlow(defaultSearchState.severities)
     val selectedSeverities: StateFlow<Set<Severity>> = _selectedSeverities
@@ -110,7 +107,7 @@ class AppDetailsViewModel @AssistedInject constructor(
         if (initialised) return
         initialised = true
         collectionJob = viewModelScope.launch {
-            logRepository.getLogs().collect { appRuns ->
+            repository.getLogs().collect { appRuns ->
                 logs.value = appRuns.filter { runWithLogs -> runWithLogs.logEntries.isNotEmpty() }
 
                 val tags = logs.value.flatMap { it.logEntries.map { entry -> entry.tag } }.toSet()
@@ -123,21 +120,37 @@ class AppDetailsViewModel @AssistedInject constructor(
     fun export(logEntries: List<LogEntry>) {
         viewModelScope.launch {
             val allAppRuns = logs.value.map { it.appRun }
-            val fileUri = exporter.exportToTempFile(allAppRuns, logEntries)
+            val fileUri = logExporter.exportToShareableFile(allAppRuns, logEntries)
             _exportReady.emit(fileUri)
         }
     }
 
     override fun onCleared() {
         super.onCleared()
-        collectionJob.cancel()
+        collectionJob?.cancel()
         Log.d("AppDetailsViewModel", "onCleared")
     }
 
-    @AssistedFactory
-    interface Factory {
-        fun create(authority: String, defaultSearchState: SearchState): AppDetailsViewModel
-    }
-
     data class UiState(val appRunsWithLogs: List<AppRunWithLogs>, val searchTerm: String)
+
+    companion object {
+        val KEY_APP_RUNS_WITH_LOGS_REPOSITORY =
+            object : CreationExtras.Key<AppRunsWithLogsRepository> {}
+        val KEY_SEARCH_STATE = object : CreationExtras.Key<SearchState> {}
+        val KEY_LOG_EXPORTER = object : CreationExtras.Key<LogExporter> {}
+
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val searchState = this[KEY_SEARCH_STATE] as SearchState
+                val repository =
+                    this[KEY_APP_RUNS_WITH_LOGS_REPOSITORY] as AppRunsWithLogsRepository
+                val logExporter = this[KEY_LOG_EXPORTER] as LogExporter
+                AppDetailsViewModel(
+                    defaultSearchState = searchState,
+                    repository = repository,
+                    logExporter = logExporter
+                )
+            }
+        }
+    }
 }

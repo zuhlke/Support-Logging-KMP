@@ -1,6 +1,10 @@
-package com.zuhlke.logging.viewer.data
+package com.zuhlke.logging.viewer.data.contentprovider
 
 import android.util.Log
+import com.zuhlke.logging.viewer.data.model.AppRun
+import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
+import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.repository.AppRunsWithLogsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -8,15 +12,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class LogRepository @AssistedInject constructor(
+class ContentProviderAppRunsWithLogsRepository @AssistedInject constructor(
     @Assisted val authority: String,
     private val fetchLogs: FetchLogs,
     private val fetchAppRuns: FetchAppRuns
-) {
+) : AppRunsWithLogsRepository {
     private val allRuns = mutableListOf<AppRun>()
     private val allLogs = mutableListOf<LogEntry>()
 
-    fun getLogs(): Flow<List<AppRunWithLogs>> = flow {
+    override fun getLogs(): Flow<List<AppRunWithLogs>> = flow {
         var lastKnownAppRunId = 0
         var lastKnownLogId = 0
 
@@ -49,6 +53,6 @@ class LogRepository @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(authority: String): LogRepository
+        fun create(authority: String): ContentProviderAppRunsWithLogsRepository
     }
 }

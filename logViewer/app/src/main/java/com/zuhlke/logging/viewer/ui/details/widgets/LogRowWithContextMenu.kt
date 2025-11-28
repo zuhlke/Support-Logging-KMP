@@ -46,8 +46,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.data.LogEntry
-import com.zuhlke.logging.viewer.data.Severity
+import com.zuhlke.logging.viewer.data.model.LogEntry
+import com.zuhlke.logging.viewer.data.model.Severity
 import com.zuhlke.logging.viewer.ui.utils.timeFormatter
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.launch

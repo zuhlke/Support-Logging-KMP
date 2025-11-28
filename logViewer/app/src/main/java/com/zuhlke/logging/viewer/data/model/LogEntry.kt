@@ -1,4 +1,4 @@
-package com.zuhlke.logging.viewer.data
+package com.zuhlke.logging.viewer.data.model
 
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
