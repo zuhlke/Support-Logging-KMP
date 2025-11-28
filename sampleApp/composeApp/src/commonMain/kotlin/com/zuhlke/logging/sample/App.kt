@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zuhlke.logging.SafeLogger
-import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.hash
 import com.zuhlke.logging.integrations.kermit.toKermitSeverity
 import com.zuhlke.logging.public

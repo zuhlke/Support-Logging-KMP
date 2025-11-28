@@ -36,6 +36,13 @@ sqlite = "2.6.1"
 terpal = "2.2.20-2.0.1.PL"
 uiautomator = "2.3.0"
 runner = "1.7.0"
+junitVersion = "4.13.2"
+espressoCore = "3.7.0"
+appcompat = "1.7.1"
+material = "1.10.0"
+jetbrainsKotlinJvm = "2.2.20"
+kotlinStdlib = "2.2.20"
+core = "1.7.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -79,6 +86,12 @@ androidx-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomato
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmarkMacroJunit4" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+junit = { group = "junit", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+androidx-core = { group = "androidx.test", name = "core", version.ref = "core" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -98,3 +111,6 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 room = { id = "androidx.room", version.ref = "room" }
 terpal = { id = "io.exoquery.terpal-plugin", version.ref = "terpal" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+jetbrainsKotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrainsKotlinJvm" }
+androidLint = { id = "com.android.lint", version.ref = "agp" }

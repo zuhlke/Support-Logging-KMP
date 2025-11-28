@@ -1,6 +1,6 @@
 package com.zuhlke.logging
 
-import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import kotlin.time.Instant
 
 internal interface LogWriter {

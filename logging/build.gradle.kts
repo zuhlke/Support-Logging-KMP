@@ -21,6 +21,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.terpal.runtime)
+            api(project(":logging-core"))
             implementation(libs.kermit)
             implementation(libs.coroutines.core)
         }

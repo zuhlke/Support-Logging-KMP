@@ -1,8 +1,8 @@
 package com.zuhlke.logging.viewer.ui.utils
 
 import androidx.annotation.StringRes
+import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.data.model.Severity
 
 @get:StringRes
 val Severity.stringResource: Int

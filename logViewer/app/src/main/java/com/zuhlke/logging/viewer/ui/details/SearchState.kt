@@ -1,6 +1,6 @@
 package com.zuhlke.logging.viewer.ui.details
 
-import com.zuhlke.logging.viewer.data.model.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import kotlinx.serialization.Serializable
 
 @Serializable
