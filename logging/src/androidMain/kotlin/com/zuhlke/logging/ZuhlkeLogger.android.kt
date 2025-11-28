@@ -2,7 +2,7 @@ package com.zuhlke.logging
 
 import android.app.Application
 import android.content.pm.ApplicationInfo
-import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.di.AndroidLoggingLibraryFactory
 import com.zuhlke.logging.integrations.kermit.KermitLogWriter
 import com.zuhlke.logging.integrations.room.RoomLogWriter

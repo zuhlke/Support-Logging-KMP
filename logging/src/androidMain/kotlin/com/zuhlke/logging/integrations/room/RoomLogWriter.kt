@@ -1,7 +1,7 @@
 package com.zuhlke.logging.integrations.room
 
 import com.zuhlke.logging.LogWriter
-import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.integrations.room.data.AppRun
 import com.zuhlke.logging.integrations.room.data.Log
 import com.zuhlke.logging.integrations.room.data.LogDao

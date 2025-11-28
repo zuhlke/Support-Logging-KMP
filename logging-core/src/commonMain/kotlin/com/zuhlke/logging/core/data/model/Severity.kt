@@ -1,4 +1,4 @@
-package com.zuhlke.logging.data
+package com.zuhlke.logging.core.data.model
 
 /**
  * Represents the severity level of a log message.

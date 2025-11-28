@@ -1,6 +1,6 @@
 package com.zuhlke.logging
 
-import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.interpolation.SafeInterpolation
 import com.zuhlke.logging.utils.fakes.LogDispatcherFake
 import com.zuhlke.logging.utils.fixtures.runMetadataFixture

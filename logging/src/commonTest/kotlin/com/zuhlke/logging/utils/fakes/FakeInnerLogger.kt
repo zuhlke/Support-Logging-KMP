@@ -2,8 +2,8 @@ package com.zuhlke.logging.utils.fakes
 
 import com.zuhlke.logging.InnerLoggerInterface
 import com.zuhlke.logging.SafeString
+import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.data.RunMetadata
-import com.zuhlke.logging.data.Severity
 
 internal class FakeInnerLogger : InnerLoggerInterface {
 

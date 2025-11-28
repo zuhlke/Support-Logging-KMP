@@ -1,6 +1,6 @@
 package com.zuhlke.logging
 
-import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.utils.fakes.ClockFake
 import com.zuhlke.logging.utils.fakes.LogWriterFake
 import com.zuhlke.logging.utils.fixtures.nowFixture

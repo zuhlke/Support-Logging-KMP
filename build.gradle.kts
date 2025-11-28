@@ -18,6 +18,7 @@ plugins {
     alias(libs.plugins.baselineProfile) apply false
     alias(libs.plugins.kotlinSerialization) apply false
     alias(libs.plugins.kotlinAndroid) apply false
+    alias(libs.plugins.androidLint) apply false
 }
 
 subprojects {

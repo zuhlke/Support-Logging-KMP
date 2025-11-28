@@ -21,6 +21,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(libs.terpal.runtime)
+            api(project(":logging-core"))
             implementation(libs.kermit)
             implementation(libs.coroutines.core)
         }
@@ -56,7 +57,7 @@ dependencies {
 }
 
 group = "io.github.zuhlke"
-version = "0.4.1"
+version = "0.5.0"
 
 mavenPublishing {
     publishToMavenCentral()

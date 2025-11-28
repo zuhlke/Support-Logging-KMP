@@ -2,7 +2,7 @@ package com.zuhlke.logging.integrations.room.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 

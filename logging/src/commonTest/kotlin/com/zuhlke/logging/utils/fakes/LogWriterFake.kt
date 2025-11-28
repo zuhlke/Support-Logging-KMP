@@ -1,7 +1,7 @@
 package com.zuhlke.logging.utils.fakes
 
 import com.zuhlke.logging.LogWriter
-import com.zuhlke.logging.data.Severity
+import com.zuhlke.logging.core.data.model.Severity
 import kotlin.time.Instant
 
 internal class LogWriterFake : LogWriter {
