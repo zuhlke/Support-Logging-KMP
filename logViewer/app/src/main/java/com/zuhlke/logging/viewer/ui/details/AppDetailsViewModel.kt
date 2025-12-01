@@ -3,11 +3,14 @@ package com.zuhlke.logging.viewer.ui.details
 import android.net.Uri
 import android.util.Log
 import androidx.annotation.MainThread
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.MutableCreationExtras
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.zuhlke.logging.core.data.model.AppRunWithLogs
@@ -15,7 +18,6 @@ import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
 import com.zuhlke.logging.viewer.export.LogExporter
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -29,6 +31,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.time.ExperimentalTime
 
 class AppDetailsViewModel(
     defaultSearchState: SearchState,
@@ -164,4 +167,23 @@ class AppDetailsViewModel(
             set(KEY_LOG_EXPORTER, logExporter)
         }
     }
+}
+
+@Composable
+fun AppDetailsViewModel.Companion.get(
+    searchState: SearchState,
+    repository: AppRunsWithLogsRepository,
+    logExporter: LogExporter
+): AppDetailsViewModel {
+    val extras = remember(searchState, repository, logExporter) {
+        createFactoryExtras(
+            searchState = searchState,
+            repository = repository,
+            logExporter = logExporter
+        )
+    }
+    return viewModel(
+        factory = Factory,
+        extras = extras
+    )
 }
