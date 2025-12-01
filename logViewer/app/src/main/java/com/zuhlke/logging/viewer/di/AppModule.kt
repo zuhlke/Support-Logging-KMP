@@ -1,8 +1,11 @@
 package com.zuhlke.logging.viewer.di
 
 import android.content.Context
-import com.zuhlke.logging.viewer.export.JsonLogExporter
-import com.zuhlke.logging.viewer.export.LogExporter
+import com.zuhlke.logger.logviewer.core.export.AndroidShareService
+import com.zuhlke.logger.logviewer.core.export.JsonLogConverter
+import com.zuhlke.logger.logviewer.core.export.KotlinSerializationJsonLogConverter
+import com.zuhlke.logger.logviewer.core.export.LogExporter
+import com.zuhlke.logger.logviewer.core.export.ShareService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,7 +15,17 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 @Module
 object AppModule {
+
     @Provides
-    fun provideLogExporter(@ApplicationContext context: Context): LogExporter =
-        JsonLogExporter(context)
+    fun provideJsonLogConverter(): JsonLogConverter = KotlinSerializationJsonLogConverter()
+
+    @Provides
+    fun shareService(@ApplicationContext context: Context): ShareService =
+        AndroidShareService(context)
+
+    @Provides
+    fun provideLogExporter(
+        jsonLogConverter: JsonLogConverter,
+        shareService: ShareService
+    ): LogExporter = LogExporter(jsonLogConverter, shareService)
 }

@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.zuhlke.logger.logviewer.core.ui.widgets.CheckboxRow
 import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.ui.details.widgets.CheckboxRow
 import com.zuhlke.logging.viewer.ui.theme.LogsViewerTheme
 
 @Composable

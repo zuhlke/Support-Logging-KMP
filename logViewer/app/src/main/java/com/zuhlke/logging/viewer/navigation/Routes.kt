@@ -1,8 +1,8 @@
 package com.zuhlke.logging.viewer.navigation
 
 import androidx.navigation3.runtime.NavKey
-import com.zuhlke.logging.viewer.ui.details.SearchState
-import com.zuhlke.logging.viewer.ui.tags.TagFilterState
+import com.zuhlke.logger.logviewer.core.ui.SearchState
+import com.zuhlke.logger.logviewer.core.ui.TagFilterState
 import kotlinx.serialization.Serializable
 
 @Serializable

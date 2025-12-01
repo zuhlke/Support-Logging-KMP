@@ -2,6 +2,7 @@ package com.zuhlke.logging.viewer.ui.tags
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zuhlke.logger.logviewer.core.ui.TagFilterState
 import com.zuhlke.logging.viewer.ui.tags.TagViewModel.UiState
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -14,10 +15,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-
-@Serializable
-data class TagFilterState(val selectedTags: Set<String>, val allTags: Set<String>)
 
 @HiltViewModel(assistedFactory = TagViewModel.Factory::class)
 class TagViewModel @AssistedInject constructor(@Assisted tagFilterState: TagFilterState) :
