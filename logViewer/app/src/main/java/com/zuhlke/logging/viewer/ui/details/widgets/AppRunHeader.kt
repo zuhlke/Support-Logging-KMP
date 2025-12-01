@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.zuhlke.logging.core.data.model.AppRun
 import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.data.model.AppRun
 import com.zuhlke.logging.viewer.ui.utils.dateTimeFormatter
 import kotlin.time.ExperimentalTime
 import kotlinx.datetime.format

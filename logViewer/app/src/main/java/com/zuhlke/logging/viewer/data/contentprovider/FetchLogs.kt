@@ -5,8 +5,8 @@ import android.database.Cursor
 import android.util.Log
 import androidx.core.database.getStringOrNull
 import androidx.core.net.toUri
+import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
-import com.zuhlke.logging.viewer.data.model.LogEntry
 import com.zuhlke.logging.viewer.di.DISPATCHER_IO
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

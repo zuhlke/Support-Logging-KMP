@@ -45,9 +45,9 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.data.model.LogEntry
 import com.zuhlke.logging.viewer.ui.utils.timeFormatter
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.launch
@@ -79,15 +79,10 @@ fun LogRowWithContextMenu(
 
     val (iconChar, iconTextColor, iconBackgroundColor) = when (entry.severity) {
         Severity.Verbose -> Triple('V', Color.Black, Color(214, 214, 214))
-
         Severity.Debug -> Triple('D', Color.Black, Color(201, 230, 254))
-
         Severity.Info -> Triple('I', Color.Black, Color(215, 245, 220))
-
         Severity.Warn -> Triple('W', Color.Black, Color(243, 234, 194))
-
         Severity.Error -> Triple('E', Color.White, Color.Red.copy(alpha = 0.6f))
-
         Severity.Assert -> Triple('A', Color.White, Color.Red)
     }
     val matchResults = highlightsRegex.findAll(messageText)
