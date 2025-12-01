@@ -22,7 +22,6 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
@@ -101,14 +100,11 @@ fun Navigation(
                         metadata = ListDetailSceneStrategy.detailPane()
                     ) {
                         Log.d("Navigation", "inside RouteSearch")
-                        val extras = MutableCreationExtras().apply {
-                            set(AppDetailsViewModel.KEY_SEARCH_STATE, key.searchState)
-                            set(
-                                AppDetailsViewModel.KEY_APP_RUNS_WITH_LOGS_REPOSITORY,
-                                appRunsWithLogsRepository.create(authority = key.authority)
-                            )
-                            set(AppDetailsViewModel.KEY_LOG_EXPORTER, logExporter)
-                        }
+                        val extras = AppDetailsViewModel.createFactoryExtras(
+                            searchState = key.searchState,
+                            repository = appRunsWithLogsRepository.create(key.authority),
+                            logExporter = logExporter
+                        )
                         val viewModel: AppDetailsViewModel = viewModel(
                             factory = AppDetailsViewModel.Factory,
                             extras = extras
@@ -134,14 +130,11 @@ fun Navigation(
                         metadata = ListDetailSceneStrategy.detailPane()
                     ) {
                         Log.d("Navigation", "inside RouteAppDetails")
-                        val extras = MutableCreationExtras().apply {
-                            set(AppDetailsViewModel.KEY_SEARCH_STATE, SearchState())
-                            set(
-                                AppDetailsViewModel.KEY_APP_RUNS_WITH_LOGS_REPOSITORY,
-                                appRunsWithLogsRepository.create(authority = key.authority)
-                            )
-                            set(AppDetailsViewModel.KEY_LOG_EXPORTER, logExporter)
-                        }
+                        val extras = AppDetailsViewModel.createFactoryExtras(
+                            searchState = SearchState(),
+                            repository = appRunsWithLogsRepository.create(key.authority),
+                            logExporter = logExporter
+                        )
                         val viewModel: AppDetailsViewModel = viewModel(
                             factory = AppDetailsViewModel.Factory,
                             extras = extras
