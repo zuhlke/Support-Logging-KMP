@@ -53,6 +53,7 @@ fun SearchScreen(
         viewModel.init()
     }
 
+    ShareFileOnExportReady(viewModel.exportReady)
     val appRuns by viewModel.filteredAppRuns.collectAsStateWithLifecycle()
     val selectedSeverities by viewModel.selectedSeverities.collectAsStateWithLifecycle()
     val uniqueTags by viewModel.uniqueTags.collectAsStateWithLifecycle()
