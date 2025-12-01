@@ -22,7 +22,6 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
@@ -30,15 +29,16 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
+import com.zuhlke.logger.logviewer.core.ui.AppDetailsViewModel
+import com.zuhlke.logger.logviewer.core.ui.SearchState
+import com.zuhlke.logger.logviewer.core.export.LogExporter
+import com.zuhlke.logger.logviewer.core.ui.get
 import com.zuhlke.logging.viewer.data.contentprovider.ContentProviderAppRunsWithLogsRepository
-import com.zuhlke.logging.viewer.export.LogExporter
 import com.zuhlke.logging.viewer.navigation.results.LocalResultEventBus
 import com.zuhlke.logging.viewer.navigation.results.ResultEffect
 import com.zuhlke.logging.viewer.navigation.results.ResultEventBus
-import com.zuhlke.logging.viewer.ui.details.AppDetailsScreen
-import com.zuhlke.logging.viewer.ui.details.AppDetailsViewModel
-import com.zuhlke.logging.viewer.ui.details.SearchScreen
-import com.zuhlke.logging.viewer.ui.details.SearchState
+import com.zuhlke.logger.logviewer.core.ui.AppDetailsScreen
+import com.zuhlke.logger.logviewer.core.ui.SearchScreen
 import com.zuhlke.logging.viewer.ui.list.AppListScreen
 import com.zuhlke.logging.viewer.ui.tags.TagFilterScreen
 import com.zuhlke.logging.viewer.ui.tags.TagViewModel
@@ -100,16 +100,11 @@ fun Navigation(
                         metadata = ListDetailSceneStrategy.detailPane()
                     ) {
                         Log.d("Navigation", "inside RouteSearch")
-                        val extras = AppDetailsViewModel.createFactoryExtras(
+                        val viewModel = AppDetailsViewModel.get(
                             searchState = key.searchState,
                             repository = appRunsWithLogsRepository.create(key.authority),
                             logExporter = logExporter
                         )
-                        val viewModel: AppDetailsViewModel = viewModel(
-                            factory = AppDetailsViewModel.Factory,
-                            extras = extras
-                        )
-
                         ResultEffect<Set<String>>(resultKey = "tags") { result ->
                             Log.d("Navigation", "ResultEffect result = $result")
                             viewModel.setTags(result)
@@ -130,14 +125,10 @@ fun Navigation(
                         metadata = ListDetailSceneStrategy.detailPane()
                     ) {
                         Log.d("Navigation", "inside RouteAppDetails")
-                        val extras = AppDetailsViewModel.createFactoryExtras(
+                        val viewModel = AppDetailsViewModel.get(
                             searchState = SearchState(),
                             repository = appRunsWithLogsRepository.create(key.authority),
                             logExporter = logExporter
-                        )
-                        val viewModel: AppDetailsViewModel = viewModel(
-                            factory = AppDetailsViewModel.Factory,
-                            extras = extras
                         )
 
                         AppDetailsScreen(
