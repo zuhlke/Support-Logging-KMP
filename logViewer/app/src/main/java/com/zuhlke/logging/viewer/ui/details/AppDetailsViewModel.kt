@@ -9,10 +9,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.zuhlke.logging.core.data.model.AppRunWithLogs
+import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
-import com.zuhlke.logging.viewer.data.model.AppRunWithLogs
-import com.zuhlke.logging.viewer.data.model.LogEntry
-import com.zuhlke.logging.viewer.data.repository.AppRunsWithLogsRepository
+import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
 import com.zuhlke.logging.viewer.export.LogExporter
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi

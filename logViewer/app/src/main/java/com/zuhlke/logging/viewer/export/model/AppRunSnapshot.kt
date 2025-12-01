@@ -1,6 +1,6 @@
 package com.zuhlke.logging.viewer.export.model
 
-import com.zuhlke.logging.viewer.data.model.AppRun
+import com.zuhlke.logging.core.data.model.AppRun
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.serialization.Serializable
