@@ -3,7 +3,6 @@ package com.zuhlke.logging.core.data.model
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
-@OptIn(ExperimentalTime::class)
 /**
  * Represents a single log entry in the application.
  *
@@ -15,6 +14,7 @@ import kotlin.time.Instant
  * @property throwable An optional [Throwable] associated with the log entry.
  * @property appRunId The identifier of the app run to which this log entry belongs.
  */
+@OptIn(ExperimentalTime::class)
 public data class LogEntry(
     val id: Int,
     val timestamp: Instant,

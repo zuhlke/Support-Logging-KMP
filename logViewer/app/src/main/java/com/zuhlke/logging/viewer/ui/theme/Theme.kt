@@ -46,6 +46,7 @@ fun LogsViewerTheme(
         }
 
         darkTheme -> DarkColorScheme
+
         else -> LightColorScheme
     }
 

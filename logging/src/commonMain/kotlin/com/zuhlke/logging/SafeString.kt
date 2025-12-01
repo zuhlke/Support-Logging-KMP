@@ -13,16 +13,15 @@ public class SafeString internal constructor(
     internal val params: List<Any>
 ) // TODO: rename? What about PrivacyString? Ask iOS team
 
-@InterpolatorFunction<SafeStringInterpolator>(SafeStringInterpolator::class)
 /**
  * Creates a [SafeString] from a string literal. All interpolated variable values can be
  * redacted in logs unless explicitly marked otherwise. **If you pass an already evaluated
  * [String], redaction will not happen.** Use [public] and [hash] to mark variables
  * that can be revealed or hashed in logs.
  */
-public fun safeString(
-    @Suppress("unused") string: String
-): SafeString = Messages.throwPluginNotExecuted()
+@InterpolatorFunction<SafeStringInterpolator>(SafeStringInterpolator::class)
+public fun safeString(@Suppress("unused") string: String): SafeString =
+    Messages.throwPluginNotExecuted()
 
 internal object SafeStringInterpolator : Interpolator<Any, SafeString> {
     override fun interpolate(parts: () -> List<String>, params: () -> List<Any>): SafeString =

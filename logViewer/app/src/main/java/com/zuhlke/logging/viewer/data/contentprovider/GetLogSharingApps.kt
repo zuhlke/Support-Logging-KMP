@@ -20,11 +20,9 @@ class GetLogSharingApps @Inject constructor(
                         ?: return@mapNotNull null
                 val info = packageInfo.applicationInfo
                 LogSharingApp(
-                    name =
-                    info?.let {
+                    name = info?.let {
                         applicationContext.packageManager.getApplicationLabel(it).toString()
-                    }
-                        ?: packageInfo.packageName,
+                    } ?: packageInfo.packageName,
                     packageName = packageInfo.packageName,
                     authority = logProvider
                 )

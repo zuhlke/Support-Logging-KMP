@@ -25,7 +25,7 @@ subprojects {
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-        version.set("1.7.1")
+        version.set("1.8.0")
         verbose.set(true)
         filter {
             exclude { it.file.path.contains("build/") }
