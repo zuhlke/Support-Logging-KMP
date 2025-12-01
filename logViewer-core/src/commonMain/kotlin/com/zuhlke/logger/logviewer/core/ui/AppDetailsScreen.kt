@@ -32,6 +32,7 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.zuhlke.logger.logviewer.core.export.ShareableFile
 import com.zuhlke.logger.logviewer.core.ui.theme.LogViewerTheme
 import com.zuhlke.logger.logviewer.core.ui.widgets.AppRunsView
 import com.zuhlke.logger.logviewer.core.ui.widgets.TopAppBarWithTitle
@@ -41,6 +42,7 @@ import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlinx.coroutines.flow.SharedFlow
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import supportloggingkmp.logviewer_core.generated.resources.Res
@@ -57,6 +59,8 @@ fun AppDetailsScreen(
     }
 
     val appRuns by viewModel.filteredAppRuns.collectAsStateWithLifecycle()
+
+    ShareFileOnExportReady(viewModel.exportReady)
 
     AppDetailsScreen(
         appRuns = appRuns.appRunsWithLogs,
@@ -293,3 +297,6 @@ fun AppDetailsPreview() {
         )
     }
 }
+
+@Composable
+expect fun ShareFileOnExportReady(exportReady: SharedFlow<ShareableFile>)

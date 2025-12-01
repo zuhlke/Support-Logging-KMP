@@ -12,6 +12,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.zuhlke.logger.logviewer.core.export.LogExporter
+import com.zuhlke.logger.logviewer.core.export.ShareableFile
 import com.zuhlke.logging.core.data.model.AppRunWithLogs
 import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
@@ -21,7 +22,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -46,6 +49,9 @@ class AppDetailsViewModel(
 
     @OptIn(FlowPreview::class)
     private val searchTermDebounce: Flow<String> = searchTerm.debounce(200)
+
+    private val _exportReady = MutableSharedFlow<ShareableFile>()
+    val exportReady: SharedFlow<ShareableFile> = _exportReady
 
     // TODO: shall we expose tags and severities here too instead of having separate public properties for them?
     val filteredAppRuns: StateFlow<UiState> = combine(
@@ -117,7 +123,8 @@ class AppDetailsViewModel(
     fun export(logEntries: List<LogEntry>) {
         viewModelScope.launch {
             val allAppRuns = logs.value.map { it.appRun }
-            logExporter.exportAndShare(allAppRuns, logEntries)
+            val readyFile = logExporter.exportAndShare(allAppRuns, logEntries)
+            _exportReady.emit(readyFile)
         }
     }
 
