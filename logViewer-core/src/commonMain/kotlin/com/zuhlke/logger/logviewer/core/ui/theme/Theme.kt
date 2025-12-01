@@ -29,10 +29,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun LogViewerTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
+fun LogViewerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colorScheme = when {
         darkTheme -> DarkColorScheme
         else -> LightColorScheme

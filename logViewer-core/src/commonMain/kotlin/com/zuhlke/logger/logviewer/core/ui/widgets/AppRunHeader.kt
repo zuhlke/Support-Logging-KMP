@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.zuhlke.logger.logviewer.core.ui.utils.dateTimeFormatter
 import com.zuhlke.logging.core.data.model.AppRun
+import kotlin.time.ExperimentalTime
 import kotlinx.datetime.format
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -36,7 +37,6 @@ import supportloggingkmp.logviewer_core.generated.resources.export
 import supportloggingkmp.logviewer_core.generated.resources.ic_info
 import supportloggingkmp.logviewer_core.generated.resources.ic_share
 import supportloggingkmp.logviewer_core.generated.resources.see_app_run_details
-import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Composable
@@ -97,7 +97,9 @@ fun AppRunHeader(appRun: AppRun, onExport: () -> Unit, modifier: Modifier = Modi
                     onClick = { /* no-op */ }
                 )
                 DropdownMenuItem(
-                    text = { Text(stringResource(Res.string.app_run_os_version, appRun.osVersion)) },
+                    text = {
+                        Text(stringResource(Res.string.app_run_os_version, appRun.osVersion))
+                    },
                     enabled = false,
                     onClick = { /* no-op */ }
                 )

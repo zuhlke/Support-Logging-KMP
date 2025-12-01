@@ -15,7 +15,6 @@ class KotlinSerializationJsonLogConverter : JsonLogConverter {
             appRuns.associateWith { appRun -> logs.filter { it.appRunId == appRun.id } }
                 .filter { it.value.isNotEmpty() }
 
-
         val toExport = logsByAppRun.map { (appRun, logs) ->
             AppRunWithLogsSnapshot(
                 info = appRun.snapshot,

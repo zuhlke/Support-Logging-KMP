@@ -45,6 +45,7 @@ import com.zuhlke.logger.logviewer.core.ui.utils.timeFormatter
 import com.zuhlke.logger.logviewer.core.utils.toClipEntry
 import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.launch
 import kotlinx.datetime.format
 import org.jetbrains.compose.resources.painterResource
@@ -52,7 +53,6 @@ import org.jetbrains.compose.resources.stringResource
 import supportloggingkmp.logviewer_core.generated.resources.Res
 import supportloggingkmp.logviewer_core.generated.resources.ic_tag
 import supportloggingkmp.logviewer_core.generated.resources.open_context_menu
-import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 @Composable

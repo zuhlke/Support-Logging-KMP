@@ -39,12 +39,12 @@ import com.zuhlke.logging.core.data.model.AppRun
 import com.zuhlke.logging.core.data.model.AppRunWithLogs
 import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import supportloggingkmp.logviewer_core.generated.resources.Res
 import supportloggingkmp.logviewer_core.generated.resources.search
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @Composable
 fun AppDetailsScreen(
