@@ -8,7 +8,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
-public class AndroidRoomLogWriter(context: Context): LogWriter {
+public class AndroidRoomLogWriter(context: Context) : LogWriter {
     private val applicationContext = context.applicationContext
 
     internal val logDatabase: LogDatabase by lazy {

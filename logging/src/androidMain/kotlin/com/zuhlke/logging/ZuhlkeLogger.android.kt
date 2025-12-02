@@ -39,7 +39,7 @@ public actual object ZuhlkeLogger {
         val writerDispatcher = DelegatingLogDispatcher(
             Clock.System,
             logWriters = listOf(
-                KermitLogWriter(subsystem = application.packageName),
+                KermitLogWriter(subsystem = application.packageName)
             ) + logWriters
         )
         InnerLogger.init(

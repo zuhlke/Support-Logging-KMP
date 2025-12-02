@@ -12,18 +12,18 @@ import platform.Foundation.NSUserDomainMask
 internal fun getDatabaseBuilder(): RoomDatabase.Builder<LogDatabase> {
     val dbFilePath = documentDirectory() + "/" + LOG_DB_FILENAME
     return Room.databaseBuilder<LogDatabase>(
-        name = dbFilePath,
+        name = dbFilePath
     )
 }
 
 @OptIn(ExperimentalForeignApi::class)
 private fun documentDirectory(): String {
-  val documentDirectory = NSFileManager.defaultManager.URLForDirectory(
-    directory = NSDocumentDirectory,
-    inDomain = NSUserDomainMask,
-    appropriateForURL = null,
-    create = false,
-    error = null,
-  )
-  return requireNotNull(documentDirectory?.path)
+    val documentDirectory = NSFileManager.defaultManager.URLForDirectory(
+        directory = NSDocumentDirectory,
+        inDomain = NSUserDomainMask,
+        appropriateForURL = null,
+        create = false,
+        error = null
+    )
+    return requireNotNull(documentDirectory?.path)
 }

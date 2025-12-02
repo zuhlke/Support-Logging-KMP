@@ -1,10 +1,10 @@
 package com.zuhlke.logging.integration.room
 
+import com.zuhlke.logging.core.LogWriter
 import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.integration.room.data.AppRun
 import com.zuhlke.logging.integration.room.data.Log
 import com.zuhlke.logging.integration.room.data.LogDao
-import com.zuhlke.logging.core.LogWriter
 import kotlin.properties.Delegates
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant

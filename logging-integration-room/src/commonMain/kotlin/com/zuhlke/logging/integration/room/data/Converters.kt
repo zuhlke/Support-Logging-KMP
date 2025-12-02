@@ -7,8 +7,7 @@ import kotlin.time.Instant
 @OptIn(ExperimentalTime::class)
 internal class Converters {
     @TypeConverter
-    fun fromTimestamp(value: Long?): Instant? =
-        value?.let { Instant.fromEpochMilliseconds(it) }
+    fun fromTimestamp(value: Long?): Instant? = value?.let { Instant.fromEpochMilliseconds(it) }
 
     @TypeConverter
     fun dateToTimestamp(date: Instant?): Long? = date?.toEpochMilliseconds()

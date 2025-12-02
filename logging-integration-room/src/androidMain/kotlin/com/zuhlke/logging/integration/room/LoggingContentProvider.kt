@@ -7,9 +7,9 @@ import android.database.MatrixCursor
 import android.net.Uri
 import android.util.Log
 import com.zuhlke.logging.integration.room.data.LogDao
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import kotlin.time.ExperimentalTime
 
 internal class LoggingContentProvider : ContentProvider() {
 
