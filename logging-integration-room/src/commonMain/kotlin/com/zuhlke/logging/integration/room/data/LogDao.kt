@@ -21,4 +21,10 @@ internal interface LogDao {
 
     @Query("SELECT * FROM apprun WHERE id > :id")
     fun getAppRunsAfter(id: Int): Flow<List<AppRun>>
+
+    @Query("SELECT * FROM apprun")
+    fun getAllAppRuns(): Flow<List<AppRun>>
+
+    @Query("SELECT * FROM log")
+    fun getAllLogs(): Flow<List<Log>>
 }

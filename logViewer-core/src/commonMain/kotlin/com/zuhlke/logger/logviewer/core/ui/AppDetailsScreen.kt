@@ -52,7 +52,8 @@ import supportloggingkmp.logviewer_core.generated.resources.search
 fun AppDetailsScreen(
     viewModel: AppDetailsViewModel,
     onSearch: (SearchState) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LaunchedEffect(Unit) {
         viewModel.init()
@@ -67,7 +68,8 @@ fun AppDetailsScreen(
         searchTerm = appRuns.searchTerm,
         onExportRequested = viewModel::export,
         onSearch = onSearch,
-        onBack = onBack
+        onBack = onBack,
+        modifier = modifier
     )
 }
 
@@ -78,10 +80,12 @@ private fun AppDetailsScreen(
     searchTerm: String,
     onExportRequested: (List<LogEntry>) -> Unit,
     onSearch: (SearchState) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val textFieldState = rememberTextFieldState()
     AppDetailsScreen(
+        modifier = modifier,
         title = {
             SimpleSearchBar(
                 textFieldState,
@@ -112,7 +116,8 @@ private fun AppDetailsScreen(
     onExportRequested: (List<LogEntry>) -> Unit,
     onSeveritySelected: (Severity) -> Unit,
     onTagSelected: (String) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var showLevel by rememberSaveable { mutableStateOf(true) }
     var showTimestamp by rememberSaveable { mutableStateOf(true) }
@@ -121,7 +126,7 @@ private fun AppDetailsScreen(
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopAppBarWithTitle(
                 title = title,

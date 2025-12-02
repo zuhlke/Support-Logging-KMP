@@ -3,6 +3,7 @@ package com.zuhlke.logging.viewer.di
 import android.content.Context
 import com.zuhlke.logger.logviewer.core.export.AndroidShareService
 import com.zuhlke.logger.logviewer.core.export.JsonLogConverter
+import com.zuhlke.logger.logviewer.core.export.JsonLogExporter
 import com.zuhlke.logger.logviewer.core.export.KotlinSerializationJsonLogConverter
 import com.zuhlke.logger.logviewer.core.export.LogExporter
 import com.zuhlke.logger.logviewer.core.export.ShareService
@@ -27,5 +28,5 @@ object AppModule {
     fun provideLogExporter(
         jsonLogConverter: JsonLogConverter,
         shareService: ShareService
-    ): LogExporter = LogExporter(jsonLogConverter, shareService)
+    ): LogExporter = JsonLogExporter(jsonLogConverter, shareService)
 }

@@ -34,6 +34,7 @@ kotlin {
         commonMain.dependencies {
             implementation(project(":logging"))
             implementation(project(":logging-integration-room"))
+            implementation(project(":logViewer-core"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

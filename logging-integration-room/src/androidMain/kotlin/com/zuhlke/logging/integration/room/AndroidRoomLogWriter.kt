@@ -3,7 +3,9 @@ package com.zuhlke.logging.integration.room
 import android.content.Context
 import com.zuhlke.logging.core.LogWriter
 import com.zuhlke.logging.core.data.model.Severity
+import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
 import com.zuhlke.logging.integration.room.data.LogDatabase
+import com.zuhlke.logging.integration.room.repository.RoomAppRunWithLogsRepository
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -15,8 +17,16 @@ public class AndroidRoomLogWriter(context: Context) : LogWriter {
         createLogRoomDatabase(applicationContext)
     }
 
+    private val dao by lazy {
+        logDatabase.logDao()
+    }
+
     private val roomLogWriter: LogWriter by lazy {
-        RoomLogWriter(logDatabase.logDao())
+        RoomLogWriter(dao)
+    }
+
+    public val repository: AppRunsWithLogsRepository by lazy {
+        RoomAppRunWithLogsRepository(dao)
     }
 
     override suspend fun writeAppRun(

@@ -8,8 +8,15 @@ import kotlinx.coroutines.withContext
 
 typealias UriString = String
 
-class LogExporter(private val converter: JsonLogConverter, private val shareService: ShareService) {
-    suspend fun exportAndShare(appRuns: List<AppRun>, logs: List<LogEntry>): ShareableFile =
+interface LogExporter {
+    suspend fun exportAndShare(appRuns: List<AppRun>, logs: List<LogEntry>): ShareableFile
+}
+
+class JsonLogExporter(
+    private val converter: JsonLogConverter,
+    private val shareService: ShareService
+) : LogExporter {
+    override suspend fun exportAndShare(appRuns: List<AppRun>, logs: List<LogEntry>): ShareableFile =
         withContext(Dispatchers.IO) {
             val json = converter.convertToJson(appRuns, logs)
             shareService.prepareToShare(json)
