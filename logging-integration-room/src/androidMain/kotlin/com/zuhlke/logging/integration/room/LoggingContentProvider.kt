@@ -1,4 +1,4 @@
-package com.zuhlke.logging
+package com.zuhlke.logging.integration.room
 
 import android.content.ContentProvider
 import android.content.ContentValues
@@ -6,8 +6,9 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.net.Uri
 import android.util.Log
-import com.zuhlke.logging.di.AndroidLoggingLibraryFactory
-import com.zuhlke.logging.integrations.room.data.LogDao
+import com.zuhlke.logging.integration.room.data.LogDao
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlin.time.ExperimentalTime
 
 internal class LoggingContentProvider : ContentProvider() {
@@ -26,9 +27,9 @@ internal class LoggingContentProvider : ContentProvider() {
             return false
         }
 
-        val factory = AndroidLoggingLibraryFactory.get(applicationContext)
+        val androidRoomLogWriter = AndroidRoomLogWriter(applicationContext)
 
-        logDao = factory.logRoomDatabase.logDao()
+        logDao = androidRoomLogWriter.logDatabase.logDao()
         return true
     }
 
@@ -54,7 +55,7 @@ internal class LoggingContentProvider : ContentProvider() {
         val afterId = uri.getQueryParameter("afterId")?.toIntOrNull() ?: -1
         return when (uri.lastPathSegment) {
             LOGS_PATH -> {
-                val logs = logDao.getLogsAfter(afterId)
+                val logs = runBlocking { logDao.getLogsAfter(afterId).first() }
                 Log.d("LoggingContentProvider", "Found logs: ${logs.size}")
                 val cursor = MatrixCursor(
                     arrayOf(
@@ -84,7 +85,7 @@ internal class LoggingContentProvider : ContentProvider() {
             }
 
             APP_RUNS_PATH -> {
-                val appRuns = logDao.getAppRunsAfter(afterId)
+                val appRuns = runBlocking { logDao.getAppRunsAfter(afterId).first() }
                 Log.d("LoggingContentProvider", "Found appRuns: ${appRuns.size}")
                 val cursor = MatrixCursor(
                     arrayOf("id", "launchDate", "appVersion", "operatingSystemVersion", "device")

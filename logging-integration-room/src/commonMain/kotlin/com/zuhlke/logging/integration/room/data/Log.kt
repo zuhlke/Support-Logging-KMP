@@ -1,4 +1,4 @@
-package com.zuhlke.logging.integrations.room.data
+package com.zuhlke.logging.integration.room.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

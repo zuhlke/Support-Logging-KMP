@@ -2,10 +2,10 @@ package com.zuhlke.logging
 
 import android.app.Application
 import android.content.pm.ApplicationInfo
+import com.zuhlke.logging.core.LogWriter
 import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.di.AndroidLoggingLibraryFactory
 import com.zuhlke.logging.integrations.kermit.KermitLogWriter
-import com.zuhlke.logging.integrations.room.RoomLogWriter
 import com.zuhlke.logging.interpolation.SafeInterpolation
 import com.zuhlke.logging.interpolation.UnsafeInterpolation
 import kotlin.system.exitProcess
@@ -26,7 +26,8 @@ public actual object ZuhlkeLogger {
         application: Application,
         useSafeInterpolation: Boolean = application.applicationInfo.flags and
             ApplicationInfo.FLAG_DEBUGGABLE == 0,
-        setUncaughtExceptionHandler: Boolean = true
+        setUncaughtExceptionHandler: Boolean = true,
+        vararg logWriters: LogWriter
     ) {
         val interpolationConfiguration = if (useSafeInterpolation) {
             SafeInterpolation
@@ -34,14 +35,12 @@ public actual object ZuhlkeLogger {
             UnsafeInterpolation
         }
         val factory = AndroidLoggingLibraryFactory.get(application)
-        val logDao = factory.logRoomDatabase.logDao()
 
         val writerDispatcher = DelegatingLogDispatcher(
             Clock.System,
             logWriters = listOf(
                 KermitLogWriter(subsystem = application.packageName),
-                RoomLogWriter(logDao)
-            )
+            ) + logWriters
         )
         InnerLogger.init(
             writerDispatcher,

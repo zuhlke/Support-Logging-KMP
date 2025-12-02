@@ -32,7 +32,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
-            api(project(":logging"))
+            implementation(project(":logging"))
+            implementation(project(":logging-integration-room"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

@@ -1,9 +1,11 @@
-package com.zuhlke.logging.integrations.room.data
+package com.zuhlke.logging.integration.room.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Entity
 internal class AppRun(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,

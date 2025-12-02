@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <permission
+        android:name="com.zuhlke.logging.permission.READ_LOGS"
+        android:label="Read Logs Permission"
+        android:protectionLevel="signature" />
+
+    <application>
+        <provider
+            android:name=".LoggingContentProvider"
+            android:authorities="${applicationId}.logging"
+            android:exported="true"
+            android:readPermission="com.zuhlke.logging.permission.READ_LOGS">
+            <meta-data
+                android:name="com.zuhlke.logging.LOGS_PROVIDER"
+                android:value="${applicationId}.logging" />
+        </provider>
+    </application>
+</manifest>

@@ -1,4 +1,4 @@
-package com.zuhlke.logging.integrations.room.data
+package com.zuhlke.logging.integration.room.data
 
 import androidx.room.TypeConverter
 import kotlin.time.ExperimentalTime
@@ -8,7 +8,7 @@ import kotlin.time.Instant
 internal class Converters {
     @TypeConverter
     fun fromTimestamp(value: Long?): Instant? =
-        value?.let { Instant.Companion.fromEpochMilliseconds(it) }
+        value?.let { Instant.fromEpochMilliseconds(it) }
 
     @TypeConverter
     fun dateToTimestamp(date: Instant?): Long? = date?.toEpochMilliseconds()
