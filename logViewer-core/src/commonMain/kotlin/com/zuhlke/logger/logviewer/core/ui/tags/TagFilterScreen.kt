@@ -1,4 +1,4 @@
-package com.zuhlke.logging.viewer.ui.tags
+package com.zuhlke.logger.logviewer.core.ui.tags
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,16 +13,34 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.zuhlke.logger.logviewer.core.ui.TagFilterState
+import com.zuhlke.logger.logviewer.core.ui.theme.LogViewerTheme
 import com.zuhlke.logger.logviewer.core.ui.widgets.CheckboxRow
-import com.zuhlke.logging.viewer.R
-import com.zuhlke.logging.viewer.ui.theme.LogsViewerTheme
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import supportloggingkmp.logviewer_core.generated.resources.Res
+import supportloggingkmp.logviewer_core.generated.resources.close
+import supportloggingkmp.logviewer_core.generated.resources.filter_tags
+import supportloggingkmp.logviewer_core.generated.resources.ic_close
 
 @Composable
-fun TagFilterScreen(
+public fun TagFilterScreen(
+    tagFilterState: TagFilterState,
+    onTagsSelectionChanged: (Set<String>) -> Unit,
+    onBack: () -> Unit
+) {
+    val viewModel = TagViewModel.get(tagFilterState)
+    TagFilterScreen(
+        viewModel = viewModel,
+        onTagsSelectionChanged = onTagsSelectionChanged,
+        onBack = onBack
+    )
+}
+
+@Composable
+internal fun TagFilterScreen(
     viewModel: TagViewModel,
     onTagsSelectionChanged: (Set<String>) -> Unit,
     onBack: () -> Unit
@@ -51,13 +69,13 @@ private fun TagFilterScreenContent(
             navigationIcon = {
                 IconButton(onClick = onBack) {
                     Icon(
-                        painterResource(R.drawable.ic_close),
-                        contentDescription = stringResource(R.string.close)
+                        painterResource(Res.drawable.ic_close),
+                        contentDescription = stringResource(Res.string.close)
                     )
                 }
             },
             title = {
-                Text(text = stringResource(R.string.filter_tags))
+                Text(text = stringResource(Res.string.filter_tags))
             }
         )
     }) { paddingValues ->
@@ -73,8 +91,8 @@ private fun TagFilterScreenContent(
 
 @Preview
 @Composable
-fun TagScreenPreview() {
-    LogsViewerTheme {
+private fun TagScreenPreview() {
+    LogViewerTheme {
         TagFilterScreenContent(
             onBack = {},
             tags = listOf(

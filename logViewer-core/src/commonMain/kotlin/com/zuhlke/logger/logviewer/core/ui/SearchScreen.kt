@@ -35,6 +35,7 @@ import com.zuhlke.logger.logviewer.core.ui.widgets.TopAppBarWithTitle
 import com.zuhlke.logging.core.data.model.AppRunWithLogs
 import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
+import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import supportloggingkmp.logviewer_core.generated.resources.Res
@@ -42,6 +43,24 @@ import supportloggingkmp.logviewer_core.generated.resources.filter_severity
 import supportloggingkmp.logviewer_core.generated.resources.filter_tags
 import supportloggingkmp.logviewer_core.generated.resources.ic_arrow_drop_down
 import supportloggingkmp.logviewer_core.generated.resources.search
+
+@Composable
+public fun SearchScreen(
+    repository: AppRunsWithLogsRepository,
+    onTagSelectorRequested: (TagFilterState) -> Unit,
+    onBack: () -> Unit
+) {
+    val viewModel = AppDetailsViewModel.get(
+        searchState = SearchState(),
+        repository = repository,
+        logExporter = platformLogExporter()
+    )
+    SearchScreen(
+        viewModel = viewModel,
+        onTagSelectorRequested = onTagSelectorRequested,
+        onBack = onBack
+    )
+}
 
 @Composable
 internal fun SearchScreen(

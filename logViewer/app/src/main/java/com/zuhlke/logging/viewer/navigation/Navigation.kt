@@ -21,7 +21,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
@@ -29,26 +28,20 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
-import com.zuhlke.logger.logviewer.core.export.LogExporter
 import com.zuhlke.logger.logviewer.core.ui.AppDetailsScreen
-import com.zuhlke.logger.logviewer.core.ui.AppDetailsViewModel
 import com.zuhlke.logger.logviewer.core.ui.SearchScreen
-import com.zuhlke.logger.logviewer.core.ui.SearchState
-import com.zuhlke.logger.logviewer.core.ui.get
+import com.zuhlke.logger.logviewer.core.ui.TagFilterState
+import com.zuhlke.logger.logviewer.core.ui.tags.TagFilterScreen
 import com.zuhlke.logging.viewer.data.contentprovider.ContentProviderAppRunsWithLogsRepository
 import com.zuhlke.logging.viewer.navigation.results.LocalResultEventBus
-import com.zuhlke.logging.viewer.navigation.results.ResultEffect
 import com.zuhlke.logging.viewer.navigation.results.ResultEventBus
 import com.zuhlke.logging.viewer.ui.list.AppListScreen
-import com.zuhlke.logging.viewer.ui.tags.TagFilterScreen
-import com.zuhlke.logging.viewer.ui.tags.TagViewModel
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
 @Composable
 fun Navigation(
     modifier: Modifier,
-    appRunsWithLogsRepository: ContentProviderAppRunsWithLogsRepository.Factory,
-    logExporter: LogExporter
+    appRunsWithLogsRepositoryFactory: ContentProviderAppRunsWithLogsRepository.Factory
 ) {
     val backStack = rememberNavBackStack(RouteAppList)
 
@@ -100,18 +93,14 @@ fun Navigation(
                         metadata = ListDetailSceneStrategy.detailPane()
                     ) {
                         Log.d("Navigation", "inside RouteSearch")
-                        val viewModel = AppDetailsViewModel.get(
-                            searchState = key.searchState,
-                            repository = appRunsWithLogsRepository.create(key.authority),
-                            logExporter = logExporter
-                        )
-                        ResultEffect<Set<String>>(resultKey = "tags") { result ->
-                            Log.d("Navigation", "ResultEffect result = $result")
-                            viewModel.setTags(result)
-                        }
+                        // TODO: the code here is broken
+//                        ResultEffect<Set<String>>(resultKey = "tags") { result ->
+//                            Log.d("Navigation", "ResultEffect result = $result")
+//                            viewModel.setTags(result)
+//                        }
                         SearchScreen(
-                            viewModel,
-                            onTagSelectorRequested = { tagsState ->
+                            appRunsWithLogsRepositoryFactory.create(key.authority),
+                            onTagSelectorRequested = { tagsState: TagFilterState ->
                                 backStack.add(RouteTagFilter(tagsState))
                             },
                             onBack = {
@@ -125,14 +114,8 @@ fun Navigation(
                         metadata = ListDetailSceneStrategy.detailPane()
                     ) {
                         Log.d("Navigation", "inside RouteAppDetails")
-                        val viewModel = AppDetailsViewModel.get(
-                            searchState = SearchState(),
-                            repository = appRunsWithLogsRepository.create(key.authority),
-                            logExporter = logExporter
-                        )
-
                         AppDetailsScreen(
-                            viewModel,
+                            appRunsWithLogsRepositoryFactory.create(key.authority),
                             onSearch = { searchState ->
                                 backStack.add(RouteSearch(key.authority, searchState))
                             },
@@ -152,13 +135,8 @@ fun Navigation(
                         )
                     ) {
                         Log.d("Navigation", "inside RouteAppDetails")
-                        val viewModel = hiltViewModel<TagViewModel, TagViewModel.Factory>(
-                            creationCallback = { factory ->
-                                factory.create(key.tagFilterState)
-                            }
-                        )
                         TagFilterScreen(
-                            viewModel,
+                            key.tagFilterState,
                             onTagsSelectionChanged = {
                                 resultBus.sendResult<Set<String>>(result = it, resultKey = "tags")
                             },
