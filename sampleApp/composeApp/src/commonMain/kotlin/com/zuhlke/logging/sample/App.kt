@@ -33,8 +33,8 @@ import com.zuhlke.logging.hash
 import com.zuhlke.logging.integrations.kermit.toKermitSeverity
 import com.zuhlke.logging.public
 import com.zuhlke.logging.safeString
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.random.Random
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 typealias KermitLogger = co.touchlab.kermit.Logger
 
@@ -45,14 +45,18 @@ fun App(repository: AppRunsWithLogsRepository) {
     val loggerWithDifferentTag = remember { SafeLogger("SampleApp2") }
     var counter by remember { mutableIntStateOf(0) }
     val viewModel =
-        AppDetailsViewModel.get(SearchState(), repository, logExporter = object : LogExporter {
-            override suspend fun exportAndShare(
-                appRuns: List<AppRun>,
-                logs: List<LogEntry>
-            ): ShareableFile {
-                TODO("Not yet implemented")
+        AppDetailsViewModel.get(
+            SearchState(),
+            repository,
+            logExporter = object : LogExporter {
+                override suspend fun exportAndShare(
+                    appRuns: List<AppRun>,
+                    logs: List<LogEntry>
+                ): ShareableFile {
+                    TODO("Not yet implemented")
+                }
             }
-        })
+        )
 
     fun addFakeLogs(severity: Severity, throwable: Throwable? = null) {
         counter += 1

@@ -81,7 +81,7 @@ private fun AppDetailsScreen(
     onExportRequested: (List<LogEntry>) -> Unit,
     onSearch: (SearchState) -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     val textFieldState = rememberTextFieldState()
     AppDetailsScreen(
@@ -117,7 +117,7 @@ private fun AppDetailsScreen(
     onSeveritySelected: (Severity) -> Unit,
     onTagSelected: (String) -> Unit,
     onBack: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     var showLevel by rememberSaveable { mutableStateOf(true) }
     var showTimestamp by rememberSaveable { mutableStateOf(true) }

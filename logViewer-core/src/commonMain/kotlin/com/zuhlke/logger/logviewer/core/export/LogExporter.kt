@@ -16,9 +16,11 @@ class JsonLogExporter(
     private val converter: JsonLogConverter,
     private val shareService: ShareService
 ) : LogExporter {
-    override suspend fun exportAndShare(appRuns: List<AppRun>, logs: List<LogEntry>): ShareableFile =
-        withContext(Dispatchers.IO) {
-            val json = converter.convertToJson(appRuns, logs)
-            shareService.prepareToShare(json)
-        }
+    override suspend fun exportAndShare(
+        appRuns: List<AppRun>,
+        logs: List<LogEntry>
+    ): ShareableFile = withContext(Dispatchers.IO) {
+        val json = converter.convertToJson(appRuns, logs)
+        shareService.prepareToShare(json)
+    }
 }
