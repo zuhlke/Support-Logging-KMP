@@ -6,13 +6,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
 
-typealias UriString = String
+internal typealias UriString = String
 
-interface LogExporter {
+internal interface LogExporter {
     suspend fun exportAndShare(appRuns: List<AppRun>, logs: List<LogEntry>): ShareableFile
 }
 
-class JsonLogExporter(
+internal class JsonLogExporter(
     private val converter: JsonLogConverter,
     private val shareService: ShareService
 ) : LogExporter {

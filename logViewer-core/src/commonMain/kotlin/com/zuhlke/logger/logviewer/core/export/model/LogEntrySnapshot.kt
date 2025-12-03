@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @OptIn(ExperimentalTime::class)
-data class LogEntrySnapshot(
+internal data class LogEntrySnapshot(
     val date: Instant,
     val level: String,
     val subsystem: String,
@@ -19,7 +19,7 @@ data class LogEntrySnapshot(
 )
 
 @OptIn(ExperimentalTime::class)
-fun LogEntry.snapshot(subsystem: String): LogEntrySnapshot = LogEntrySnapshot(
+internal fun LogEntry.snapshot(subsystem: String): LogEntrySnapshot = LogEntrySnapshot(
     date = timestamp,
     level = severity.toIosCompatibleString(),
     subsystem = subsystem,
@@ -29,7 +29,7 @@ fun LogEntry.snapshot(subsystem: String): LogEntrySnapshot = LogEntrySnapshot(
     composedMessage = if (throwable != null) "$message\n$throwable" else message
 )
 
-fun Severity.toIosCompatibleString(): String = when (this) {
+internal fun Severity.toIosCompatibleString(): String = when (this) {
     Severity.Verbose -> "verbose"
     Severity.Debug -> "debug"
     Severity.Info -> "info"

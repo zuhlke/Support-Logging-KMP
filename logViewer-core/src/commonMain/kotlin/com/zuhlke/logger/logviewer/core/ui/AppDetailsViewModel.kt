@@ -11,6 +11,8 @@ import androidx.lifecycle.viewmodel.MutableCreationExtras
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.zuhlke.logger.logviewer.core.export.JsonLogExporter
+import com.zuhlke.logger.logviewer.core.export.KotlinSerializationJsonLogConverter
 import com.zuhlke.logger.logviewer.core.export.LogExporter
 import com.zuhlke.logger.logviewer.core.export.ShareableFile
 import com.zuhlke.logging.core.data.model.AppRunWithLogs
@@ -32,7 +34,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class AppDetailsViewModel(
+internal class AppDetailsViewModel(
     defaultSearchState: SearchState,
     private val repository: AppRunsWithLogsRepository,
     private val logExporter: LogExporter
@@ -169,7 +171,7 @@ class AppDetailsViewModel(
 }
 
 @Composable
-fun AppDetailsViewModel.Companion.get(
+internal fun AppDetailsViewModel.Companion.get(
     searchState: SearchState,
     repository: AppRunsWithLogsRepository,
     logExporter: LogExporter

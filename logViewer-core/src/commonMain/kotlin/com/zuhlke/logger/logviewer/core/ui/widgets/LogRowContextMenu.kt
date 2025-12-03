@@ -25,7 +25,7 @@ import supportloggingkmp.logviewer_core.generated.resources.ic_visibility
 import supportloggingkmp.logviewer_core.generated.resources.show_similar_items
 
 @Composable
-fun LogRowContextMenu(
+internal fun LogRowContextMenu(
     expanded: Boolean,
     onCopyToClipboard: () -> Unit,
     onExport: () -> Unit,

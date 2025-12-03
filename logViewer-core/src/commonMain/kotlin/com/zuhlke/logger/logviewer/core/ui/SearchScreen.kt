@@ -44,7 +44,7 @@ import supportloggingkmp.logviewer_core.generated.resources.ic_arrow_drop_down
 import supportloggingkmp.logviewer_core.generated.resources.search
 
 @Composable
-fun SearchScreen(
+internal fun SearchScreen(
     viewModel: AppDetailsViewModel,
     onTagSelectorRequested: (TagFilterState) -> Unit,
     onBack: () -> Unit
@@ -249,7 +249,7 @@ private fun SearchScreen(
 }
 
 @Composable
-fun getTagChipText(selectedTags: Set<String>): String = if (selectedTags.isEmpty()) {
+internal fun getTagChipText(selectedTags: Set<String>): String = if (selectedTags.isEmpty()) {
     stringResource(Res.string.filter_tags)
 } else {
     selectedTags.minOf { it } + if (selectedTags.size > 1) {

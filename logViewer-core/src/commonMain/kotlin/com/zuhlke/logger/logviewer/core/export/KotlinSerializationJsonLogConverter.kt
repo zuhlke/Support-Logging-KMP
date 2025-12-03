@@ -6,9 +6,9 @@ import com.zuhlke.logging.core.data.model.AppRun
 import com.zuhlke.logging.core.data.model.LogEntry
 import kotlinx.serialization.json.Json
 
-class KotlinSerializationJsonLogConverter : JsonLogConverter {
+internal class KotlinSerializationJsonLogConverter : JsonLogConverter {
 
-    val json = Json { prettyPrint = true }
+    private val json = Json { prettyPrint = true }
 
     override fun convertToJson(appRuns: List<AppRun>, logs: List<LogEntry>): String {
         val logsByAppRun =

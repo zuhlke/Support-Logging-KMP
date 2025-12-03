@@ -40,7 +40,7 @@ import supportloggingkmp.logviewer_core.generated.resources.see_app_run_details
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun AppRunHeader(appRun: AppRun, onExport: () -> Unit, modifier: Modifier = Modifier) {
+internal fun AppRunHeader(appRun: AppRun, onExport: () -> Unit, modifier: Modifier = Modifier) {
     var expanded by rememberSaveable { mutableStateOf(false) }
     Row(
         modifier = modifier

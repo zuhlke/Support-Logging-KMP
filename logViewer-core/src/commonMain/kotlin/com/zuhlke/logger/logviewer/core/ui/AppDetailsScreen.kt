@@ -32,6 +32,7 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.zuhlke.logger.logviewer.core.export.LogExporter
 import com.zuhlke.logger.logviewer.core.export.ShareableFile
 import com.zuhlke.logger.logviewer.core.ui.theme.LogViewerTheme
 import com.zuhlke.logger.logviewer.core.ui.widgets.AppRunsView
@@ -40,16 +41,35 @@ import com.zuhlke.logging.core.data.model.AppRun
 import com.zuhlke.logging.core.data.model.AppRunWithLogs
 import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
+import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
 import kotlinx.coroutines.flow.SharedFlow
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import supportloggingkmp.logviewer_core.generated.resources.Res
 import supportloggingkmp.logviewer_core.generated.resources.search
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Composable
-fun AppDetailsScreen(
+public fun AppDetailsScreen(
+    repository: AppRunsWithLogsRepository,
+    onSearch: (SearchState) -> Unit,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val viewModel = AppDetailsViewModel.get(
+        searchState = SearchState(),
+        repository = repository,
+        logExporter = platformLogExporter()
+    )
+    AppDetailsScreen(viewModel, onSearch, onBack, modifier)
+}
+
+@Composable
+internal expect fun platformLogExporter(): LogExporter
+
+@Composable
+private fun AppDetailsScreen(
     viewModel: AppDetailsViewModel,
     onSearch: (SearchState) -> Unit,
     onBack: () -> Unit,
@@ -172,7 +192,7 @@ private fun AppDetailsScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SimpleSearchBar(
+internal fun SimpleSearchBar(
     textFieldState: TextFieldState,
     onSearch: () -> Unit,
     searchResults: List<String>,
@@ -221,7 +241,7 @@ fun SimpleSearchBar(
 
 @Preview
 @Composable
-fun AppDetailsPreview() {
+internal fun AppDetailsPreview() {
     LogViewerTheme {
         AppDetailsScreen(
             onBack = {},
@@ -251,10 +271,10 @@ fun AppDetailsPreview() {
                             timestamp = Instant.parse("2023-10-01T12:34:56Z"),
                             severity = Severity.Debug,
                             message = "This is a sample log message. Very long message to test " +
-                                "wrapping and see how it looks in the UI. This should be " +
-                                "truncated if not expanded. Let's add even more text to " +
-                                "ensure it exceeds two lines in the display. And even more " +
-                                "text to be sure!",
+                                    "wrapping and see how it looks in the UI. This should be " +
+                                    "truncated if not expanded. Let's add even more text to " +
+                                    "ensure it exceeds two lines in the display. And even more " +
+                                    "text to be sure!",
                             tag = "SampleTag",
                             throwable = "java.lang.Exception: Sample exception",
                             appRunId = 1
@@ -304,4 +324,4 @@ fun AppDetailsPreview() {
 }
 
 @Composable
-expect fun ShareFileOnExportReady(exportReady: SharedFlow<ShareableFile>)
+internal expect fun ShareFileOnExportReady(exportReady: SharedFlow<ShareableFile>)

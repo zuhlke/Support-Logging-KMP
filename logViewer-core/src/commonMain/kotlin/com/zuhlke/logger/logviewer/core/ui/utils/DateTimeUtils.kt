@@ -4,7 +4,7 @@ import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.format.DateTimeComponents
 import kotlinx.datetime.format.char
 
-val dateTimeFormatter = DateTimeComponents.Format {
+internal val dateTimeFormatter = DateTimeComponents.Format {
     day()
     char('/')
     monthNumber()
@@ -19,7 +19,7 @@ val dateTimeFormatter = DateTimeComponents.Format {
     offset(UtcOffset.Formats.FOUR_DIGITS)
 }
 
-val timeFormatter = DateTimeComponents.Format {
+internal val timeFormatter = DateTimeComponents.Format {
     hour()
     char(':')
     minute()

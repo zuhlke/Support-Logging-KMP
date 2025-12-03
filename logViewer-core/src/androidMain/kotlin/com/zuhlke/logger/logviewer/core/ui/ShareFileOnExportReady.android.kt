@@ -9,7 +9,7 @@ import com.zuhlke.logger.logviewer.core.export.startShare
 import kotlinx.coroutines.flow.SharedFlow
 
 @Composable
-actual fun ShareFileOnExportReady(exportReady: SharedFlow<ShareableFile>) {
+internal actual fun ShareFileOnExportReady(exportReady: SharedFlow<ShareableFile>) {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         exportReady.collect { shareableFile ->
