@@ -42,13 +42,13 @@ import com.zuhlke.logging.core.data.model.AppRunWithLogs
 import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.SharedFlow
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import supportloggingkmp.logviewer_core.generated.resources.Res
 import supportloggingkmp.logviewer_core.generated.resources.search
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 @Composable
 public fun AppDetailsScreen(
@@ -271,10 +271,10 @@ internal fun AppDetailsPreview() {
                             timestamp = Instant.parse("2023-10-01T12:34:56Z"),
                             severity = Severity.Debug,
                             message = "This is a sample log message. Very long message to test " +
-                                    "wrapping and see how it looks in the UI. This should be " +
-                                    "truncated if not expanded. Let's add even more text to " +
-                                    "ensure it exceeds two lines in the display. And even more " +
-                                    "text to be sure!",
+                                "wrapping and see how it looks in the UI. This should be " +
+                                "truncated if not expanded. Let's add even more text to " +
+                                "ensure it exceeds two lines in the display. And even more " +
+                                "text to be sure!",
                             tag = "SampleTag",
                             throwable = "java.lang.Exception: Sample exception",
                             appRunId = 1

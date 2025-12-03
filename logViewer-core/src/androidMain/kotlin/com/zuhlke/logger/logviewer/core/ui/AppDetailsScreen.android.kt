@@ -8,9 +8,7 @@ import com.zuhlke.logger.logviewer.core.export.KotlinSerializationJsonLogConvert
 import com.zuhlke.logger.logviewer.core.export.LogExporter
 
 @Composable
-internal actual fun platformLogExporter(): LogExporter {
-    return JsonLogExporter(
-        converter = KotlinSerializationJsonLogConverter(),
-        shareService = AndroidShareService(LocalContext.current)
-    )
-}
+internal actual fun platformLogExporter(): LogExporter = JsonLogExporter(
+    converter = KotlinSerializationJsonLogConverter(),
+    shareService = AndroidShareService(LocalContext.current)
+)
