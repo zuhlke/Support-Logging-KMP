@@ -28,6 +28,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import com.zuhlke.logger.logviewer.core.ui.utils.stringResource
 import com.zuhlke.logger.logviewer.core.ui.widgets.AppRunsView
 import com.zuhlke.logger.logviewer.core.ui.widgets.SeverityModalBottomSheet
@@ -47,6 +48,7 @@ import supportloggingkmp.logviewer_core.generated.resources.search
 @Composable
 public fun SearchScreen(
     repository: AppRunsWithLogsRepository,
+    tags: Set<String>,
     onTagSelectorRequested: (TagFilterState) -> Unit,
     onBack: () -> Unit
 ) {
@@ -55,6 +57,9 @@ public fun SearchScreen(
         repository = repository,
         logExporter = platformLogExporter()
     )
+    LaunchedEffect(tags) {
+        viewModel.setTags(tags)
+    }
     SearchScreen(
         viewModel = viewModel,
         onTagSelectorRequested = onTagSelectorRequested,

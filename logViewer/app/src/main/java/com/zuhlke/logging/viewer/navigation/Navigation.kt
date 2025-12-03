@@ -12,7 +12,6 @@ import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,8 +32,7 @@ import com.zuhlke.logger.logviewer.core.ui.SearchScreen
 import com.zuhlke.logger.logviewer.core.ui.TagFilterState
 import com.zuhlke.logger.logviewer.core.ui.tags.TagFilterScreen
 import com.zuhlke.logging.viewer.data.contentprovider.ContentProviderAppRunsWithLogsRepository
-import com.zuhlke.logging.viewer.navigation.results.LocalResultEventBus
-import com.zuhlke.logging.viewer.navigation.results.ResultEventBus
+import com.zuhlke.logging.viewer.navigation.results.rememberResultStore
 import com.zuhlke.logging.viewer.ui.list.AppListScreen
 
 @OptIn(ExperimentalMaterial3AdaptiveApi::class)
@@ -55,102 +53,98 @@ fun Navigation(
     }
     val listDetailStrategy = rememberListDetailSceneStrategy<NavKey>(directive = directive)
 
-    val resultBus = remember { ResultEventBus() }
-    CompositionLocalProvider(LocalResultEventBus.provides(resultBus)) {
-        NavDisplay(
-            backStack = backStack,
-            sceneStrategy = dialogStrategy then listDetailStrategy,
-            modifier = modifier.semantics {
-                // Allows to use testTag() for UiAutomator resource-id.
-                testTagsAsResourceId = true
-            },
-            entryDecorators = listOf(
-                rememberSaveableStateHolderNavEntryDecorator(),
-                rememberViewModelStoreNavEntryDecorator()
-            ),
-            onBack = { backStack.removeLastOrNull() },
-            entryProvider = { key ->
-                when (key) {
-                    is RouteAppList -> NavEntry(
-                        key,
-                        metadata = ListDetailSceneStrategy.listPane(
-                            detailPlaceholder = {
-                                Placeholder(
-                                    modifier = Modifier,
-                                    "Choose a run from the list"
-                                )
-                            }
-                        )
-                    ) {
-                        Log.d("Navigation", "inside RouteAppList")
-                        AppListScreen(onAppClick = { authority ->
-                            backStack.add(RouteAppDetails(authority))
-                        })
-                    }
+    val resultStore = rememberResultStore()
 
-                    is RouteSearch -> NavEntry(
-                        key,
-                        metadata = ListDetailSceneStrategy.detailPane()
-                    ) {
-                        Log.d("Navigation", "inside RouteSearch")
-                        // TODO: the code here is broken
-//                        ResultEffect<Set<String>>(resultKey = "tags") { result ->
-//                            Log.d("Navigation", "ResultEffect result = $result")
-//                            viewModel.setTags(result)
-//                        }
-                        SearchScreen(
-                            appRunsWithLogsRepositoryFactory.create(key.authority),
-                            onTagSelectorRequested = { tagsState: TagFilterState ->
-                                backStack.add(RouteTagFilter(tagsState))
-                            },
-                            onBack = {
-                                backStack.removeLastOrNull()
-                            }
-                        )
-                    }
-
-                    is RouteAppDetails -> NavEntry(
-                        key,
-                        metadata = ListDetailSceneStrategy.detailPane()
-                    ) {
-                        Log.d("Navigation", "inside RouteAppDetails")
-                        AppDetailsScreen(
-                            appRunsWithLogsRepositoryFactory.create(key.authority),
-                            onSearch = { searchState ->
-                                backStack.add(RouteSearch(key.authority, searchState))
-                            },
-                            onBack = {
-                                backStack.removeLastOrNull()
-                            }
-                        )
-                    }
-
-                    is RouteTagFilter -> NavEntry(
-                        key,
-                        metadata = DialogSceneStrategy.dialog(
-                            DialogProperties(
-                                usePlatformDefaultWidth = false,
-                                decorFitsSystemWindows = false
+    NavDisplay(
+        backStack = backStack,
+        sceneStrategy = dialogStrategy then listDetailStrategy,
+        modifier = modifier.semantics {
+            // Allows to use testTag() for UiAutomator resource-id.
+            testTagsAsResourceId = true
+        },
+        entryDecorators = listOf(
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator()
+        ),
+        onBack = { backStack.removeLastOrNull() },
+        entryProvider = { key ->
+            when (key) {
+                is RouteAppList -> NavEntry(
+                    key,
+                    metadata = ListDetailSceneStrategy.listPane(
+                        detailPlaceholder = {
+                            Placeholder(
+                                modifier = Modifier,
+                                "Choose a run from the list"
                             )
-                        )
-                    ) {
-                        Log.d("Navigation", "inside RouteAppDetails")
-                        TagFilterScreen(
-                            key.tagFilterState,
-                            onTagsSelectionChanged = {
-                                resultBus.sendResult<Set<String>>(result = it, resultKey = "tags")
-                            },
-                            onBack = {
-                                backStack.removeLastOrNull()
-                            }
-                        )
-                    }
-
-                    else -> error("Unknown route: $key")
+                        }
+                    )
+                ) {
+                    Log.d("Navigation", "inside RouteAppList")
+                    AppListScreen(onAppClick = { authority ->
+                        backStack.add(RouteAppDetails(authority))
+                    })
                 }
+
+                is RouteSearch -> NavEntry(
+                    key,
+                    metadata = ListDetailSceneStrategy.detailPane()
+                ) {
+                    Log.d("Navigation", "inside RouteSearch")
+                    val tags = resultStore.getResultState<Set<String>?>()
+                    SearchScreen(
+                        appRunsWithLogsRepositoryFactory.create(key.authority),
+                        tags = tags ?: emptySet(),
+                        onTagSelectorRequested = { tagsState: TagFilterState ->
+                            backStack.add(RouteTagFilter(tagsState))
+                        },
+                        onBack = {
+                            backStack.removeLastOrNull()
+                        }
+                    )
+                }
+
+                is RouteAppDetails -> NavEntry(
+                    key,
+                    metadata = ListDetailSceneStrategy.detailPane()
+                ) {
+                    Log.d("Navigation", "inside RouteAppDetails")
+                    AppDetailsScreen(
+                        appRunsWithLogsRepositoryFactory.create(key.authority),
+                        onSearch = { searchState ->
+                            backStack.add(RouteSearch(key.authority, searchState))
+                        },
+                        onBack = {
+                            backStack.removeLastOrNull()
+                        }
+                    )
+                }
+
+                is RouteTagFilter -> NavEntry(
+                    key,
+                    metadata = DialogSceneStrategy.dialog(
+                        DialogProperties(
+                            usePlatformDefaultWidth = false,
+                            decorFitsSystemWindows = false
+                        )
+                    )
+                ) {
+                    Log.d("Navigation", "inside RouteAppDetails")
+                    TagFilterScreen(
+                        key.tagFilterState,
+                        onTagsSelectionChanged = {
+                            resultStore.setResult<Set<String>>(result = it)
+                        },
+                        onBack = {
+                            backStack.removeLastOrNull()
+                        }
+                    )
+                }
+
+                else -> error("Unknown route: $key")
             }
-        )
-    }
+        }
+    )
 }
 
 @Composable
