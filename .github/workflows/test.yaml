@@ -1,3 +1,4 @@
+# TODO: Use MacOS runner when the project is made public.
 name: Run All Tests
 
 on:
