@@ -33,9 +33,23 @@ kotlin {
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    val xcfName = "LoggingCore"
+
+    iosX64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
+    iosArm64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
+    iosSimulatorArm64 {
+        binaries.framework {
+            baseName = xcfName
+        }
+    }
 
     // Source set declarations.
     // Declaring a target automatically creates a source set with the same name. By default, the

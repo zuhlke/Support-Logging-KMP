@@ -4,7 +4,7 @@ import ComposeApp
 
 struct ComposeView: UIViewControllerRepresentable {
 
-    let logsRepository: Logging_coreAppRunsWithLogsRepository
+    let logsRepository: AppRunsWithLogsRepository
 
     func makeUIViewController(context: Context) -> UIViewController {
         MainViewControllerKt.MainViewController(logsRepository: logsRepository)
@@ -15,7 +15,7 @@ struct ComposeView: UIViewControllerRepresentable {
 
 struct ContentView: View {
 
-    let logsRepository: Logging_coreAppRunsWithLogsRepository
+    let logsRepository: AppRunsWithLogsRepository
 
     var body: some View {
         ComposeView(logsRepository: logsRepository)
