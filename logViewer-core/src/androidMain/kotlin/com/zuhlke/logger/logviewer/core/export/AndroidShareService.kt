@@ -9,6 +9,7 @@ import kotlin.time.ExperimentalTime
 internal class AndroidShareService(private val applicationContext: Context) : ShareService {
     @OptIn(ExperimentalTime::class)
     override suspend fun prepareToShare(json: String): ShareableFile {
+        // TODO: it doesn't work if the widget gets logs from Dao directly. Fix crash
         val exportFile = File(applicationContext.cacheDir, "exports").apply { mkdir() }
             .resolve("log-${Clock.System.now()}.json")
             .also { it.writeText(json) }

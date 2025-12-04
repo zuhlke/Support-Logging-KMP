@@ -23,6 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.retain.RetainedEffect
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,6 +34,7 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.zuhlke.logger.logviewer.core.export.LogExporter
 import com.zuhlke.logger.logviewer.core.export.ShareableFile
 import com.zuhlke.logger.logviewer.core.ui.theme.LogViewerTheme
@@ -57,11 +60,21 @@ public fun AppDetailsScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val viewModel = AppDetailsViewModel.get(
-        searchState = SearchState(),
-        repository = repository,
-        logExporter = platformLogExporter()
-    )
+    val logExporter = platformLogExporter()
+    val viewModel = retain {
+        AppDetailsViewModel(
+            defaultSearchState = SearchState(),
+            repository = repository,
+            logExporter = logExporter
+        )
+    }
+    RetainedEffect(viewModel) {
+        viewModel.init()
+        onRetire {
+            viewModel.clear()
+        }
+    }
+
     AppDetailsScreen(viewModel, onSearch, onBack, modifier)
 }
 
@@ -75,10 +88,6 @@ private fun AppDetailsScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.init()
-    }
-
     val appRuns by viewModel.filteredAppRuns.collectAsStateWithLifecycle()
 
     ShareFileOnExportReady(viewModel.exportReady)
