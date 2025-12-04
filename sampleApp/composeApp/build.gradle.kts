@@ -16,6 +16,7 @@ kotlin {
     }
 
     listOf(
+        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -32,9 +33,9 @@ kotlin {
             implementation(libs.androidx.activity.compose)
         }
         commonMain.dependencies {
-            implementation(project(":logging"))
-            implementation(project(":logging-integration-room"))
-            implementation(project(":logViewer-core"))
+            api(project(":logging"))
+            api(project(":logging-integration-room"))
+            api(project(":logViewer-core"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

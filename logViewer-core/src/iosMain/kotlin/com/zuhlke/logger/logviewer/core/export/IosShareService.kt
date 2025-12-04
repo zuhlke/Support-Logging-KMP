@@ -1,6 +1,6 @@
 package com.zuhlke.logger.logviewer.core.export
 
-class IosShareService : ShareService {
+internal class IosShareService : ShareService {
     override suspend fun prepareToShare(json: String): ShareableFile {
         // TODO: iOS specific implementation to share the JSON string
         return object : ShareableFile {
