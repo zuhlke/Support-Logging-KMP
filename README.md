@@ -1,3 +1,7 @@
+# ⚠️ Work in Progress
+
+This library is under active development and is not ready for production use. APIs, behavior, and implementation details may change without notice. Please do not use this library in production or ship it to end users.
+
 # Zuhlke Safe Logging KMP library
 
 iOS‑style privacy redaction for Kotlin Multiplatform logging (Android & iOS). When `useSafeInterpolation = true`, every interpolated value is redacted unless wrapped with `public(...)` or `hash(...)`. String interpolation lets you safely keep production logs on: sanitized output appears in Android Logcat + a signature‑protected ContentProvider, and in OSLog on iOS.
