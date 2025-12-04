@@ -35,7 +35,6 @@ kotlin {
     // A step-by-step guide on how to include this library in an XCode
     // project can be found here:
     // https://developer.android.com/kotlin/multiplatform/migrate
-    val xcfName = "logging-integration-roomKit"
 
     if (HostManager.hostIsMac) {
         iosX64()
@@ -98,9 +97,11 @@ kotlin {
 
 dependencies {
     add("kspAndroid", libs.room.compiler)
-    add("kspIosSimulatorArm64", libs.room.compiler)
-    add("kspIosX64", libs.room.compiler)
-    add("kspIosArm64", libs.room.compiler)
+    if (HostManager.hostIsMac) {
+        add("kspIosSimulatorArm64", libs.room.compiler)
+        add("kspIosX64", libs.room.compiler)
+        add("kspIosArm64", libs.room.compiler)
+    }
 }
 
 room {
