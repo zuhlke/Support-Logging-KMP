@@ -41,8 +41,8 @@ public final class com/zuhlke/logging/SafeStringKt {
 
 public final class com/zuhlke/logging/ZuhlkeLogger {
 	public static final field INSTANCE Lcom/zuhlke/logging/ZuhlkeLogger;
-	public final fun initialize (Landroid/app/Application;ZZ)V
-	public static synthetic fun initialize$default (Lcom/zuhlke/logging/ZuhlkeLogger;Landroid/app/Application;ZZILjava/lang/Object;)V
+	public final fun initialize (Landroid/app/Application;ZZ[Lcom/zuhlke/logging/core/LogWriter;)V
+	public static synthetic fun initialize$default (Lcom/zuhlke/logging/ZuhlkeLogger;Landroid/app/Application;ZZ[Lcom/zuhlke/logging/core/LogWriter;ILjava/lang/Object;)V
 }
 
 public final class com/zuhlke/logging/integrations/kermit/KermitLogWriterKt {
