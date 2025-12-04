@@ -16,6 +16,7 @@ kotlin {
     }
 
     listOf(
+        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -23,6 +24,7 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
             export(project(":logging"))
+            export(project(":logging-integration-room"))
         }
     }
 
@@ -33,6 +35,8 @@ kotlin {
         }
         commonMain.dependencies {
             api(project(":logging"))
+            api(project(":logging-integration-room"))
+            api(project(":logViewer-core"))
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

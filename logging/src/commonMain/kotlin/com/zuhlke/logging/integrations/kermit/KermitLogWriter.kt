@@ -2,7 +2,7 @@ package com.zuhlke.logging.integrations.kermit
 
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.loggerConfigInit
-import com.zuhlke.logging.LogWriter
+import com.zuhlke.logging.core.LogWriter
 import com.zuhlke.logging.core.data.model.Severity
 import kotlin.time.Instant
 

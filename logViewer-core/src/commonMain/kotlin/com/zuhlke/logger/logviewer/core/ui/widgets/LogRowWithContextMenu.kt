@@ -56,7 +56,7 @@ import supportloggingkmp.logviewer_core.generated.resources.open_context_menu
 
 @OptIn(ExperimentalTime::class)
 @Composable
-fun LogRowWithContextMenu(
+internal fun LogRowWithContextMenu(
     entry: LogEntry,
     highlightsRegex: Regex,
     showLevel: Boolean,
@@ -119,7 +119,7 @@ fun LogRowWithContextMenu(
 }
 
 @Composable
-fun LogRowWithContextMenu(
+internal fun LogRowWithContextMenu(
     messageText: AnnotatedString,
     timestamp: String,
     tag: String,
@@ -190,7 +190,7 @@ fun LogRowWithContextMenu(
 }
 
 @Composable
-fun LogRowInternal(
+internal fun LogRowInternal(
     messageText: AnnotatedString,
     textExpanded: Boolean,
     iconChar: Char,

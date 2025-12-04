@@ -14,7 +14,7 @@ import supportloggingkmp.logviewer_core.generated.resources.Res
 import supportloggingkmp.logviewer_core.generated.resources.no_logs_yet
 
 @Composable
-fun AppRunsView(
+internal fun AppRunsView(
     appRuns: List<AppRunWithLogs>,
     searchTerm: String,
     showLevel: Boolean,

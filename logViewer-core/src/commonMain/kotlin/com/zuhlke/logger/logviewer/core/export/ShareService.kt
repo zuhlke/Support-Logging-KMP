@@ -1,9 +1,9 @@
 package com.zuhlke.logger.logviewer.core.export
 
-interface ShareService {
+internal interface ShareService {
     suspend fun prepareToShare(json: String): ShareableFile
 }
 
-interface ShareableFile {
+internal interface ShareableFile {
     val uriString: UriString
 }

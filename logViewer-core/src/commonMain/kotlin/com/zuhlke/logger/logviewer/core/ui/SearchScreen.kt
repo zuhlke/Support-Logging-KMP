@@ -28,6 +28,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.dropUnlessResumed
 import com.zuhlke.logger.logviewer.core.ui.utils.stringResource
 import com.zuhlke.logger.logviewer.core.ui.widgets.AppRunsView
 import com.zuhlke.logger.logviewer.core.ui.widgets.SeverityModalBottomSheet
@@ -35,6 +36,7 @@ import com.zuhlke.logger.logviewer.core.ui.widgets.TopAppBarWithTitle
 import com.zuhlke.logging.core.data.model.AppRunWithLogs
 import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
+import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import supportloggingkmp.logviewer_core.generated.resources.Res
@@ -44,7 +46,29 @@ import supportloggingkmp.logviewer_core.generated.resources.ic_arrow_drop_down
 import supportloggingkmp.logviewer_core.generated.resources.search
 
 @Composable
-fun SearchScreen(
+public fun SearchScreen(
+    repository: AppRunsWithLogsRepository,
+    tags: Set<String>,
+    onTagSelectorRequested: (TagFilterState) -> Unit,
+    onBack: () -> Unit
+) {
+    val viewModel = AppDetailsViewModel.get(
+        searchState = SearchState(),
+        repository = repository,
+        logExporter = platformLogExporter()
+    )
+    LaunchedEffect(tags) {
+        viewModel.setTags(tags)
+    }
+    SearchScreen(
+        viewModel = viewModel,
+        onTagSelectorRequested = onTagSelectorRequested,
+        onBack = onBack
+    )
+}
+
+@Composable
+internal fun SearchScreen(
     viewModel: AppDetailsViewModel,
     onTagSelectorRequested: (TagFilterState) -> Unit,
     onBack: () -> Unit
@@ -249,7 +273,7 @@ private fun SearchScreen(
 }
 
 @Composable
-fun getTagChipText(selectedTags: Set<String>): String = if (selectedTags.isEmpty()) {
+internal fun getTagChipText(selectedTags: Set<String>): String = if (selectedTags.isEmpty()) {
     stringResource(Res.string.filter_tags)
 } else {
     selectedTags.minOf { it } + if (selectedTags.size > 1) {

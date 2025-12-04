@@ -8,6 +8,7 @@ plugins {
 }
 
 kotlin {
+    explicitApi()
 
     // Target declarations - add or remove as needed below. These define
     // which platforms this KMP module supports.

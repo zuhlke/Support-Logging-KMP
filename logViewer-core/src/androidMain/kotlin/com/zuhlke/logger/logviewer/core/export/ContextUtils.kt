@@ -6,7 +6,7 @@ import android.net.Uri
 import supportloggingkmp.logviewer_core.generated.resources.Res
 import supportloggingkmp.logviewer_core.generated.resources.share_via
 
-suspend fun Context.startShare(uri: Uri) {
+internal suspend fun Context.startShare(uri: Uri) {
     val intent = Intent(Intent.ACTION_SEND).apply {
         type = "application/json"
         putExtra(Intent.EXTRA_STREAM, uri)

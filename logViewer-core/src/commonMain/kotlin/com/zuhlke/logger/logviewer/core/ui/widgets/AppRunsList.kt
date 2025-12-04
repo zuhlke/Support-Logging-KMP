@@ -14,7 +14,7 @@ import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
 
 @Composable
-fun AppRunsList(
+internal fun AppRunsList(
     appRuns: List<AppRunWithLogs>,
     searchTerm: String,
     showLevel: Boolean,

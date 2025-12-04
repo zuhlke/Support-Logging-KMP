@@ -38,7 +38,7 @@ import supportloggingkmp.logviewer_core.generated.resources.show_timestamp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBarWithTitle(
+internal fun TopAppBarWithTitle(
     title: @Composable (() -> Unit),
     showLevel: Boolean,
     showTimestamp: Boolean,

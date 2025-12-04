@@ -19,7 +19,7 @@ import supportloggingkmp.logviewer_core.generated.resources.ic_check_box_outline
 import supportloggingkmp.logviewer_core.generated.resources.unchecked
 
 @Composable
-fun TogglableDropdownMenuItem(
+internal fun TogglableDropdownMenuItem(
     text: String,
     iconId: DrawableResource,
     checked: Boolean,

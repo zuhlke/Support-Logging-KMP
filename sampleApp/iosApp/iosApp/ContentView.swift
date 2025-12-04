@@ -3,16 +3,22 @@ import SwiftUI
 import ComposeApp
 
 struct ComposeView: UIViewControllerRepresentable {
+
+    let logsRepository: AppRunsWithLogsRepository
+
     func makeUIViewController(context: Context) -> UIViewController {
-        MainViewControllerKt.MainViewController()
+        MainViewControllerKt.MainViewController(logsRepository: logsRepository)
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
 }
 
 struct ContentView: View {
+
+    let logsRepository: AppRunsWithLogsRepository
+
     var body: some View {
-        ComposeView()
+        ComposeView(logsRepository: logsRepository)
             .ignoresSafeArea()
     }
 }

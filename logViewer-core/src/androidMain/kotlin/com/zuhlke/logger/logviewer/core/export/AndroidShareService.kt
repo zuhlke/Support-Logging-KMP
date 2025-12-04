@@ -6,7 +6,7 @@ import java.io.File
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-class AndroidShareService(private val applicationContext: Context) : ShareService {
+internal class AndroidShareService(private val applicationContext: Context) : ShareService {
     @OptIn(ExperimentalTime::class)
     override suspend fun prepareToShare(json: String): ShareableFile {
         val exportFile = File(applicationContext.cacheDir, "exports").apply { mkdir() }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.Button
@@ -17,8 +18,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.zuhlke.logger.logviewer.core.ui.AppDetailsScreen
 import com.zuhlke.logging.SafeLogger
 import com.zuhlke.logging.core.data.model.Severity
+import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
 import com.zuhlke.logging.hash
 import com.zuhlke.logging.integrations.kermit.toKermitSeverity
 import com.zuhlke.logging.public
@@ -30,7 +33,7 @@ typealias KermitLogger = co.touchlab.kermit.Logger
 
 @Composable
 @Preview
-fun App() {
+fun App(repository: AppRunsWithLogsRepository) {
     val logger = remember { SafeLogger("SampleApp") }
     val loggerWithDifferentTag = remember { SafeLogger("SampleApp2") }
     var counter by remember { mutableIntStateOf(0) }
@@ -64,11 +67,10 @@ hash = ${hash(password)}"""
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
                 .safeContentPadding()
-                .padding(vertical = 24.dp)
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Button(onClick = {
+            Button(modifier = Modifier.padding(top = 24.dp), onClick = {
                 addFakeLogs(Severity.Verbose)
             }) {
                 Text("Add verbose log")
@@ -104,12 +106,17 @@ hash = ${hash(password)}"""
             }) {
                 Text("Add assertion log")
             }
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = {
                 throw IllegalStateException("Crash test $counter")
             }) {
                 Text("Crash app")
             }
+            AppDetailsScreen(repository, onSearch = {
+                TODO("Not yet implemented")
+            }, onBack = {
+                // No-op
+            }, modifier = Modifier.weight(1f))
         }
     }
 }

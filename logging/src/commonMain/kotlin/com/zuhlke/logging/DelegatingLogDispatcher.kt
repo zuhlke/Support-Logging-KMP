@@ -1,5 +1,6 @@
 package com.zuhlke.logging
 
+import com.zuhlke.logging.core.LogWriter
 import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.data.RunMetadata
 import kotlin.time.Clock

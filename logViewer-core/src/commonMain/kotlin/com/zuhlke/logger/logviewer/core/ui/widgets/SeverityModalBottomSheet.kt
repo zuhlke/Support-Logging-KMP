@@ -24,7 +24,7 @@ import supportloggingkmp.logviewer_core.generated.resources.ic_close
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SeverityModalBottomSheet(
+internal fun SeverityModalBottomSheet(
     onDismissRequest: () -> Unit,
     selectedSeverities: Set<Severity> = emptySet(),
     onSelectionChanged: (Set<Severity>) -> Unit
@@ -73,7 +73,7 @@ private fun SeverityCheckboxRow(
 
 @Preview
 @Composable
-fun SeverityModalBottomSheetPreview() {
+internal fun SeverityModalBottomSheetPreview() {
     SeverityModalBottomSheet(
         onDismissRequest = {},
         selectedSeverities = setOf(Severity.Error, Severity.Warn),

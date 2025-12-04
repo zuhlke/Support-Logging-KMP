@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @OptIn(ExperimentalTime::class)
-data class AppRunSnapshot(
+internal data class AppRunSnapshot(
     val launchDate: Instant,
     val appVersion: String,
     val operatingSystemVersion: String,
@@ -15,7 +15,7 @@ data class AppRunSnapshot(
 )
 
 @OptIn(ExperimentalTime::class)
-val AppRun.snapshot: AppRunSnapshot
+internal val AppRun.snapshot: AppRunSnapshot
     get() {
         return AppRunSnapshot(
             launchDate = launchDate,

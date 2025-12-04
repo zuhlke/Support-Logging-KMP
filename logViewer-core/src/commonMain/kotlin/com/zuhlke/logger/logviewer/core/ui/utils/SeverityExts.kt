@@ -10,7 +10,7 @@ import supportloggingkmp.logviewer_core.generated.resources.severity_info
 import supportloggingkmp.logviewer_core.generated.resources.severity_verbose
 import supportloggingkmp.logviewer_core.generated.resources.severity_warning
 
-val Severity.stringResource: StringResource
+internal val Severity.stringResource: StringResource
     get() {
         return when (this) {
             Severity.Verbose -> Res.string.severity_verbose

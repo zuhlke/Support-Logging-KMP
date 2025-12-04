@@ -14,7 +14,7 @@ concurrency:
 jobs:
   all-tests:
     name: Run Checks
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
@@ -34,7 +34,7 @@ jobs:
         run: ./gradlew lint
 
       - name: Run KtLint
-        run: ./gradlew ktlintCheck
+        run: ./gradlew ktlintCheck --stacktrace
 
       - name: Check binary compatibility
         run: ./gradlew apiCheck || { exit_code=$?; printf "*** This PR changes Logger's public API. If this change is intentional, run './gradlew apiDump' and commit the new API files. ***"; exit $exit_code; }
