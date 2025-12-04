@@ -27,7 +27,7 @@ public actual object ZuhlkeLogger {
         useSafeInterpolation: Boolean = application.applicationInfo.flags and
             ApplicationInfo.FLAG_DEBUGGABLE == 0,
         setUncaughtExceptionHandler: Boolean = true,
-        vararg logWriters: LogWriter
+        vararg logWriters: LogWriter = emptyArray()
     ) {
         val interpolationConfiguration = if (useSafeInterpolation) {
             SafeInterpolation

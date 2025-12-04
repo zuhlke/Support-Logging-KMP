@@ -24,6 +24,7 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
             export(project(":logging"))
+            export(project(":logging-integration-room"))
         }
     }
 
