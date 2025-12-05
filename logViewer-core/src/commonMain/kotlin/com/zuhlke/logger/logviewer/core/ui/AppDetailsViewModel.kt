@@ -20,9 +20,15 @@ import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
 import kotlin.time.ExperimentalTime
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,13 +40,20 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalUuidApi::class)
 internal class AppDetailsViewModel(
     defaultSearchState: SearchState,
     private val repository: AppRunsWithLogsRepository,
     private val logExporter: LogExporter
-) : ViewModel() {
+) {
+    private val uuid = Uuid.random()
 
-    private var collectionJob: Job? = null
+    init {
+        println("AppDetailsViewModel $uuid created")
+    }
+
+    private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
     private val logs = MutableStateFlow<List<AppRunWithLogs>>(emptyList())
     private val _selectedSeverities = MutableStateFlow(defaultSearchState.severities)
     val selectedSeverities: StateFlow<Set<Severity>> = _selectedSeverities
@@ -111,7 +124,7 @@ internal class AppDetailsViewModel(
     fun init() {
         if (initialised) return
         initialised = true
-        collectionJob = viewModelScope.launch {
+        viewModelScope.launch {
             repository.getLogs().collect { appRuns ->
                 logs.value = appRuns.filter { runWithLogs -> runWithLogs.logEntries.isNotEmpty() }
 
@@ -130,61 +143,10 @@ internal class AppDetailsViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        collectionJob?.cancel()
-        println("AppDetailsViewModel onCleared") // TODO: remove
+    fun clear() {
+        viewModelScope.coroutineContext.cancelChildren()
+        println("AppDetailsViewModel $uuid cleared") // TODO: remove
     }
 
     data class UiState(val appRunsWithLogs: List<AppRunWithLogs>, val searchTerm: String)
-
-    companion object {
-        val KEY_APP_RUNS_WITH_LOGS_REPOSITORY =
-            object : CreationExtras.Key<AppRunsWithLogsRepository> {}
-        val KEY_SEARCH_STATE = object : CreationExtras.Key<SearchState> {}
-        val KEY_LOG_EXPORTER = object : CreationExtras.Key<LogExporter> {}
-
-        val Factory: ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val searchState = this[KEY_SEARCH_STATE] as SearchState
-                val repository =
-                    this[KEY_APP_RUNS_WITH_LOGS_REPOSITORY] as AppRunsWithLogsRepository
-                val logExporter = this[KEY_LOG_EXPORTER] as LogExporter
-                AppDetailsViewModel(
-                    defaultSearchState = searchState,
-                    repository = repository,
-                    logExporter = logExporter
-                )
-            }
-        }
-
-        fun createFactoryExtras(
-            searchState: SearchState,
-            repository: AppRunsWithLogsRepository,
-            logExporter: LogExporter
-        ) = MutableCreationExtras().apply {
-            set(KEY_SEARCH_STATE, searchState)
-            set(KEY_APP_RUNS_WITH_LOGS_REPOSITORY, repository)
-            set(KEY_LOG_EXPORTER, logExporter)
-        }
-    }
-}
-
-@Composable
-internal fun AppDetailsViewModel.Companion.get(
-    searchState: SearchState,
-    repository: AppRunsWithLogsRepository,
-    logExporter: LogExporter
-): AppDetailsViewModel {
-    val extras = remember(searchState, repository, logExporter) {
-        createFactoryExtras(
-            searchState = searchState,
-            repository = repository,
-            logExporter = logExporter
-        )
-    }
-    return viewModel(
-        factory = Factory,
-        extras = extras
-    )
 }

@@ -20,6 +20,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.retain.RetainedEffect
+import androidx.compose.runtime.retain.retain
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -52,11 +54,20 @@ public fun SearchScreen(
     onTagSelectorRequested: (TagFilterState) -> Unit,
     onBack: () -> Unit
 ) {
-    val viewModel = AppDetailsViewModel.get(
-        searchState = SearchState(),
-        repository = repository,
-        logExporter = platformLogExporter()
-    )
+    val logExporter = platformLogExporter()
+    val viewModel = retain {
+        AppDetailsViewModel(
+            defaultSearchState = SearchState(),
+            repository = repository,
+            logExporter = logExporter
+        )
+    }
+    RetainedEffect(viewModel) {
+        viewModel.init()
+        onRetire {
+            viewModel.clear()
+        }
+    }
     LaunchedEffect(tags) {
         viewModel.setTags(tags)
     }
