@@ -13,6 +13,7 @@ import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.retain.retainRetainedValuesStoreRegistry
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,6 +56,8 @@ fun Navigation(
 
     val resultStore = rememberResultStore()
 
+    val retainedValuesStoreRegistry = retainRetainedValuesStoreRegistry()
+
     NavDisplay(
         backStack = backStack,
         sceneStrategy = dialogStrategy then listDetailStrategy,
@@ -66,7 +69,12 @@ fun Navigation(
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator()
         ),
-        onBack = { backStack.removeLastOrNull() },
+        onBack = {
+            val last = backStack.removeLastOrNull()
+            if (last is RouteAppDetails) {
+                retainedValuesStoreRegistry.clearChild("details")
+            }
+        },
         entryProvider = { key ->
             when (key) {
                 is RouteAppList -> NavEntry(
@@ -108,16 +116,18 @@ fun Navigation(
                     key,
                     metadata = ListDetailSceneStrategy.detailPane()
                 ) {
-                    Log.d("Navigation", "inside RouteAppDetails")
-                    AppDetailsScreen(
-                        appRunsWithLogsRepositoryFactory.create(key.authority),
-                        onSearch = { searchState ->
-                            backStack.add(RouteSearch(key.authority, searchState))
-                        },
-                        onBack = {
-                            backStack.removeLastOrNull()
-                        }
-                    )
+                    retainedValuesStoreRegistry.LocalRetainedValuesStoreProvider("details") {
+                        Log.d("Navigation", "inside RouteAppDetails")
+                        AppDetailsScreen(
+                            appRunsWithLogsRepositoryFactory.create(key.authority),
+                            onSearch = { searchState ->
+                                backStack.add(RouteSearch(key.authority, searchState))
+                            },
+                            onBack = {
+                                backStack.removeLastOrNull()
+                            }
+                        )
+                    }
                 }
 
                 is RouteTagFilter -> NavEntry(

@@ -19,9 +19,11 @@ import com.zuhlke.logging.core.data.model.AppRunWithLogs
 import com.zuhlke.logging.core.data.model.LogEntry
 import com.zuhlke.logging.core.data.model.Severity
 import com.zuhlke.logging.core.repository.AppRunsWithLogsRepository
+import kotlin.time.ExperimentalTime
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
@@ -38,11 +40,18 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalUuidApi::class)
 internal class AppDetailsViewModel(
     defaultSearchState: SearchState,
     private val repository: AppRunsWithLogsRepository,
     private val logExporter: LogExporter
 ) {
+    private val uuid = Uuid.random()
+
+    init {
+        println("AppDetailsViewModel $uuid created")
+    }
+
     private val viewModelScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private val logs = MutableStateFlow<List<AppRunWithLogs>>(emptyList())
@@ -136,7 +145,7 @@ internal class AppDetailsViewModel(
 
     fun clear() {
         viewModelScope.coroutineContext.cancelChildren()
-        println("AppDetailsViewModel clear called") // TODO: remove
+        println("AppDetailsViewModel $uuid cleared") // TODO: remove
     }
 
     data class UiState(val appRunsWithLogs: List<AppRunWithLogs>, val searchTerm: String)

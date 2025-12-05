@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.retain.LocalRetainedValuesStoreProvider
-import androidx.compose.runtime.retain.retainManagedRetainedValuesStore
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.zuhlke.logging.viewer.data.contentprovider.ContentProviderAppRunsWithLogsRepository
@@ -38,16 +36,13 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            val retainedValuesStore = retainManagedRetainedValuesStore()
-            LocalRetainedValuesStoreProvider(retainedValuesStore) {
-                LogsViewerTheme {
-                    Navigation(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .imePadding(),
-                        appRunsWithLogsRepositoryFactory
-                    )
-                }
+            LogsViewerTheme {
+                Navigation(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .imePadding(),
+                    appRunsWithLogsRepositoryFactory
+                )
             }
         }
     }
